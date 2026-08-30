@@ -18,13 +18,12 @@ ENV VITE_MS_USUARIOS_URL=$VITE_MS_USUARIOS_URL
 
 # Copiamos dependencias primero para aprovechar caché
 COPY package*.json ./
-RUN npm ci --only=production && \
-    npm cache clean --force
+RUN npm install
 
 # Copiamos código fuente
 COPY . .
 
-# Build de producción
+# Build de producción (Vite necesita dependencias de dev)
 RUN npm run build
 
 # ==========================================

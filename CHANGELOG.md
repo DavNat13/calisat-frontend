@@ -3,6 +3,13 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.1.1] - 2026-08-28
+
+### Fixed
+- Corregido comando de instalación en Dockerfile: reemplazado `npm ci --only=production` por `npm install`
+- Solucionado error por ausencia de package-lock.json
+- Vite ahora recibe todas las dependencias incluyendo devDependencies para compilar correctamente
+
 ## [1.1.0] - 2026-08-28
 
 ### Added
@@ -16,8 +23,6 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 - Bloqueo de acceso a archivos ocultos (.)
 
 ### Changed
-- Reemplazado `npm install` por `npm ci --only=production` para builds reproducibles
-- Agregado `npm cache clean --force` para reducir tamaño de imagen
 - Actualizada imagen Nginx a versión 1.25-alpine
 - Eliminada configuración por defecto de Nginx
 
@@ -41,5 +46,6 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 - Dockerfile base multi-stage (Node 20 + Nginx)
 - nginx.conf con SPA routing
 
+[1.1.1]: https://github.com/DavNat13/calisat-frontend/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/DavNat13/calisat-frontend/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/DavNat13/calisat-frontend/releases/tag/v1.0.0
