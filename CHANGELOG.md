@@ -3,6 +3,16 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.2.0] - 2026-09-04
+
+### Added
+- Integración de registro automático POST hacia el backend después del login
+- Adquisición silenciosa de token con `acquireTokenSilent` antes de llamar al API
+- Endpoint POST `/api/v1/usuarios/registro` con Bearer token en headers
+
+### Fixed
+- Prevención de bucles infinitos con `useRef` para ejecutar el POST una sola vez por sesión
+
 ## [1.1.2] - 2026-09-04
 
 ### Fixed
@@ -52,6 +62,7 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 - Dockerfile base multi-stage (Node 20 + Nginx)
 - nginx.conf con SPA routing
 
+[1.2.0]: https://github.com/DavNat13/calisat-frontend/compare/v1.1.2...v1.2.0
 [1.1.2]: https://github.com/DavNat13/calisat-frontend/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/DavNat13/calisat-frontend/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/DavNat13/calisat-frontend/compare/v1.0.0...v1.1.0

@@ -1,19 +1,38 @@
 import { useIsAuthenticated } from "@azure/msal-react";
 import { useMsal } from "@azure/msal-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { loginRequest } from "../../auth/AuthConfig";
 
 export default function LoginButton() {
   const { instance, accounts, inProgress } = useMsal();
   const isAuthenticated = useIsAuthenticated();
+  const hasRegistered = useRef(false);
 
   useEffect(() => {
     if (accounts.length > 0 && inProgress === "none") {
       if (window.location.search.includes("state=") || window.location.hash.includes("code=")) {
         window.history.replaceState({}, document.title, window.location.pathname);
       }
+
+      if (!hasRegistered.current) {
+        hasRegistered.current = true;
+        instance.acquireTokenSilent({ ...loginRequest, account: accounts[0] })
+          .then(response => {
+            return fetch(`${import.meta.env.VITE_MS_USUARIOS_URL}/api/v1/usuarios/registro`, {
+              method: "POST",
+              headers: {
+                "Authorization": `Bearer ${response.accessToken}`,
+                "Content-Type": "application/json"
+              }
+            });
+          })
+          .then(res => {
+            if (res.ok) console.log("Usuario sincronizado con el backend");
+          })
+          .catch(e => console.error("Error sincronizando usuario:", e));
+      }
     }
-  }, [accounts, inProgress]);
+  }, [accounts, inProgress, instance]);
 
   const handleLogin = () => {
     instance.loginRedirect(loginRequest).catch(e => {
@@ -22,6 +41,7 @@ export default function LoginButton() {
   };
 
   const handleLogout = () => {
+    hasRegistered.current = false;
     instance.logoutRedirect().catch(e => {
       console.error("Error en logout:", e);
     });
