@@ -3,6 +3,12 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.1.2] - 2026-09-04
+
+### Fixed
+- Limpieza de parámetros `state=` y `code=` en URL post-login de Azure AD
+- URL base limpia sin recargar la página después del redirect
+
 ## [1.1.1] - 2026-08-28
 
 ### Fixed
@@ -46,6 +52,7 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 - Dockerfile base multi-stage (Node 20 + Nginx)
 - nginx.conf con SPA routing
 
+[1.1.2]: https://github.com/DavNat13/calisat-frontend/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/DavNat13/calisat-frontend/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/DavNat13/calisat-frontend/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/DavNat13/calisat-frontend/releases/tag/v1.0.0

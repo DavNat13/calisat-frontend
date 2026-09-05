@@ -1,10 +1,19 @@
 import { useIsAuthenticated } from "@azure/msal-react";
 import { useMsal } from "@azure/msal-react";
+import { useEffect } from "react";
 import { loginRequest } from "../../auth/AuthConfig";
 
 export default function LoginButton() {
-  const { instance, accounts } = useMsal();
+  const { instance, accounts, inProgress } = useMsal();
   const isAuthenticated = useIsAuthenticated();
+
+  useEffect(() => {
+    if (accounts.length > 0 && inProgress === "none") {
+      if (window.location.search.includes("state=") || window.location.hash.includes("code=")) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
+  }, [accounts, inProgress]);
 
   const handleLogin = () => {
     instance.loginRedirect(loginRequest).catch(e => {
