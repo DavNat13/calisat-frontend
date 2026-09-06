@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../../auth/AuthConfig";
+import { apiRequest } from "../../auth/AuthConfig"; 
 
 const API_GATEWAY = import.meta.env.VITE_API_GATEWAY_URL;
 const PERFIL_ENDPOINT = "/api/v1/usuarios/perfil";
@@ -13,7 +13,7 @@ export default function useUserProfile() {
 
   const getToken = async () => {
     const response = await instance.acquireTokenSilent({
-      ...loginRequest,
+      ...apiRequest, 
       account: accounts[0]
     });
     return response.accessToken;
