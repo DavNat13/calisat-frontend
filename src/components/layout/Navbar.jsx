@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import LoginButton from "./LoginButton";
+import UserNavbar from "./UserNavbar";
 
 export default function Navbar() {
   return (
@@ -20,7 +20,7 @@ export default function Navbar() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <LoginButton />
+            <UserNavbar />
           </div>
         </div>
       </div>

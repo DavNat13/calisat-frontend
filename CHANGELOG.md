@@ -3,6 +3,18 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.2.2] - 2026-09-04
+
+### Added
+- Componente `UserNavbar.jsx` con ícono de usuario y menú desplegable
+- Estilos `UserNavbar.css` para navegación de usuario
+- Componente `UserProfile.jsx` con botones para probar endpoints CRUD
+- Estilos `UserProfile.css` para interfaz de perfil
+- Hook `useUserProfile` para consumir GET, PUT, DELETE contra el backend
+
+### Changed
+- Navbar.jsx actualizado para usar `UserNavbar` en lugar de `LoginButton`
+
 ## [1.2.1] - 2026-09-04
 
 ### Added
@@ -71,6 +83,7 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 - Dockerfile base multi-stage (Node 20 + Nginx)
 - nginx.conf con SPA routing
 
+[1.2.2]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.1...v1.2.2
 [1.2.1]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/DavNat13/calisat-frontend/compare/v1.1.2...v1.2.0
 [1.1.2]: https://github.com/DavNat13/calisat-frontend/compare/v1.1.1...v1.1.2

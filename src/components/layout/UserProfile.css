@@ -1,0 +1,142 @@
+.profile-container {
+  max-width: 40rem;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #0f172a;
+  border-radius: 0.75rem;
+  border: 1px solid #1e293b;
+}
+
+.profile-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+}
+
+.section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 0.75rem;
+}
+
+.profile-actions {
+  margin-bottom: 1.5rem;
+}
+
+.profile-card {
+  background: #1e293b;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.profile-field {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #334155;
+}
+
+.profile-field:last-child {
+  border-bottom: none;
+}
+
+.field-label {
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.field-value {
+  color: #e2e8f0;
+  font-size: 0.875rem;
+  font-family: monospace;
+  word-break: break-all;
+}
+
+.update-section {
+  margin-bottom: 1.5rem;
+}
+
+.update-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.update-input {
+  flex: 1;
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  color: #e2e8f0;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.update-input:focus {
+  border-color: #EA580C;
+}
+
+.update-input::placeholder {
+  color: #64748b;
+}
+
+.delete-section {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #334155;
+}
+
+.btn {
+  padding: 0.625rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #EA580C;
+  color: #ffffff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #c2410c;
+}
+
+.btn-secondary {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #475569;
+}
+
+.btn-danger {
+  background: #991b1b;
+  color: #ffffff;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #7f1d1d;
+}
+
+.profile-message {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: #1e3a5f;
+  border-radius: 0.5rem;
+  color: #93c5fd;
+  font-size: 0.875rem;
+}
