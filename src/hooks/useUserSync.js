@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../auth/AuthConfig";
 
-const BACKEND_URL = "https://ho5p58iyu7.execute-api.us-east-1.amazonaws.com";
+const API_GATEWAY = import.meta.env.VITE_API_GATEWAY_URL;
 const REGISTRO_ENDPOINT = "/api/v1/usuarios/registro";
 
 export default function useUserSync() {
@@ -15,7 +15,7 @@ export default function useUserSync() {
 
       instance.acquireTokenSilent({ ...loginRequest, account: accounts[0] })
         .then(response => {
-          return fetch(`${BACKEND_URL}${REGISTRO_ENDPOINT}`, {
+          return fetch(`${API_GATEWAY}${REGISTRO_ENDPOINT}`, {
             method: "POST",
             headers: {
               "Authorization": `Bearer ${response.accessToken}`,

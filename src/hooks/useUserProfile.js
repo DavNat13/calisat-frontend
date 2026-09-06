@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../../auth/AuthConfig";
 
-const BACKEND_URL = "https://ho5p58iyu7.execute-api.us-east-1.amazonaws.com";
+const API_GATEWAY = import.meta.env.VITE_API_GATEWAY_URL;
 const PERFIL_ENDPOINT = "/api/v1/usuarios/perfil";
 
 export default function useUserProfile() {
@@ -24,7 +24,7 @@ export default function useUserProfile() {
     setMensaje("");
     try {
       const token = await getToken();
-      const res = await fetch(`${BACKEND_URL}${PERFIL_ENDPOINT}`, {
+      const res = await fetch(`${API_GATEWAY}${PERFIL_ENDPOINT}`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (res.ok) {
@@ -47,7 +47,7 @@ export default function useUserProfile() {
     setMensaje("");
     try {
       const token = await getToken();
-      const res = await fetch(`${BACKEND_URL}${PERFIL_ENDPOINT}`, {
+      const res = await fetch(`${API_GATEWAY}${PERFIL_ENDPOINT}`, {
         method: "PUT",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -74,7 +74,7 @@ export default function useUserProfile() {
     setMensaje("");
     try {
       const token = await getToken();
-      const res = await fetch(`${BACKEND_URL}${PERFIL_ENDPOINT}`, {
+      const res = await fetch(`${API_GATEWAY}${PERFIL_ENDPOINT}`, {
         method: "DELETE",
         headers: { "Authorization": `Bearer ${token}` }
       });
