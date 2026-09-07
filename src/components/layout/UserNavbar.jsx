@@ -38,6 +38,7 @@ export default function UserNavbar() {
         {showMenu && (
           <div className="user-dropdown">
             <Link to="/perfil" className="dropdown-item" onClick={() => setShowMenu(false)}>Mi Perfil</Link>
+            <Link to="/productos" className="dropdown-item" onClick={() => setShowMenu(false)}>Crear Productos</Link>
             <button className="dropdown-item logout" onClick={handleLogout}>
               Cerrar Sesión
             </button>

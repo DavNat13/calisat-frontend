@@ -3,6 +3,32 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.3.2] - 2026-09-07
+
+### Changed
+- Formulario de creación de productos con diseño responsivo y estados de carga
+- Grilla adaptativa de tarjetas de productos con imagen, precio formateado y categoría
+- Manejo de errores y mensajes de éxito en el formulario
+
+## [1.3.1] - 2026-09-07
+
+### Added
+- Enlace "Crear Productos" en el menú desplegable del navbar de usuario
+- Navegación SPA hacia `/productos` desde el dropdown
+
+## [1.3.0] - 2026-09-07
+
+### Added
+- Vista de gestión de catálogo (`ProductosPage.jsx`) con formulario y listado
+- Servicio `catalogoService.js` para consumo del API Gateway (GET/POST)
+- Ruta `/productos` configurada en App.jsx
+- Listado de productos activos en grilla de tarjetas
+- Formulario de creación con campos: SKU, Nombre, Descripción, Precio, Categoría, Imagen URL
+- Actualización automática del listado tras crear un producto
+
+### Changed
+- Versión incrementada a 1.3.0
+
 ## [1.2.12] - 2026-09-05
 
 ### Added
@@ -137,6 +163,9 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 - Dockerfile base multi-stage (Node 20 + Nginx)
 - nginx.conf con SPA routing
 
+[1.3.2]: https://github.com/DavNat13/calisat-frontend/compare/v1.3.1...v1.3.2
+[1.3.1]: https://github.com/DavNat13/calisat-frontend/compare/v1.3.0...v1.3.1
+[1.3.0]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.12...v1.3.0
 [1.2.12]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.11...v1.2.12
 [1.2.11]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.10...v1.2.11
 [1.2.10]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.9...v1.2.10
