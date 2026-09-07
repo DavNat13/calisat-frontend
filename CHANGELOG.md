@@ -3,6 +3,20 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.3.3] - 2026-09-07
+
+### Added
+- Edición de productos: formulario pre-cargado con datos del producto seleccionado (PUT)
+- Eliminación de productos con modal de confirmación previa (DELETE)
+- Botones "Editar" y "Eliminar" en cada tarjeta de producto
+- Filtro rápido por categoría con campo de búsqueda
+- Contador de productos en el listado
+
+### Changed
+- Servicio catalogoService ampliado con `getProductoBySku`, `getProductosByCategoria`, `updateProducto`, `deleteProducto`
+- Formulario dinámico: alterna entre modo creación y edición
+- SKU deshabilitado durante edición para preservar inmutabilidad
+
 ## [1.3.2] - 2026-09-07
 
 ### Changed
@@ -163,6 +177,7 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 - Dockerfile base multi-stage (Node 20 + Nginx)
 - nginx.conf con SPA routing
 
+[1.3.3]: https://github.com/DavNat13/calisat-frontend/compare/v1.3.2...v1.3.3
 [1.3.2]: https://github.com/DavNat13/calisat-frontend/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/DavNat13/calisat-frontend/compare/v1.3.0...v1.3.1
 [1.3.0]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.12...v1.3.0
