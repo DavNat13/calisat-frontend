@@ -12,9 +12,9 @@ export const msalConfig = {
 };
 
 export const loginRequest = {
-  scopes: ["User.Read"]
+  scopes: ["User.Read"],
 };
 
 export const apiRequest = {
-  scopes: [`api://${import.meta.env.VITE_AZURE_CLIENT_ID}/desarrollo/read-write`],
+  scopes: [`api://${import.meta.env.VITE_AZURE_CLIENT_ID}/read-write`],
 };
