@@ -1,9 +1,9 @@
 export const msalConfig = {
   auth: {
-    clientId: import.meta.env.VITE_AZURE_CLIENT_ID,
-    authority: `https://login.microsoftonline.com/${import.meta.env.VITE_AZURE_TENANT_ID}`,
-    redirectUri: import.meta.env.VITE_AZURE_REDIRECT_URI,
-    postLogoutRedirectUri: import.meta.env.VITE_AZURE_REDIRECT_URI,
+    clientId: "d221f0d2-1a7c-4872-ad6c-367a1f0717ec",
+    authority: "https://login.microsoftonline.com/e5372bf0-c5e3-4286-887c-79069f209c1f",
+    redirectUri: "https://ezeh839whh.execute-api.us-east-1.amazonaws.com/desarrrollo/",
+    postLogoutRedirectUri: "https://ezeh839whh.execute-api.us-east-1.amazonaws.com/desarrrollo/",
   },
   cache: {
     cacheLocation: "sessionStorage",
@@ -16,5 +16,5 @@ export const loginRequest = {
 };
 
 export const apiRequest = {
-  scopes: [`api://${import.meta.env.VITE_AZURE_CLIENT_ID}/read-write`],
+  scopes: ["api://d221f0d2-1a7c-4872-ad6c-367a1f0717ec/read-write"],
 };

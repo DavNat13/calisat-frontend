@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useMsal } from "@azure/msal-react";
 import { apiRequest } from "../../auth/AuthConfig"; 
 
-const API_GATEWAY = import.meta.env.VITE_API_GATEWAY_URL;
+const API_GATEWAY = "https://ho5p58iyu7.execute-api.us-east-1.amazonaws.com";
 const PERFIL_ENDPOINT = "/api/v1/usuarios/perfil";
 
 export default function useUserProfile() {

@@ -3,6 +3,13 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.2.8] - 2026-09-05
+
+### Changed
+- Eliminadas variables de entorno del Dockerfile (ARG/ENV de Vite)
+- Hardcodeadas credenciales de Azure AD y URL del API Gateway en código fuente
+- Simplificado proceso de construcción Docker para entorno académico
+
 ## [1.2.7] - 2026-09-05
 
 ### Fixed
@@ -105,6 +112,7 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 - Dockerfile base multi-stage (Node 20 + Nginx)
 - nginx.conf con SPA routing
 
+[1.2.8]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.7...v1.2.8
 [1.2.7]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.5...v1.2.7
 [1.2.5]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.4...v1.2.5
 [1.2.4]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.2...v1.2.4
