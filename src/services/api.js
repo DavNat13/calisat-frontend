@@ -32,7 +32,7 @@ export async function acquireTokenSilent() {
   if (accounts.length === 0) return null;
 
   const apiRequest = {
-    scopes: [`api://${import.meta.env.VITE_AZURE_CLIENT_ID}/read-write`],
+    scopes: ["api://d221f0d2-1a7c-4872-ad6c-367a1f0717ec/read-write"],
     account: accounts[0],
   };
 
