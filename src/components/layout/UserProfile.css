@@ -55,6 +55,18 @@
   word-break: break-all;
 }
 
+.token-value {
+  max-width: 20rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.token-value:hover {
+  white-space: normal;
+}
+
 .update-section {
   margin-bottom: 1.5rem;
 }

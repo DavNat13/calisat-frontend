@@ -3,6 +3,12 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.2.12] - 2026-09-05
+
+### Added
+- Visualización del token JWT en la sección de perfil
+- Estilos CSS para el campo de token con efecto hover
+
 ## [1.2.11] - 2026-09-05
 
 ### Fixed
@@ -131,6 +137,7 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 - Dockerfile base multi-stage (Node 20 + Nginx)
 - nginx.conf con SPA routing
 
+[1.2.12]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.11...v1.2.12
 [1.2.11]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.10...v1.2.11
 [1.2.10]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.9...v1.2.10
 [1.2.9]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.8...v1.2.9

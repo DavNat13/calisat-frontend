@@ -45,6 +45,12 @@ export default function UserProfile() {
             <span className="field-label">Activo:</span>
             <span className="field-value">{perfil.activo ? "Sí" : "No"}</span>
           </div>
+          {perfil.token && (
+            <div className="profile-field">
+              <span className="field-label">Token JWT:</span>
+              <span className="field-value token-value">{perfil.token}</span>
+            </div>
+          )}
         </div>
       )}
 
