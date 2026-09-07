@@ -3,6 +3,13 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.2.10] - 2026-09-05
+
+### Fixed
+- Corregida ruta `/perfil` para usar componente `UserProfile` real
+- Reemplazado `<a href>` por `<Link to>` en UserNavbar para navegación SPA
+- Cerrado menú desplegable al hacer clic en "Mi Perfil"
+
 ## [1.2.9] - 2026-09-05
 
 ### Changed
@@ -119,6 +126,7 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 - Dockerfile base multi-stage (Node 20 + Nginx)
 - nginx.conf con SPA routing
 
+[1.2.10]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.9...v1.2.10
 [1.2.9]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.8...v1.2.9
 [1.2.8]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.7...v1.2.8
 [1.2.7]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.5...v1.2.7

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useMsal } from "@azure/msal-react";
 import { useIsAuthenticated } from "@azure/msal-react";
 import useUserSync from "../../hooks/useUserSync";
@@ -36,7 +37,7 @@ export default function UserNavbar() {
         </button>
         {showMenu && (
           <div className="user-dropdown">
-            <a href="/perfil" className="dropdown-item">Mi Perfil</a>
+            <Link to="/perfil" className="dropdown-item" onClick={() => setShowMenu(false)}>Mi Perfil</Link>
             <button className="dropdown-item logout" onClick={handleLogout}>
               Cerrar Sesión
             </button>
