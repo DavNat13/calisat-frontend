@@ -3,6 +3,13 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.2.7] - 2026-09-05
+
+### Fixed
+- Corregido uso de `loginRequest` por `apiRequest` en hook `useUserSync`
+- Se evita solicitar scopes incorrectos de Microsoft Graph (`User.Read`)
+- Peticiones de sincronización ahora obtienen audiencia correcta para API Gateway
+
 ## [1.2.5] - 2026-09-04
 
 ### Fixed
@@ -98,6 +105,7 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 - Dockerfile base multi-stage (Node 20 + Nginx)
 - nginx.conf con SPA routing
 
+[1.2.7]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.5...v1.2.7
 [1.2.5]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.4...v1.2.5
 [1.2.4]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.2...v1.2.4
 [1.2.2]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.1...v1.2.2

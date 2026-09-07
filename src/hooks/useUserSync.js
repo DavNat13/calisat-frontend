@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useMsal } from "@azure/msal-react";
-import { loginRequest } from "../auth/AuthConfig";
+import { apiRequest } from "../auth/AuthConfig";
 
 const API_GATEWAY = import.meta.env.VITE_API_GATEWAY_URL;
 const REGISTRO_ENDPOINT = "/api/v1/usuarios/registro";
@@ -13,7 +13,7 @@ export default function useUserSync() {
     if (accounts.length > 0 && inProgress === "none" && !hasRegistered.current) {
       hasRegistered.current = true;
 
-      instance.acquireTokenSilent({ ...loginRequest, account: accounts[0] })
+      instance.acquireTokenSilent({ ...apiRequest, account: accounts[0] })
         .then(response => {
           return fetch(`${API_GATEWAY}${REGISTRO_ENDPOINT}`, {
             method: "POST",
