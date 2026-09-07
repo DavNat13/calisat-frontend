@@ -3,6 +3,13 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.2.9] - 2026-09-05
+
+### Changed
+- Verificada integración completa de UserProfile con API Gateway
+- Confirmado envío correcto de Bearer Token en GET, PUT y DELETE
+- Optimizado manejo de estados de carga y mensajes de error
+
 ## [1.2.8] - 2026-09-05
 
 ### Changed
@@ -112,6 +119,7 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 - Dockerfile base multi-stage (Node 20 + Nginx)
 - nginx.conf con SPA routing
 
+[1.2.9]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.8...v1.2.9
 [1.2.8]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.7...v1.2.8
 [1.2.7]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.5...v1.2.7
 [1.2.5]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.4...v1.2.5
