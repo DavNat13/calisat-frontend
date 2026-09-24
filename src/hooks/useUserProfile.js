@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useMsal } from "@azure/msal-react";
 import { apiRequest } from "../auth/AuthConfig";
 
@@ -35,7 +35,7 @@ export default function useUserProfile() {
         setPerfil(null);
         setMensaje("Perfil no encontrado");
       }
-    } catch (e) {
+    } catch {
       setMensaje("Error al obtener perfil");
     } finally {
       setLoading(false);
@@ -62,7 +62,7 @@ export default function useUserProfile() {
       } else if (res.status === 404) {
         setMensaje("Perfil no encontrado");
       }
-    } catch (e) {
+    } catch {
       setMensaje("Error al actualizar nombre");
     } finally {
       setLoading(false);
@@ -84,7 +84,7 @@ export default function useUserProfile() {
       } else if (res.status === 404) {
         setMensaje("Perfil no encontrado");
       }
-    } catch (e) {
+    } catch {
       setMensaje("Error al eliminar perfil");
     } finally {
       setLoading(false);

@@ -7,7 +7,7 @@ import ProductosPage from "./pages/ProductosPage";
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-[#020617]">
+      <div className="min-h-screen bg-background">
         <Navbar />
         <main>
           <Routes>

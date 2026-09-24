@@ -3,6 +3,20 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.3.4] - 2026-09-23
+
+### Fixed
+- Corregidos 5 errores de ESLint: imports y parámetros `catch` sin usar en `useUserProfile`, regla `react-hooks/exhaustive-deps` en `useProductos`
+- Carga de productos normalizada en `useProductos` (soporte de respuesta array y paginada `content`) con cancelación del efecto al desmontar
+- `vite.config.js`: `base: '/'` para rutas SPA correctas al desplegar en la raíz
+
+### Removed
+- Bloque de visualización del token JWT en `UserProfile.jsx`
+- Código muerto: `src/services/api.js`, `src/components/layout/LoginButton.jsx` y assets SVG (`react.svg`, `vite.svg`, `public/icons.svg`)
+
+### Added
+- `package-lock.json` para instalación reproducible de dependencias (`npm ci`)
+
 ## [1.3.3] - 2026-09-07
 
 ### Added
@@ -177,6 +191,7 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 - Dockerfile base multi-stage (Node 20 + Nginx)
 - nginx.conf con SPA routing
 
+[1.3.4]: https://github.com/DavNat13/calisat-frontend/compare/v1.3.3...v1.3.4
 [1.3.3]: https://github.com/DavNat13/calisat-frontend/compare/v1.3.2...v1.3.3
 [1.3.2]: https://github.com/DavNat13/calisat-frontend/compare/v1.3.1...v1.3.2
 [1.3.1]: https://github.com/DavNat13/calisat-frontend/compare/v1.3.0...v1.3.1

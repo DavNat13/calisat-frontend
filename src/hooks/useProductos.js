@@ -10,6 +10,8 @@ const INITIAL_FORM = {
   imagenUrl: "",
 };
 
+const aLista = (data) => (Array.isArray(data) ? data : data?.content || []);
+
 export default function useProductos() {
   const {
     listarProductos,
@@ -35,7 +37,7 @@ export default function useProductos() {
     setError("");
     try {
       const data = await listarProductos();
-      setProductos(data.content || []);
+      setProductos(aLista(data));
     } catch {
       setError("Error al cargar productos");
     } finally {
@@ -44,7 +46,19 @@ export default function useProductos() {
   };
 
   useEffect(() => {
-    cargarProductos();
+    let cancelado = false;
+    (async () => {
+      try {
+        const data = await listarProductos();
+        if (!cancelado) setProductos(aLista(data));
+      } catch {
+        if (!cancelado) setError("Error al cargar productos");
+      }
+    })();
+    return () => {
+      cancelado = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- solo carga inicial; listarProductos no está memoizado
   }, []);
 
   const handleChange = (e) => {
@@ -130,7 +144,7 @@ export default function useProductos() {
     setError("");
     try {
       const data = await getProductosByCategoria(filtro.trim());
-      setProductos(Array.isArray(data) ? data : []);
+      setProductos(aLista(data));
     } catch {
       setError("Error al filtrar por categoría");
     } finally {
