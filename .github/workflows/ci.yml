@@ -1,0 +1,31 @@
+# CI - calisat-frontend
+# Pipeline básico del frontend: instala dependencias, lint y build.
+# Se usa npm ci (requiere package-lock.json para instalar exactamente las versiones fijadas).
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .  # raíz del repositorio del frontend
+    steps:
+      # Obtener el código del repositorio
+      - uses: actions/checkout@v4
+      # Instalar Node.js 20 con caché de npm para acelerar la instalación
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      # Instalar dependencias de forma limpia y reproducible
+      - run: npm ci
+      # Verificar calidad de código con ESLint
+      - run: npm run lint
+      # Compilar el proyecto para validar que el build pasa
+      - run: npm run build

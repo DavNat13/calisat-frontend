@@ -106,6 +106,12 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 - Se evita solicitar scopes incorrectos de Microsoft Graph (`User.Read`)
 - Peticiones de sincronización ahora obtienen audiencia correcta para API Gateway
 
+## [1.2.6] - 2026-09-06
+
+### Fixed
+- Actualizada la adquisición de tokens MSAL para usar los scopes personalizados `apiRequest` (reemplazo de `loginRequest`) en el hook `useUserProfile`
+- Resueltos errores 401 Unauthorized por discrepancias entre el emisor y la audiencia del token frente al autorizador JWT del API Gateway
+
 ## [1.2.5] - 2026-09-04
 
 ### Fixed
@@ -212,7 +218,8 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 [1.2.10]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.9...v1.2.10
 [1.2.9]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.8...v1.2.9
 [1.2.8]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.7...v1.2.8
-[1.2.7]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.5...v1.2.7
+[1.2.7]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.6...v1.2.7
+[1.2.6]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.5...v1.2.6
 [1.2.5]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.4...v1.2.5
 [1.2.4]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.2...v1.2.4
 [1.2.2]: https://github.com/DavNat13/calisat-frontend/compare/v1.2.1...v1.2.2
