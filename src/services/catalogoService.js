@@ -44,6 +44,14 @@ export default function useCatalogoService() {
     return res.json();
   };
 
+  const manejarErrorEscritura = async (res, mensajePorDefecto) => {
+    if (res.status === 403) {
+      throw new Error("Se requiere rol administrador");
+    }
+    const error = await res.json().catch(() => null);
+    throw new Error(error?.mensaje || mensajePorDefecto);
+  };
+
   const crearProducto = async (producto) => {
     const token = await getToken();
     const res = await fetch(`${API_GATEWAY}${CATALOGO_BASE}`, {
@@ -54,10 +62,7 @@ export default function useCatalogoService() {
       },
       body: JSON.stringify(producto),
     });
-    if (!res.ok) {
-      const error = await res.json().catch(() => null);
-      throw new Error(error?.mensaje || "Error al crear producto");
-    }
+    if (!res.ok) await manejarErrorEscritura(res, "Error al crear producto");
     return res.json();
   };
 
@@ -71,10 +76,7 @@ export default function useCatalogoService() {
       },
       body: JSON.stringify(data),
     });
-    if (!res.ok) {
-      const error = await res.json().catch(() => null);
-      throw new Error(error?.mensaje || "Error al actualizar producto");
-    }
+    if (!res.ok) await manejarErrorEscritura(res, "Error al actualizar producto");
     return res.json();
   };
 
@@ -86,10 +88,7 @@ export default function useCatalogoService() {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (!res.ok) {
-      const error = await res.json().catch(() => null);
-      throw new Error(error?.mensaje || "Error al eliminar producto");
-    }
+    if (!res.ok) await manejarErrorEscritura(res, "Error al eliminar producto");
     return res.json();
   };
 

@@ -74,6 +74,18 @@
   color: #ffffff;
 }
 
+.dropdown-item.dropdown-rol {
+  cursor: default;
+  font-size: 0.75rem;
+  color: var(--color-text-subtle);
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+.dropdown-item.dropdown-rol:hover {
+  background: transparent;
+  color: var(--color-text-subtle);
+}
+
 .login-btn {
   display: flex;
   align-items: center;

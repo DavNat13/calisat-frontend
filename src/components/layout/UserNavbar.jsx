@@ -3,11 +3,14 @@ import { Link } from "react-router-dom";
 import { useMsal } from "@azure/msal-react";
 import { useIsAuthenticated } from "@azure/msal-react";
 import useUserSync from "../../hooks/useUserSync";
+import useAuthRole from "../../auth/useAuthRole";
+import { ROLES } from "../../auth/roles";
 import "./UserNavbar.css";
 
 export default function UserNavbar() {
   const { instance, accounts } = useMsal();
   const isAuthenticated = useIsAuthenticated();
+  const { hasAnyRole, roles } = useAuthRole();
   const [showMenu, setShowMenu] = useState(false);
   useUserSync();
 
@@ -22,6 +25,11 @@ export default function UserNavbar() {
   };
 
   if (isAuthenticated && accounts.length > 0) {
+    const esCliente = hasAnyRole(ROLES.CLIENTE);
+    const esAdministrador = hasAnyRole(ROLES.ADMINISTRADOR);
+    const esLogistica = hasAnyRole(ROLES.LOGISTICA);
+    const rolVisible = roles[0] ?? "SIN ROL";
+
     return (
       <div className="user-navbar">
         <button
@@ -37,8 +45,18 @@ export default function UserNavbar() {
         </button>
         {showMenu && (
           <div className="user-dropdown">
-            <Link to="/perfil" className="dropdown-item" onClick={() => setShowMenu(false)}>Mi Perfil</Link>
-            <Link to="/productos" className="dropdown-item" onClick={() => setShowMenu(false)}>Crear Productos</Link>
+            <div className="dropdown-item dropdown-rol" aria-disabled="true">
+              Rol: {rolVisible}
+            </div>
+            {esCliente && (
+              <Link to="/perfil" className="dropdown-item" onClick={() => setShowMenu(false)}>Mi Perfil</Link>
+            )}
+            {esAdministrador && (
+              <Link to="/productos" className="dropdown-item" onClick={() => setShowMenu(false)}>Crear Productos</Link>
+            )}
+            {esLogistica && (
+              <Link to="/productos" className="dropdown-item" onClick={() => setShowMenu(false)}>Catálogo</Link>
+            )}
             <button className="dropdown-item logout" onClick={handleLogout}>
               Cerrar Sesión
             </button>

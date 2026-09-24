@@ -5,7 +5,7 @@ const formatPrecio = (precio) => {
   }).format(precio);
 };
 
-export default function ProductoCard({ producto, isAuthenticated, onEdit, onDelete }) {
+export default function ProductoCard({ producto, puedeGestionar, onEdit, onDelete }) {
   const { sku, nombre, descripcion, precio, categoria, imagenUrl } = producto;
 
   return (
@@ -27,7 +27,7 @@ export default function ProductoCard({ producto, isAuthenticated, onEdit, onDele
         {descripcion && (
           <p className="text-slate-500 text-xs line-clamp-2 mb-3">{descripcion}</p>
         )}
-        {isAuthenticated && (
+        {puedeGestionar && (
           <div className="flex gap-2 mt-3 pt-3 border-t border-slate-700/50">
             <button
               onClick={() => onEdit(sku)}

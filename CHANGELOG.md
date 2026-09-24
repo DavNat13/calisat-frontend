@@ -3,6 +3,18 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.5.0] - 2026-09-24
+
+### Added
+- `AuthRoleProvider`: contexto React bajo `MsalProvider` que lee `instance.getActiveAccount().idTokenClaims.roles` y expone `roles`, `activeRole`, `hasRole` y `hasAnyRole` (ADMINISTRADOR, CLIENTE, LOGISTICA)
+- Componente `ProtectedRoute` que valida el rol activo y redirige a `/403` si no hay permisos (o a `/` si no hay sesión)
+- Página `ForbiddenPage` en la ruta `/403`
+- Renderizado condicional en `UserNavbar`: "Mi Perfil" solo para CLIENTE, "Crear Productos" solo para ADMINISTRADOR, indicador de rol activo en el menú
+- Rutas `/carrito`, `/checkout` y `/perfil` protegidas con `ProtectedRoute` para CLIENTE; enlace "Carrito" del `Navbar` visible solo para CLIENTE
+- Formulario y acciones de gestión de productos (`ProductoForm`, botones Editar/Eliminar) visibles solo para ADMINISTRADOR
+- Manejo de HTTP 403 en `catalogoService` con mensaje "Se requiere rol administrador"
+- Versión package.json actualizada a 1.5.0
+
 ## [1.4.0] - 2026-09-23
 
 ### Added
@@ -207,6 +219,7 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 - Dockerfile base multi-stage (Node 20 + Nginx)
 - nginx.conf con SPA routing
 
+[1.5.0]: https://github.com/DavNat13/calisat-frontend/compare/v1.4.0...v1.5.0
 [1.4.0]: https://github.com/DavNat13/calisat-frontend/compare/v1.3.4...v1.4.0
 [1.3.4]: https://github.com/DavNat13/calisat-frontend/compare/v1.3.3...v1.3.4
 [1.3.3]: https://github.com/DavNat13/calisat-frontend/compare/v1.3.2...v1.3.3

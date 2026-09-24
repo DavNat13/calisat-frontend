@@ -6,6 +6,7 @@ import './index.css';
 import { PublicClientApplication, EventType } from "@azure/msal-browser";
 import { MsalProvider } from "@azure/msal-react";
 import { msalConfig } from "./auth/AuthConfig";
+import AuthRoleProvider from "./auth/AuthRoleProvider";
 
 const msalInstance = new PublicClientApplication(msalConfig);
 
@@ -34,7 +35,9 @@ async function bootstrap() {
   ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
       <MsalProvider instance={msalInstance}>
-        <App />
+        <AuthRoleProvider>
+          <App />
+        </AuthRoleProvider>
       </MsalProvider>
     </React.StrictMode>
   );

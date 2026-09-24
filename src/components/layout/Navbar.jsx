@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import UserNavbar from "./UserNavbar";
+import useAuthRole from "../../auth/useAuthRole";
+import { ROLES } from "../../auth/roles";
 
 export default function Navbar() {
+  const { hasAnyRole } = useAuthRole();
+
   return (
     <nav className="bg-background border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -14,9 +18,11 @@ export default function Navbar() {
               <Link to="/productos" className="text-text-muted hover:text-white text-sm transition-colors">
                 Productos
               </Link>
-              <Link to="/carrito" className="text-text-muted hover:text-white text-sm transition-colors">
-                Carrito
-              </Link>
+              {hasAnyRole(ROLES.CLIENTE) && (
+                <Link to="/carrito" className="text-text-muted hover:text-white text-sm transition-colors">
+                  Carrito
+                </Link>
+              )}
             </div>
           </div>
           <div className="flex items-center gap-4">

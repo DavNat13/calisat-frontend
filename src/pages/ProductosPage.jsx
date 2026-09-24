@@ -1,11 +1,13 @@
-import { useIsAuthenticated } from "@azure/msal-react";
+import useAuthRole from "../auth/useAuthRole";
+import { ROLES } from "../auth/roles";
 import useProductos from "../hooks/useProductos";
 import ProductoForm from "../components/catalogo/ProductoForm";
 import ProductoCard from "../components/catalogo/ProductoCard";
 import ConfirmDialog from "../components/catalogo/ConfirmDialog";
 
 export default function ProductosPage() {
-  const isAuthenticated = useIsAuthenticated();
+  const { hasRole } = useAuthRole();
+  const esAdministrador = hasRole(ROLES.ADMINISTRADOR);
   const {
     productos, form, editingSku, loading, submitting,
     error, exito, filtro, confirmDelete,
@@ -23,7 +25,7 @@ export default function ProductosPage() {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-semibold text-white mb-6">Gestión de Productos</h1>
 
-      {isAuthenticated && (
+      {esAdministrador && (
         <ProductoForm
           form={form}
           editingSku={editingSku}
@@ -81,7 +83,7 @@ export default function ProductosPage() {
               <ProductoCard
                 key={p.sku}
                 producto={p}
-                isAuthenticated={isAuthenticated}
+                puedeGestionar={esAdministrador}
                 onEdit={handleEdit}
                 onDelete={setConfirmDelete}
               />
