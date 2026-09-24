@@ -9,22 +9,22 @@ export default function ProductoForm({
   onCancel,
 }) {
   const inputClass =
-    "w-full bg-[#1e293b] border border-slate-600 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-cyan-500";
+    "w-full bg-surface-2 border border-border-strong rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-primary";
   const disabledClass = `${inputClass} disabled:opacity-50 disabled:cursor-not-allowed`;
 
   return (
-    <div className="bg-[#0f172a] border border-slate-700 rounded-lg p-6 mb-8">
+    <div className="bg-surface border border-border-strong rounded-lg p-6 mb-8">
       <h2 className="text-lg font-medium text-white mb-4">
         {editingSku ? `Editar Producto (${editingSku})` : "Crear Producto"}
       </h2>
 
       {error && (
-        <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-2 rounded mb-4 text-sm">
+        <div className="bg-danger-soft border border-danger/30 text-danger px-4 py-2 rounded mb-4 text-sm">
           {error}
         </div>
       )}
       {exito && (
-        <div className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-4 py-2 rounded mb-4 text-sm">
+        <div className="bg-success/10 border border-success/30 text-success px-4 py-2 rounded mb-4 text-sm">
           {exito}
         </div>
       )}
@@ -112,7 +112,7 @@ export default function ProductoForm({
           <button
             type="submit"
             disabled={submitting}
-            className="bg-cyan-600 hover:bg-cyan-700 disabled:bg-slate-600 text-white font-medium px-6 py-2 rounded text-sm transition-colors"
+            className="bg-primary hover:bg-primary-hover disabled:bg-slate-600 text-white font-medium px-6 py-2 rounded text-sm transition-colors"
           >
             {submitting
               ? editingSku ? "Actualizando..." : "Creando..."

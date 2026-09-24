@@ -9,14 +9,14 @@ export default function ProductoCard({ producto, isAuthenticated, onEdit, onDele
   const { sku, nombre, descripcion, precio, categoria, imagenUrl } = producto;
 
   return (
-    <div className="bg-[#0f172a] border border-slate-700 rounded-lg overflow-hidden hover:border-slate-500 transition-colors">
+    <div className="bg-surface border border-border-strong rounded-lg overflow-hidden hover:border-slate-500 transition-colors">
       {imagenUrl && (
         <img src={imagenUrl} alt={nombre} className="w-full h-40 object-cover" />
       )}
       <div className="p-4">
         <div className="flex items-start justify-between mb-2">
           <h3 className="text-white font-medium text-sm">{nombre}</h3>
-          <span className="text-cyan-400 font-semibold text-sm whitespace-nowrap ml-2">
+          <span className="text-accent font-semibold text-sm whitespace-nowrap ml-2">
             {formatPrecio(precio)}
           </span>
         </div>
@@ -37,7 +37,7 @@ export default function ProductoCard({ producto, isAuthenticated, onEdit, onDele
             </button>
             <button
               onClick={() => onDelete(sku)}
-              className="flex-1 bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs px-3 py-1.5 rounded transition-colors border border-red-500/30"
+              className="flex-1 bg-danger-soft hover:bg-danger/20 text-danger text-xs px-3 py-1.5 rounded transition-colors border border-danger/30"
             >
               Eliminar
             </button>

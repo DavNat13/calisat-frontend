@@ -3,6 +3,16 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.4.0] - 2026-09-23
+
+### Added
+- Paleta completa de tokens de diseño en `@theme` de `src/index.css`: `primary`, `accent`, `background`, `surface` (2 y 3), `border` (y `strong`), `text` (muted y subtle), `success`, `warning`, `danger` (y `soft`) con sus variantes hover/active/soft
+
+### Changed
+- Componentes y estilos migrados a los nuevos tokens del tema: `Navbar`, `UserNavbar.css`, `UserProfile.css`, `ConfirmDialog`, `ProductoCard`, `ProductoForm`, `HomePage` y `ProductosPage`
+- Colores hardcodeados (`#020617`, `#EA580C`, grises de Tailwind) reemplazados por variables del tema (`var(--color-*)` y utilidades `bg-*`/`text-*`/`border-*`)
+- Eliminados estilos obsoletos `.token-value` de `UserProfile.css`
+
 ## [1.3.4] - 2026-09-23
 
 ### Fixed
@@ -191,6 +201,7 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 - Dockerfile base multi-stage (Node 20 + Nginx)
 - nginx.conf con SPA routing
 
+[1.4.0]: https://github.com/DavNat13/calisat-frontend/compare/v1.3.4...v1.4.0
 [1.3.4]: https://github.com/DavNat13/calisat-frontend/compare/v1.3.3...v1.3.4
 [1.3.3]: https://github.com/DavNat13/calisat-frontend/compare/v1.3.2...v1.3.3
 [1.3.2]: https://github.com/DavNat13/calisat-frontend/compare/v1.3.1...v1.3.2

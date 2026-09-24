@@ -42,7 +42,7 @@ export default function ProductosPage() {
           value={filtro}
           onChange={(e) => setFiltro(e.target.value)}
           placeholder="Filtrar por categoría..."
-          className="bg-[#1e293b] border border-slate-600 rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-cyan-500 sm:w-64"
+          className="bg-surface-2 border border-border-strong rounded px-3 py-2 text-white text-sm focus:outline-none focus:border-primary sm:w-64"
         />
         <button
           onClick={handleFiltroCategoria}
