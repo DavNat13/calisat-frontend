@@ -99,18 +99,29 @@ calisat-frontend/
 
 ## ⚙️ Configuración
 
-| Parámetro | Valor | Origen |
-|-----------|-------|--------|
-| Puerto (desarrollo) | `5173` (por defecto de Vite) | `npm run dev` |
-| Puerto (producción) | `80` (nginx) | `Dockerfile` / `nginx.conf` |
-| Base URL del API Gateway | `https://ho5p58iyu7.execute-api.us-east-1.amazonaws.com` | `src/services/catalogoService.js`, `src/hooks/useUserSync.js` |
+| Parámetro | Valor | Definido en |
+|-----------|-------|-------------|
+| Puerto (desarrollo) | `5173` (por defecto de Vite) | — |
+| Puerto (producción) | `80` (nginx) | `nginx.conf` |
+| Base URL del API Gateway | `https://ho5p58iyu7.execute-api.us-east-1.amazonaws.com` | `src/config/api.js` |
 | Client ID (MSAL) | `d221f0d2-1a7c-4872-ad6c-367a1f0717ec` | `src/auth/AuthConfig.js` |
 | Tenant (autoridad) | `e5372bf0-c5e3-4286-887c-79069f209c1f` | `src/auth/AuthConfig.js` |
-| *Redirect URI* | `https://ezeh839whh.execute-api.us-east-1.amazonaws.com/desarrrollo/` | `src/auth/AuthConfig.js` |
+| *Redirect URI* | `https://ezeh839whh.execute-api.us-east-1.amazonaws.com/desarrrollo/` | `src/auth/AuthConfig.js` (+ registro en Entra ID) |
+| *Post-logout redirect* | igual que el *redirect URI* | `src/auth/AuthConfig.js` |
 | *Scope* de API | `api://d221f0d2-1a7c-4872-ad6c-367a1f0717ec/read-write` | `src/auth/AuthConfig.js` |
-| *Cache* de MSAL | `sessionStorage` | `AuthConfig.js` |
+| *Cache* de MSAL | `sessionStorage` | fijo en `AuthConfig.js` |
 
-> ⚠️ **Modo académico**: el `clientId`, el tenant y los *redirect URIs* están **hardcodeados** con fines académicos. En un entorno real deben externalizarse por variables de entorno.
+> **Sin variables de entorno**: la SPA **no** lee el objeto de entorno de
+> Vite ni archivos `.env` — toda la configuración va hardcodeada en los
+> ficheros de la tabla. Si cambia el host del API Gateway, amplía también
+> `connect-src` en `nginx.conf` (la CSP bloquea el fetch a orígenes no
+> listados); si cambia el tenant o el origen desplegado, actualiza
+> `AuthConfig.js` **y** el redirect URI registrado en Microsoft Entra ID.
+>
+> ⚠️ clientId/tenant/URL son **identificadores públicos** (viven en el
+> JavaScript de producción). Nunca pongas aquí *client secrets*, API keys,
+> tokens ni credenciales: en una SPA pública no existe ningún sitio seguro
+> donde guardarlas.
 
 ## ▶️ Ejecución local
 
@@ -196,11 +207,14 @@ Los productos llegan paginados (`{ content: [...], totalElements, ... }`); `useP
 
 ## 🔒 Seguridad
 
-- **Autenticación**: Microsoft Entra ID (Azure AD) vía **MSAL** (`@azure/msal-browser` 5.x / `@azure/msal-react` 5.x).
-- **Token**: se obtiene con `acquireTokenSilent` y se envía como `Authorization: Bearer <token>` al API Gateway.
-- **Sin RBAC**: no hay roles en el cliente; cualquier usuario autenticado puede gestionar su perfil y (según el backend) operar sobre el catálogo — *modo académico, usuario genérico*.
-- **Caché de sesión**: `sessionStorage` (el token no persiste al cerrar la pestaña).
-- **Cabeceras nginx**: `X-Frame-Options`, `X-Content-Type-Options`, `X-XSS-Protection`, `Referrer-Policy`.
+- **Autenticación**: Microsoft Entra ID (Azure AD) vía **MSAL** (`@azure/msal-browser` 5.x / `@azure/msal-react` 5.x), flujo de *redirect* + PKCE (SPA pública, sin *client secret*).
+- **Token**: se obtiene con `acquireTokenSilent` y se envía como `Authorization: Bearer <token>` al API Gateway. El token **no** se imprime en consola.
+- **RBAC en cliente**: roles (`ADMINISTRADOR`, `CLIENTE`, `LOGISTICA`) leídos del claim `roles` del *id token*, con `ProtectedRoute` en `/carrito`, `/checkout` y `/perfil`, y condicionando la UI de administración del catálogo. **La autoridad real es el backend** (`@PreAuthorize`/`SecurityFilterChain`): el cliente solo evita mostrar acciones sin permiso; cualquier llamada manipulada a mano es rechazada por el servidor.
+- **Catálogo público**: los GET de `/api/v1/catalogo/**` van sin `Authorization` **por diseño** (`permitAll()` en `calisat-ms-catalogo`). Las escrituras (POST/PUT/DELETE) sí exigen token + rol `ADMINISTRADOR`.
+- **Mensajes de error**: la UI muestra copias propias en español; el detalle real (status/payload) va a `console.error` (`src/utils/errores.js`). No se exponen rutas, esquemas ni trazas internas.
+- **Caché de token**: `sessionStorage` (el token no persiste al cerrar la pestaña ni a otras pestañas).
+- **Cabeceras nginx**: `Content-Security-Policy`, `X-Frame-Options`, `X-Content-Type-Options`, `X-XSS-Protection: 0`, `Referrer-Policy`, `Permissions-Policy`, `Strict-Transport-Security` (ver decisiones en `nginx.conf`).
+- **CSRF**: no aplica: la API usa *Bearer tokens* en cabecera (no cookies de sesión).
 - **CORS**: restringido en el backend al origen del despliegue (API Gateway/CloudFront).
 
 ## 🧪 Tests
@@ -229,10 +243,11 @@ docker run -d -p 80:80 --name calisat-frontend calisat-frontend:1.4.0
 
 ### nginx (resumen de `nginx.conf`)
 
-- Gzip para texto/JS/CSS/JSON.
-- `location /assets/` con caché `public, immutable` de 1 año.
-- Fallback SPA para React Router.
-- Bloqueo de rutas ocultas (`/\.`).
+- Gzip para texto/JS/CSS/JSON · `server_tokens off`.
+- **Cabeceras de seguridad** a nivel `server` (CSP, `X-Frame-Options`, `X-Content-Type-Options`, `X-XSS-Protection: 0`, `Referrer-Policy`, `Permissions-Policy`, HSTS). Se declaran solo ahí porque nginx **no** hereda `add_header` en un `location` que declare el suyo: por eso la caché se controla con `expires` y no con `add_header Cache-Control`.
+- `location /assets/` → caché de 1 año (`expires 1y`); imágenes → 30 días.
+- `location /` → `expires -1` (`Cache-Control: no-cache` en `index.html` y rutas SPA): un despliegue nuevo se ve al instante.
+- Fallback SPA para React Router y bloqueo de rutas ocultas (`/\.`).
 
 ## 🔗 Microservicios relacionados
 

@@ -3,6 +3,11 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.8.1] - 2026-09-25
+
+### Changed
+- README: estructura por módulos, configuración sin variables de entorno (archivos `.env` prohibidos), cabeceras/CSP de nginx y sección del panel de administración
+
 ## [1.8.0] - 2026-09-25
 
 ### Added
