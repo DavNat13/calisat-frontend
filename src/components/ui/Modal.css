@@ -1,0 +1,76 @@
+/* Kit de UI · Modal
+   Overlay fijo + panel centrado. Las animaciones reutilizables
+   (.anim-fade-in / .anim-scale-in) vienen de src/styles/animaciones.css. */
+
+/* Bloqueo de scroll del body mientras hay un modal abierto (lo añade/quita
+   Modal.jsx). scrollbar-gutter evita el salto de layout al desaparecer la
+   barra de scroll. */
+body.scroll-bloqueado {
+  overflow: hidden;
+}
+
+html:has(body.scroll-bloqueado) {
+  scrollbar-gutter: stable;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgb(0 0 0 / 0.6);
+}
+
+.modal {
+  width: 100%;
+  max-width: 26rem;
+  padding: 1.5rem;
+  background-color: var(--color-surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-overlay);
+}
+
+/* Cabecera: título a la izquierda, botón cerrar a la derecha */
+.modal__cabecera {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.modal__titulo {
+  font-size: var(--text-xl);
+  line-height: var(--text-xl--line-height);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.modal__cuerpo {
+  margin-top: 0.75rem;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+}
+
+.modal__cuerpo strong {
+  color: var(--color-text);
+}
+
+/* Acciones alineadas a la derecha (secundario → primario/peligro) */
+.modal__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+/* Óptica: el icono queda alineado con el borde del panel */
+.modal__cerrar {
+  flex-shrink: 0;
+  margin-top: -0.375rem;
+  margin-inline-end: -0.375rem;
+}

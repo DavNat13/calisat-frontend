@@ -3,6 +3,11 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.7.0] - 2026-09-25
+
+### Added
+- Kit de componentes en `src/components/ui/`: `Button`, `Input`, `Card`, `Badge`, `Modal` (focus-trap y bloqueo de scroll) y `Proximamente`, cada uno con su CSS co-localizado
+
 ## [1.6.1] - 2026-09-25
 
 ### Added

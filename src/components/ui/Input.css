@@ -1,0 +1,22 @@
+/* Kit de UI · Input
+   La estructura .campo (label, control, mensajes) vive en
+   src/styles/inputs.css. Este archivo aporta dos refuerzos propios del
+   componente: el estado de error reflejado en ARIA y la fila icono+texto
+   de los mensajes. */
+
+/* ARIA como fuente de verdad del estado: si el control es inválido se
+   marca visualmente aunque no se aplique el modificador .campo--error. */
+.campo__control[aria-invalid="true"] {
+  border-color: var(--color-danger);
+}
+
+.campo__control[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px var(--color-danger-soft);
+}
+
+/* Mensaje de estado en fila (icono decorativo + texto) */
+.campo__estado {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}

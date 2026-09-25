@@ -1,0 +1,10 @@
+/* Kit de UI · Card
+   El aspecto base (fondo, borde, radio, sombra) vive en
+   src/styles/tarjetas.css. Este archivo aporta el modificador de layout
+   propio del envoltorio: tarjeta en columna para repartir altura en rejillas. */
+
+.tarjeta--columna {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}

@@ -1,0 +1,37 @@
+/* Kit de UI · Badge (.insignia)
+   Chip pequeño: fondo tenue + borde con el matiz semántico y texto negro
+   (única combinación que garantiza ≥4.5:1 sobre amarillo/verde/rojo claros).
+   Tamaños sobre la escala --text-xs; radio --radius-full. */
+
+.insignia {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  background-color: var(--color-surface-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+  font-weight: 600;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+/* Amarillo de marca: fondo suave + borde sólido, texto negro */
+.insignia--amarillo {
+  background-color: var(--color-primary-soft);
+  border-color: var(--color-primary);
+}
+
+/* Éxito: tinte verde (color-mix sobre tokens, sin hex literales) */
+.insignia--exito {
+  background-color: color-mix(in srgb, var(--color-success) 12%, var(--color-surface));
+  border-color: var(--color-success);
+}
+
+/* Peligro: fondo suave de error + borde sólido */
+.insignia--peligro {
+  background-color: var(--color-danger-soft);
+  border-color: var(--color-danger);
+}

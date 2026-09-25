@@ -1,0 +1,11 @@
+/* Kit de UI · Button
+   La primitiva .boton (variantes y tamaños) vive en src/styles/botones.css.
+   Este archivo aporta únicamente el ajuste del nodo `icon` que recibe el
+   componente como prop: se alinea y nunca encoge junto al texto. */
+
+.boton__icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}

@@ -1,0 +1,30 @@
+/* Kit de UI · Proximamente
+   Pantalla de estado en construcción (Carrito, Checkout): icono en círculo
+   de marca, insignia, título, texto y CTA, centrados sobre la primitiva
+   .pagina--centrada (src/styles/paginas.css). */
+
+.proximamente {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.proximamente__icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  background-color: var(--color-primary-soft);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-full);
+  color: var(--color-text);
+}
+
+/* Estrecho el texto de apoyo (gana a .pagina__descripcion por especificidad,
+   con independencia del orden final del CSS emitido) */
+.proximamente .proximamente__texto {
+  max-width: 32rem;
+}
