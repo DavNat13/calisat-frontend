@@ -3,6 +3,14 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.5.1] - 2026-09-25
+
+### Fixed
+- `nginx.conf` reescrito: cabeceras de seguridad declaradas únicamente a nivel `server` (evita perderlas por la herencia de `add_header`), CSP con `script-src 'self'`, HSTS, `X-Content-Type-Options`, `Referrer-Policy` y `Permissions-Policy`; `server_tokens off` y caché con `expires`
+- `.gitignore` excluye `.env` y `.env.*` (la SPA no usa variables de entorno; la configuración va hardcodeada)
+- `vite.config.js`: troceado de bundles `msal` y `vendor` en la salida del build
+- Nuevo `.dockerignore` para builds Docker sin artefactos locales
+
 ## [1.5.0] - 2026-09-24
 
 ### Added
@@ -133,7 +141,7 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 
 ### Changed
 - Reemplazada URL hardcoded del backend por variable `VITE_API_GATEWAY_URL`
-- Hooks `useUserSync` y `useUserProfile` ahora usan `import.meta.env.VITE_API_GATEWAY_URL`
+- Hooks `useUserSync` y `useUserProfile` ahora leen la URL del backend desde la variable de entorno `VITE_API_GATEWAY_URL` (hoy ya no aplica: la URL está hardcodeada en `src/config/api.js`)
 - Variable de entorno renombrada de `VITE_MS_USUARIOS_URL` a `VITE_API_GATEWAY_URL`
 
 ### Added
@@ -212,7 +220,7 @@ y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/
 - Tailwind CSS 4.1.0 con colores corporativos (#020617, #EA580C)
 - React Router DOM 7.1.0 con 5 rutas configuradas
 - Integración MSAL para autenticación Azure AD
-- AuthConfig.js con variables de entorno via import.meta.env
+- AuthConfig.js con configuración leída de variables de entorno de Vite (hoy ya no aplica: valores fijos en `src/auth/AuthConfig.js`)
 - services/api.js como interceptor de token Bearer
 - components/layout/Navbar.jsx con navegación y LoginButton
 - pages/HomePage.jsx con hero y categorías

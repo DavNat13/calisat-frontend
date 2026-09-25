@@ -1,0 +1,12 @@
+# Contexto de build de Docker: evita copiar basura/secretos a las capas
+# de la imagen (el `COPY . .` de la etapa de build).
+node_modules
+dist
+.git
+.github
+*.log
+
+# Variables de entorno: la SPA no usa .env (config hardcodeada); estos
+# archivos jamás deben entrar a las capas de build de la imagen.
+.env
+.env.*
