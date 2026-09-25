@@ -1,0 +1,108 @@
+/* Menú de usuario en la navbar — versión clara con el sistema de diseño:
+   superficie blanca, borde sutil, foco amarillo y texto negro. */
+
+.usuario {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Botón de usuario (nombre + icono) */
+.usuario__boton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem; /* 44px: objetivo táctil accesible */
+  padding: 0.5rem 0.75rem;
+  background-color: transparent;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.usuario__boton:hover {
+  background-color: var(--color-surface-2);
+  border-color: var(--color-primary-active);
+}
+
+/* Borde de foco (además del outline global): #A16207 → 4.92:1 */
+.usuario__boton:focus-visible {
+  border-color: var(--color-focus);
+}
+
+.usuario__nombre {
+  display: block;
+  max-width: 9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ----------------------------- Desplegable ------------------------------ */
+.usuario__desplegable {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 12rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  z-index: 60;
+}
+
+.usuario__rol {
+  margin: 0;
+  padding: 0.625rem 1rem;
+  background-color: var(--color-surface-2);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+  color: var(--color-text-muted); /* 7.2:1 sobre --color-surface-2 (AA) */
+}
+
+.usuario__opcion {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 2.75rem; /* 44px: objetivo táctil accesible */
+  padding: 0.75rem 1rem;
+  background-color: transparent;
+  border: none;
+  font-family: inherit;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.usuario__opcion:hover {
+  background-color: var(--color-surface-3);
+  color: var(--color-text);
+}
+
+/* Separador entre el acceso al panel y las opciones de cuenta.
+   <hr> semántico: sin clase .usuario__opcion, las flechas del menú lo
+   saltan al recorrer las opciones. */
+.usuario__separador {
+  margin: 0;
+  border: none;
+  border-top: 1px solid var(--color-border);
+}
+
+.usuario__opcion--salir {
+  color: var(--color-danger);
+  border-top: 1px solid var(--color-border);
+}
+
+.usuario__opcion--salir:hover {
+  background-color: var(--color-danger-soft);
+  color: var(--color-danger-hover);
+}

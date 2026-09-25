@@ -1,0 +1,69 @@
+/* ProductoForm — panel .tarjeta con rejilla de 1/2 columnas.
+   Campos con label visible (htmlFor/id) vía el Input del kit de UI. */
+
+.producto-form {
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.producto-form__titulo {
+  margin: 0 0 1rem;
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ------------------------------ Mensajes ------------------------------- */
+.producto-form__alerta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid;
+  border-radius: var(--radius-control);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+.producto-form__alerta--error {
+  background-color: var(--color-danger-soft);
+  border-color: var(--color-danger);
+  color: var(--color-danger-hover);
+}
+
+.producto-form__alerta--exito {
+  background-color: color-mix(in srgb, var(--color-success) 10%, var(--color-surface));
+  border-color: var(--color-success);
+  color: var(--color-text);
+}
+
+/* -------------------------------- Rejilla ------------------------------- */
+.producto-form__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .producto-form__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.producto-form__campo {
+  min-width: 0;
+}
+
+/* Campo a lo ancho de toda la rejilla */
+.producto-form__full {
+  grid-column: 1 / -1;
+}
+
+.producto-form__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}

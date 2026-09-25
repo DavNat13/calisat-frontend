@@ -1,0 +1,39 @@
+/* 403 — código gigante en negro (acento) con detalle amarillo debajo.
+   El ritmo vertical y el centrado los aporta .pagina .pagina--centrada
+   (src/styles/paginas.css). */
+
+.error-403 {
+  max-width: 32rem;
+  margin-inline: auto;
+}
+
+.error-403__codigo {
+  margin: 0;
+  font-size: clamp(4.5rem, 18vw, 7.5rem);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: var(--color-accent);
+}
+
+/* Detalle de marca: barra amarilla centrada bajo el código */
+.error-403__codigo::after {
+  content: "";
+  display: block;
+  width: 5rem;
+  height: 0.5rem;
+  margin: 1rem auto 1.75rem;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+}
+
+.error-403__titulo {
+  margin: 0 0 0.5rem;
+  color: var(--color-text);
+}
+
+.error-403__texto {
+  margin: 0 0 2rem;
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+}

@@ -1,0 +1,120 @@
+/* HomePage — hero claro con patrón sutil + rejilla de categorías.
+   El amarillo solo aparece como fondo/acentos, nunca como texto. */
+
+.inicio {
+  background-color: var(--color-background);
+}
+
+/* --------------------------------- Hero --------------------------------- */
+.hero {
+  padding-block: 5rem;
+  background-color: var(--color-surface-2);
+  background-image: radial-gradient(var(--color-border) 1px, transparent 1px);
+  background-size: 22px 22px;
+  border-bottom: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.hero__contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero__titulo {
+  max-width: 20ch;
+  margin: 0 0 1.25rem;
+  font-size: clamp(2.25rem, 6vw, 3.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+}
+
+/* Marca amarilla tipo marcador: fondo amarillo + texto negro */
+.hero__destaque {
+  padding: 0 0.2em;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border-radius: 0.25rem;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.hero__subtitulo {
+  max-width: 42rem;
+  margin: 0 0 2rem;
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+  color: var(--color-text-muted);
+}
+
+/* ------------------------------ Categorías ------------------------------ */
+.categorias {
+  padding-block: 3.5rem;
+  background-color: var(--color-surface);
+}
+
+.categorias__titulo {
+  margin: 0 0 2rem;
+  text-align: center;
+  color: var(--color-text);
+}
+
+.categorias__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .categorias__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .categorias__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Card del kit (hereda .tarjeta + .tarjeta--columna); aquí su variante
+   de página: espaciado interior. */
+.categoria {
+  gap: 0.75rem;
+  padding: 1.5rem;
+}
+
+/* Hielo/borde amarillo al interactuar (más específico que .tarjeta--hover) */
+.tarjeta.categoria:hover,
+.tarjeta.categoria:focus-within {
+  border-color: var(--color-primary-active);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.categoria__icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background-color: var(--color-primary-soft);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+}
+
+.categoria__nombre {
+  margin: 0;
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.categoria__descripcion {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-text-muted);
+}

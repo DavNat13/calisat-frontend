@@ -1,0 +1,98 @@
+/* Mi Perfil — página clara con primitivas del sistema (.tarjeta, .boton,
+   .campo). Clases semánticas .perfil-*; sin restos de la versión oscura.
+   Ritmo vertical y cabecera: primitivas .pagina / .pagina__cabecera. */
+
+/* Columna de lectura acotada dentro del .contenedor (72rem) */
+.perfil {
+  max-width: 48rem;
+}
+
+/* --------------------------- Datos de cuenta ---------------------------- */
+.perfil__datos {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.perfil__subtitulo {
+  margin: 0 0 0.75rem;
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.perfil__lista {
+  margin: 0;
+}
+
+.perfil__fila {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.perfil__fila:first-child {
+  padding-top: 0;
+}
+
+.perfil__fila:last-child {
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.perfil__etiqueta {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.perfil__valor {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  text-align: right;
+  word-break: break-all;
+}
+
+/* ------------------------------ Secciones ------------------------------- */
+.perfil__seccion {
+  margin-top: 1.5rem;
+}
+
+.perfil__seccion--peligro {
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Aviso previo a la acción destructiva */
+.perfil__nota {
+  margin: 0 0 0.75rem;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+.perfil__actualizar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.perfil__actualizar .campo {
+  flex: 1 1 16rem;
+}
+
+/* Mensaje de estado (info sobre superficie amarilla suave + texto negro) */
+.perfil__mensaje {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-primary-soft);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+}

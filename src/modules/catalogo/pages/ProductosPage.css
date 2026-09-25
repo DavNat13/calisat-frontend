@@ -1,0 +1,96 @@
+/* ProductosPage — filtros y rejilla responsiva de tarjetas.
+   El ritmo vertical y la cabecera (título + descripción) vienen de las
+   primitivas .pagina / .pagina__cabecera (src/styles/paginas.css). */
+
+/* --------------------------------- Filtros ------------------------------- */
+.productos__filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.productos__campo-busqueda {
+  flex: 1 1 16rem;
+  max-width: 20rem;
+}
+
+/* Conmutador "Ver dados de baja" (aria-pressed): cuando está activo el
+   botón toma el relleno suave de marca para que el estado también sea
+   visible sin depender de la lectura de pantalla. */
+.productos__alternar--activo {
+  background-color: var(--color-primary-soft);
+  border-color: var(--color-primary);
+  color: var(--color-text);
+}
+
+/* -------------------------------- Listado -------------------------------- */
+.productos__subtitulo {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.productos__contador {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--color-text-subtle);
+}
+
+/* Estados vacío / cargando / error */
+.productos__estado {
+  margin: 0;
+  padding: 3rem 1rem;
+  color: var(--color-text-subtle);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.productos__estado--error {
+  padding: 1rem;
+  color: var(--color-danger);
+}
+
+/* Éxito comunicado fuera del formulario (vista de dados de baja) */
+.productos__estado--exito {
+  padding: 1rem;
+  background-color: color-mix(in srgb, var(--color-success) 12%, var(--color-surface));
+  border: 1px solid var(--color-success);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+}
+
+.productos__vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.productos__vacio .productos__estado {
+  padding-bottom: 0;
+}
+
+.productos__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .productos__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .productos__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

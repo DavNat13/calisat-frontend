@@ -3,6 +3,18 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.7.1] - 2026-09-25
+
+### Added
+- `PublicLayout` (shell público con skip-link a `main#contenido`) y CSS propio del `Navbar`
+- Módulo `src/modules/carrito/` con `CarritoPage` y `CheckoutPage`
+- CSS co-localizados para `HomePage`, `ForbiddenPage`, `ProductosPage`, `ProductoCard`, `ProductoForm` y `ConfirmDialog`
+
+### Changed
+- Código reorganizado por módulos: `src/modules/catalogo`, `usuarios`, `home`, `errors` y `carrito` (antes mezclados en `src/pages`, `src/components` y `src/hooks`)
+- JSX sin utilidades Tailwind: classNames semánticos en español con estilos en CSS co-localizado por componente/página
+- `Navbar` y `UserNavbar`: menú móvil accesible (hamburguesa con `aria-expanded`, cierre con Escape y devolución de foco)
+
 ## [1.7.0] - 2026-09-25
 
 ### Added
