@@ -3,6 +3,11 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.8.2] - 2026-09-25
+
+### Fixed
+- `package-lock.json` regenerado desde la base limpia: los increments de versión de los commits anteriores habían reescrito por error versiones de dependencias (`hashery`, `@jridgewell/sourcemap-codec` y otras); ahora solo cambian la versión de la app (1.8.2) y las dependencias nuevas (`@fontsource-variable/inter`, `lucide-react`)
+
 ## [1.8.1] - 2026-09-25
 
 ### Changed
