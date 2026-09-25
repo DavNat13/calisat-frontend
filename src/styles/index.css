@@ -1,0 +1,19 @@
+/* Calisat Design System — entrada global de estilos.
+   Regla: los .jsx contienen SOLO lógica; el diseño vive en archivos CSS
+   (los de este directorio por función y los co-localizados por componente).
+   Los imports van primero (exigencia de CSS); los tokens se declaran en
+   tokens.css (@theme static, emitido siempre en :root). */
+
+@import "tailwindcss";
+
+@import "./tokens.css";
+@import "./fuentes.css";
+@import "./base.css";
+@import "./animaciones.css";
+@import "./sombras.css";
+@import "./bordes.css";
+@import "./tarjetas.css";
+@import "./iconos.css";
+@import "./inputs.css";
+@import "./botones.css";
+@import "./paginas.css";

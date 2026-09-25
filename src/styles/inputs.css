@@ -1,0 +1,74 @@
+/* ==========================================================================
+   Inputs y campos de formulario: primitiva .campo (label + control + mensajes).
+   ========================================================================== */
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.campo__label {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.campo__control {
+  width: 100%;
+  min-height: 2.75rem; /* 44px: objetivo táctil accesible */
+  padding: 0.5rem 0.75rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.campo__control::placeholder {
+  color: var(--color-text-subtle);
+}
+
+/* El anillo amarillo puro (#FACC15) da 1.6:1 y #CA8A04 da 2.94:1 sobre
+   blanco; el foco usa --color-focus (#A16207 → 4.92:1) + halo suave. */
+.campo__control:focus {
+  outline: none;
+  border-color: var(--color-focus);
+  box-shadow: 0 0 0 3px var(--color-primary-soft);
+}
+
+.campo__control:disabled {
+  background-color: var(--color-surface-2);
+  color: var(--color-text-subtle);
+  cursor: not-allowed;
+}
+
+textarea.campo__control {
+  min-height: 6rem;
+  resize: vertical;
+}
+
+select.campo__control {
+  appearance: auto;
+}
+
+/* Estado de error */
+.campo--error .campo__control {
+  border-color: var(--color-danger);
+}
+
+.campo--error .campo__control:focus {
+  box-shadow: 0 0 0 3px var(--color-danger-soft);
+}
+
+.campo__error {
+  font-size: var(--text-xs);
+  color: var(--color-danger);
+}
+
+.campo__ayuda {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}

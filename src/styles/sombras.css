@@ -1,0 +1,29 @@
+/* ==========================================================================
+   Sombras: clases que aplican los tokens --shadow-* de tokens.css.
+   ========================================================================== */
+
+/* Sombra sutil de reposo (tarjetas, paneles) */
+.sombra-card {
+  box-shadow: var(--shadow-card);
+}
+
+/* Elevación al pasar el cursor (combinar con transición en el componente) */
+.sombra-card-hover:hover,
+.sombra-card-hover:focus-within {
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Sombra de paneles flotantes: dropdowns, popovers */
+.sombra-panel {
+  box-shadow: var(--shadow-panel);
+}
+
+/* Sombra fuerte de capas superpuestas: modales */
+.sombra-overlay {
+  box-shadow: var(--shadow-overlay);
+}
+
+/* Sin sombra */
+.sombra-nula {
+  box-shadow: none;
+}

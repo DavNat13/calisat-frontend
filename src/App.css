@@ -1,0 +1,43 @@
+/* Shell de la aplicación: navbar fija arriba y contenido con altura mínima
+   para que el fondo claro cubra siempre toda la ventana. */
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--color-background);
+}
+
+.app__contenido {
+  flex: 1;
+}
+
+/* Región enfocable de forma programática (skip-link / cambio de ruta):
+   no dibuja anillo, porque no es un control interactivo. El desplazamiento
+   y el anuncio de la región los aporta el propio tabindex="-1". */
+.app__contenido:focus {
+  outline: none;
+}
+
+/* Fallback de <Suspense> mientras carga el chunk de la ruta (App.jsx).
+   role="status" en el propio nodo: announce el estado de carga. */
+.app__carga {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 40vh;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+/* Aro giratorio: reutiliza el keyframe `spin` de src/styles/animaciones.css */
+.app__carga-icono {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--color-border-strong);
+  border-top-color: var(--color-primary-active);
+  border-radius: var(--radius-full);
+}

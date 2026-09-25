@@ -3,6 +3,17 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.6.0] - 2026-09-25
+
+### Added
+- Dependencias `@fontsource-variable/inter` (tipografía autoalojada) y `lucide-react` (iconos del kit)
+- Parciales de estilos en `src/styles/`: `tokens`, `fuentes`, `base`, `animaciones`, `sombras`, `bordes`, `tarjetas`, `iconos`, `inputs`, `botones` y `paginas`
+- `src/App.css` con la base de la nueva paleta
+
+### Changed
+- `src/index.css` movido a `src/styles/index.css`; `main.jsx` carga las fuentes y los parciales
+- Nueva paleta en `tokens.css` (`@theme`): amarillo `#FACC15`, neutros `#0A0A0A`/`#FAFAFA` y foco `#a16207` (contraste 4.92:1 sobre blanco); `src/styles/index.css` ya no lleva utilidades Tailwind
+
 ## [1.5.1] - 2026-09-25
 
 ### Fixed

@@ -1,0 +1,36 @@
+/* ==========================================================================
+   Tarjetas: primitiva base .tarjeta usada por todo el catálogo y paneles.
+   Las variantes específicas de cada componente se definen en su propio CSS.
+   ========================================================================== */
+
+.tarjeta {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+/* Variante interactiva: eleva el foco/cursor sobre ella */
+.tarjeta--hover:hover,
+.tarjeta--hover:focus-within {
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--color-border-strong);
+}
+
+/* Sin sombra (para bloques planos) */
+.tarjeta--plana {
+  box-shadow: none;
+}
+
+/* Partes internas comunes */
+.tarjeta__cuerpo {
+  padding: 1.25rem;
+}
+
+.tarjeta__footer {
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-surface-2);
+}

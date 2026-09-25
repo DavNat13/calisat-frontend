@@ -1,0 +1,37 @@
+/* ==========================================================================
+   Bordes y radios: clases reutilizables sobre los tokens de tokens.css.
+   ========================================================================== */
+
+/* Bordes de 1px */
+.borde-fino {
+  border: 1px solid var(--color-border);
+}
+
+.borde-fuerte {
+  border: 1px solid var(--color-border-strong);
+}
+
+.borde-superior {
+  border-top: 1px solid var(--color-border);
+}
+
+.borde-inferior {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.borde-sin {
+  border: none;
+}
+
+/* Radios (sobre los tokens --radius-*) */
+.redondeado-card {
+  border-radius: var(--radius-card);
+}
+
+.redondeado-control {
+  border-radius: var(--radius-control);
+}
+
+.redondeado-full {
+  border-radius: var(--radius-full);
+}

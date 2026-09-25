@@ -1,0 +1,34 @@
+/* ==========================================================================
+   Iconos: clases para los SVG de lucide-react (se aplica className="icono").
+   El tamaño se controla por CSS (los atributos width/height del SVG quedan
+   sobrescritos) y el color hereda del texto circundante.
+   ========================================================================== */
+
+.icono {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  vertical-align: middle;
+  color: inherit;
+}
+
+.icono--sm {
+  width: 1rem;
+  height: 1rem;
+}
+
+.icono--lg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.icono--xl {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+/* Alineación vertical con texto en botones/enlaces */
+.icono--inicio {
+  margin-inline-end: 0.5rem;
+}
