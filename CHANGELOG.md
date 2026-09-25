@@ -3,6 +3,16 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.6.1] - 2026-09-25
+
+### Added
+- `src/config/api.js` con la URL del API Gateway hardcodeada (única fuente de verdad; sin `.env` ni `import.meta.env`)
+- `src/utils/errores.js` (mensajes de error genéricos en español para la UI, detalle solo en `console.error`) y `src/utils/enfocarContenido.js` (devolución de foco al contenido principal)
+
+### Changed
+- `AuthConfig.js`: constantes de tenant, client id y redirects visibles en el archivo, y obtención de la cuenta activa con `getActiveAccount()`
+- `ProtectedRoute` movido de `src/components/auth/` a `src/auth/`
+
 ## [1.6.0] - 2026-09-25
 
 ### Added

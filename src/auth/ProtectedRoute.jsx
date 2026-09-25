@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useIsAuthenticated } from "@azure/msal-react";
-import useAuthRole from "../../auth/useAuthRole";
+import useAuthRole from "./useAuthRole";
 
 export default function ProtectedRoute({ roles, children }) {
   const isAuthenticated = useIsAuthenticated();
