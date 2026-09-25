@@ -3,6 +3,18 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [1.8.0] - 2026-09-25
+
+### Added
+- Panel de administración en `/admin` con `AdminLayout` (sidebar off-canvas, overlay y hamburguesa con `aria-expanded`) y rutas protegidas con guard `ADMINISTRADOR|LOGISTICA`
+- Secciones: `DashboardPage` (stat cards por rol + últimos envíos), gestión de productos con vista "dados de baja" y reactivar, `InventarioPage` (CRUD de stock con reservar/liberar/confirmar), `EnviosPage` (creación y transiciones de estado válidas) y `NotificacionesPage` (detalle con traza de intentos y reintentar)
+- Hooks `useStock`, `useEnvios` y `useNotificaciones`; servicios `apiAdmin`, `adminService`, `stockService`, `envioService`, `notificacionService` y utilidades `estadoEnvio`/`estadoNotificacion`
+- Enlace "Panel de administración" en `UserNavbar` visible para ADMINISTRADOR y LOGISTICA
+
+### Changed
+- `App.jsx`: doble shell de rutas (público con `PublicLayout` vs `/admin`) con `lazy` de las páginas del panel
+- `/productos` queda como vitrina solo-lectura; la gestión vive en `/admin/productos`
+
 ## [1.7.1] - 2026-09-25
 
 ### Added

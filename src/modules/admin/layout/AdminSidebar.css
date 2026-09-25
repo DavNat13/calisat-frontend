@@ -1,0 +1,175 @@
+/* Panel lateral del panel de administración (250px).
+   Escritorio: columna fija a la izquierda del flex .admin-layout.
+   ≤992px: cajón deslizante (translateX) con .panel-lateral--abierto. */
+
+.panel-lateral {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  flex-shrink: 0;
+  background-color: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+}
+
+/* ------------------------------ Cabecera ------------------------------ */
+.panel-lateral__cabecera {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1.25rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Marca negra con detalle amarillo (mismo lenguaje que .navbar__brand).
+   El amarillo nunca es texto: es un filete bajo la palabra. */
+.panel-lateral__marca {
+  position: relative;
+  align-self: flex-start;
+  padding-bottom: 0.4rem;
+  color: var(--color-accent);
+  font-size: var(--text-xl);
+  line-height: var(--text-xl--line-height);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.panel-lateral__marca::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0.25rem;
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+}
+
+.panel-lateral__subtitulo {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+/* ------------------------------ Navegación ---------------------------- */
+.panel-lateral__nav {
+  padding: 0.75rem 0.5rem;
+}
+
+.panel-lateral__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Item de navegación (enlace o botón del pie). El borde izquierdo de 4px
+   está SIEMPRE (transparente) para que el activo no desplace el texto. */
+.panel-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 2.75rem; /* 44px: objetivo táctil accesible */
+  padding: 0.5rem 0.75rem;
+  background-color: transparent;
+  border: none;
+  border-left: 4px solid transparent;
+  border-radius: var(--radius-control);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.panel-item:hover {
+  background-color: var(--color-surface-2);
+  color: var(--color-text);
+}
+
+/* Activo (NavLink añade aria-current="page" solo): fondo suave de marca +
+   indicador izquierdo amarillo + texto negro. */
+.panel-item--activo,
+.panel-item--activo:hover {
+  background-color: var(--color-primary-soft);
+  border-left-color: var(--color-primary);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* -------------------------------- Pie --------------------------------- */
+.panel-lateral__pie {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: auto; /* acolado al fondo del panel */
+  padding: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.panel-lateral__usuario {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  font-weight: 600;
+}
+
+.panel-lateral__usuario-nombre {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panel-lateral__acciones {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.panel-item--salir {
+  color: var(--color-danger);
+}
+
+.panel-item--salir:hover {
+  background-color: var(--color-danger-soft);
+  color: var(--color-danger-hover);
+}
+
+/* --------------------------- Responsive ≤992px ------------------------- */
+@media (max-width: 992px) {
+  .panel-lateral {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 80;
+    max-width: 80vw;
+    /* visibility: hidden fuera de pantalla => sus enlaces NO reciben foco
+       de Tab mientras el cajón está cerrado. */
+    transform: translateX(-100%);
+    visibility: hidden;
+    box-shadow: var(--shadow-overlay);
+    /* Altura fija por top/bottom: sin esto, en pantallas bajas o con texto
+       ampliado el pie (Cerrar sesión) quedaba fuera de alcance. */
+    overflow-y: auto;
+    transition: transform 0.2s ease, visibility 0.2s ease;
+  }
+
+  .panel-lateral--abierto {
+    transform: translateX(0);
+    visibility: visible;
+  }
+}

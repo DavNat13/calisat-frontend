@@ -1,0 +1,237 @@
+/* InventarioPage — barra de búsqueda/alta, mensajes, listado tabular,
+   paginación y modales del panel.
+   El ritmo vertical y la cabecera (título + descripción) vienen de las
+   primitivas .pagina / .pagina__cabecera (src/styles/paginas.css). */
+
+/* ----------------------------- Barra de acciones ----------------------- */
+.inventario__barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.inventario__campo-busqueda {
+  flex: 1 1 16rem;
+  max-width: 22rem;
+}
+
+/* ------------------------------ Mensajes ------------------------------- */
+.inventario__mensaje {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+/* Verde sobre verde claro: el texto queda negro (≥4.5:1); el borde aporta
+   el matiz, igual que en las insignias del kit. */
+.inventario__mensaje--exito {
+  background-color: color-mix(in srgb, var(--color-success) 12%, var(--color-surface));
+  border-color: var(--color-success);
+  color: var(--color-text);
+}
+
+/* Rojo sobre fondo neutro: #DC2626 sobre blanco da 4.83:1 (sobre
+   --color-danger-soft bajaría a 4.41:1 y rompería AA). */
+.inventario__mensaje--error {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+/* ------------------------------- Listado ------------------------------- */
+.inventario__seccion {
+  margin-top: 0.5rem;
+}
+
+.inventario__encabezado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.inventario__titulo-listado {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.inventario__contador {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--color-text-subtle);
+}
+
+.inventario__nota {
+  margin: 0 0 1rem;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+.inventario__estado {
+  margin: 0;
+  padding: 3rem 1rem;
+  color: var(--color-text-subtle);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  text-align: center;
+}
+
+.inventario__vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.inventario__vacio .inventario__estado {
+  padding-bottom: 0;
+}
+
+/* Región desplazable horizontalmente en pantallas estrechas (lleva foco
+   de teclado: role="region" + tabIndex en el JSX). */
+.inventario__lista {
+  overflow-x: auto;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.inventario__tabla {
+  width: 100%;
+  min-width: 60rem;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+.inventario__tabla th,
+.inventario__tabla td {
+  padding: 0.875rem 1rem;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.inventario__tabla thead th {
+  background-color: var(--color-surface-2);
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.inventario__tabla tbody tr:last-child th,
+.inventario__tabla tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.inventario__tabla tbody tr:hover {
+  background-color: var(--color-surface-2);
+}
+
+/* SKU como cabecera de fila: el screen reader lo anuncia con cada celda */
+.inventario__tabla tbody th {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+    monospace;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.inventario__celda--numerica {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.inventario__fecha {
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.inventario__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* ----------------------------- Paginación ------------------------------ */
+.inventario__paginacion {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.inventario__paginacion-texto {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+/* -------------------------- Modales del panel -------------------------- */
+.inventario-formulario {
+  display: grid;
+  gap: 1rem;
+}
+
+.inventario-formulario__alerta {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.75rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-control);
+  color: var(--color-danger);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+.inventario-formulario__resumen {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+.inventario__confirmacion {
+  margin: 0;
+}
+
+.inventario__sku-inline {
+  display: inline-block;
+  padding: 0.0625rem 0.375rem;
+  background-color: var(--color-surface-3);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+    monospace;
+  font-weight: 600;
+  word-break: break-all;
+}

@@ -1,0 +1,73 @@
+/* Shell del panel de administración: panel lateral + contenido.
+   Escritorio (≤992px como punto de quiebre): el panel es una columna fija
+   de 250px. Por debajo de ese ancho se convierte en un cajón deslizante
+   con overlay. */
+
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--color-background);
+}
+
+/* Contenido a la derecha del panel. min-width:0 para que el grid de stat
+   cards no fuerce scroll horizontal dentro de un flex. */
+.admin-layout__contenido {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Región enfocable de forma programática (skip-link / cambio de ruta):
+   no dibuja anillo, porque no es un control interactivo. */
+.admin-layout__contenido:focus {
+  outline: none;
+}
+
+/* Hamburguesa: SOLO ≤992px. Compuesto con .admin-layout__contenido para
+   ganarle a .boton (src/styles/botones.css emite display:inline-flex) con
+   independencia del orden en el que se emitan ambos CSS (mismo patrón que
+   .navbar .navbar__hamburguesa). */
+.admin-layout__contenido .admin-layout__boton-menu {
+  display: none;
+}
+
+/* --------------------------- Barra móvil ------------------------------ */
+/* Solo ≤992px: en escritorio el panel lateral ya está siempre visible y
+   la barra (y su hamburguesa) no tienen sentido. */
+.admin-layout__barra {
+  display: none;
+}
+
+/* ------------------------------ Overlay ------------------------------ */
+.admin-layout__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background-color: rgb(0 0 0 / 0.45);
+}
+
+@media (min-width: 993px) {
+  .admin-layout__overlay {
+    display: none;
+  }
+}
+
+@media (max-width: 992px) {
+  .admin-layout__barra {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 3.25rem;
+    padding: 0.375rem 1rem;
+    background-color: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .admin-layout__barra .admin-layout__boton-menu {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+}

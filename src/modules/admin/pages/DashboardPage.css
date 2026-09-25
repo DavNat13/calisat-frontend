@@ -1,0 +1,232 @@
+/* Dashboard del panel de administración.
+   Composición: .pagina > .contenedor > .pagina__cabecera (filete inferior) +
+   secciones con <h2> fileteado + rejillas de .stat-tarjeta. */
+
+/* ----------------------------- Cabecera ------------------------------- */
+/* La cabecera es la primitiva .pagina__cabecera (patrón de las 4 páginas
+   del panel); aquí solo se le añade el filete inferior propio. El margen
+   inferior (1.5rem) y la disposición ya vienen de paginas.css. */
+.admin-dashboard .pagina__cabecera {
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ---------------------------- Carga / avisos -------------------------- */
+.admin-dashboard__carga {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 40vh;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+/* Aro giratorio: reutiliza el keyframe `spin` de src/styles/animaciones.css */
+.admin-dashboard__carga-icono {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--color-border-strong);
+  border-top-color: var(--color-primary-active);
+  border-radius: var(--radius-full);
+}
+
+.admin-dashboard__aviso {
+  margin: 0 0 1.5rem;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+/* ------------------------------ Secciones ----------------------------- */
+.admin-dashboard__titulo-seccion {
+  margin: 2rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--text-2xl);
+  line-height: var(--text-2xl--line-height);
+}
+
+/* La primera sección no duplica el ritmo de la cabecera (su <h2> arranca
+   pegado al margen inferior de la cabecera o del aviso). */
+.admin-dashboard__seccion:first-of-type .admin-dashboard__titulo-seccion {
+  margin-top: 0;
+}
+
+/* --------------------------- Grid de stats ---------------------------- */
+/* min(280px, 100%): sin el 100% el mínimo de 280px desbordaba la caja en
+   pantallas de ≤320px (contenedor de 272px útiles). */
+.admin-dashboard__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 1.5rem;
+}
+
+/* ---------------------------- Stat card ------------------------------- */
+.stat-tarjeta {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transition: transform 0.2s ease, box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.stat-tarjeta:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Círculo de marca a la izquierda con el icono negro (24px). */
+.stat-tarjeta__icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  flex-shrink: 0;
+  background-color: var(--color-primary-soft);
+  border-radius: var(--radius-full);
+  color: var(--color-text);
+}
+
+.stat-tarjeta__icono .icono {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.stat-tarjeta__texto {
+  min-width: 0;
+}
+
+.stat-tarjeta__label {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+.stat-tarjeta__valor {
+  margin: 0.25rem 0 0;
+  color: var(--color-text);
+  font-size: 2rem;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* --------------------------- Acciones rápidas ------------------------- */
+.admin-dashboard__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* ---------------------------- Últimos envíos -------------------------- */
+.admin-dashboard__vacio {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+.admin-dashboard__lista-envios {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Patrón de fila "pendiente" del panel: guía en monoespaciada + meta a la
+   izquierda, estado y acción a la derecha (se apilan en móvil). */
+.envio-tarjeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.envio-tarjeta:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.envio-tarjeta__info {
+  display: flex;
+  flex: 1 1 16rem;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.envio-tarjeta__guia {
+  color: var(--color-text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+    monospace;
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+  font-weight: 600;
+}
+
+.envio-tarjeta__transportista,
+.envio-tarjeta__fecha {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+.envio-tarjeta__acciones {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-inline-start: auto;
+}
+
+/* --------------------------- Panel de bienvenida ---------------------- */
+.admin-dashboard__bienvenida {
+  margin-top: 2.5rem;
+  padding: 2rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.admin-dashboard__bienvenida-titulo {
+  margin: 0 0 0.5rem;
+  font-size: var(--text-2xl);
+  line-height: var(--text-2xl--line-height);
+}
+
+.admin-dashboard__bienvenida-texto {
+  max-width: 70ch;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+}
+
+/* --------------------------- Motion reducida -------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .stat-tarjeta:hover {
+    transform: none;
+  }
+}

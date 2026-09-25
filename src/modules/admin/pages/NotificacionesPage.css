@@ -1,0 +1,357 @@
+/* NotificacionesPage — filtro por estado, tarjetas, paginación y modales
+   (detalle con traza de intentos + confirmación de reintento).
+   El ritmo vertical y la cabecera vienen de .pagina / .pagina__cabecera. */
+
+/* ------------------------------- Filtro -------------------------------- */
+.notificaciones__barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.notificaciones__filtro {
+  flex: 1 1 14rem;
+  max-width: 20rem;
+}
+
+/* ------------------------------ Mensajes ------------------------------- */
+.notificaciones__mensaje {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+.notificaciones__mensaje--exito {
+  background-color: color-mix(in srgb, var(--color-success) 12%, var(--color-surface));
+  border-color: var(--color-success);
+  color: var(--color-text);
+}
+
+.notificaciones__mensaje--error {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+/* ------------------------------- Listado ------------------------------- */
+.notificaciones__seccion {
+  margin-top: 0.5rem;
+}
+
+.notificaciones__encabezado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.notificaciones__titulo-listado {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.notificaciones__contador {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--color-text-subtle);
+}
+
+.notificaciones__estado {
+  margin: 0;
+  padding: 3rem 1rem;
+  color: var(--color-text-subtle);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  text-align: center;
+}
+
+.notificaciones__vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.notificaciones__vacio .notificaciones__estado {
+  padding-bottom: 0;
+}
+
+.notificaciones__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* -------------------------- Tarjeta de notificación -------------------- */
+.notificacion-ficha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.notificacion-ficha:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.notificacion-ficha__info {
+  display: flex;
+  flex: 1 1 18rem;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.notificacion-ficha__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.notificacion-ficha__asunto {
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+  font-weight: 600;
+}
+
+.notificacion-ficha__destinatario {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+.notificacion-ficha__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.notificacion-ficha__texto {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--color-text-subtle);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+}
+
+.notificacion-ficha__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  margin-inline-start: auto;
+}
+
+/* ----------------------------- Paginación ------------------------------ */
+.notificaciones__paginacion {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.notificaciones__paginacion-texto {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+/* -------------------------- Modales del panel -------------------------- */
+.notificaciones-formulario {
+  display: grid;
+  gap: 1rem;
+}
+
+.notificaciones-formulario__alerta {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.75rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-control);
+  color: var(--color-danger);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+.notificaciones-formulario__mensaje {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.notificaciones__asunto-inline {
+  color: var(--color-text);
+  word-break: break-word;
+}
+
+/* El detalle necesita más ancho que el modal genérico (26rem) */
+.notificaciones-detalle {
+  max-width: 40rem;
+}
+
+/* -------------------------- Modal: detalle ----------------------------- */
+.notificacion-detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.notificacion-detalle__subtitulo {
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+  font-weight: 600;
+}
+
+.notificacion-detalle__datos {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+@media (min-width: 520px) {
+  .notificacion-detalle__datos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.notificacion-detalle__dato {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.notificacion-detalle__dato dt {
+  color: var(--color-text-subtle);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+}
+
+.notificacion-detalle__dato dd {
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  word-break: break-word;
+}
+
+.notificacion-detalle__mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+    monospace;
+}
+
+.notificacion-detalle__cuerpo {
+  margin: 0;
+  padding: 0.75rem;
+  background-color: var(--color-surface-2);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.notificacion-detalle__estado {
+  margin: 0;
+  padding: 1rem;
+  background-color: var(--color-surface-2);
+  border-radius: var(--radius-control);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  text-align: center;
+}
+
+.notificacion-detalle__estado--error {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-danger);
+  color: var(--color-danger);
+}
+
+/* ------------------------- Tabla de intentos --------------------------- */
+.notificacion-detalle__tabla-zona {
+  overflow-x: auto;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+}
+
+.notificacion-detalle__tabla {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+}
+
+.notificacion-detalle__tabla th,
+.notificacion-detalle__tabla td {
+  padding: 0.625rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.notificacion-detalle__tabla thead th {
+  background-color: var(--color-surface-2);
+  color: var(--color-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.notificacion-detalle__tabla tbody tr:last-child th,
+.notificacion-detalle__tabla tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.notificacion-detalle__error-celda {
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
