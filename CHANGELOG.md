@@ -3,6 +3,13 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [2.2.1] - 2026-09-28
+
+### Fixed
+- `nginx.conf`: la directiva `connect-src` de la CSP no incluía los orígenes de AWS Cognito, así que detrás de nginx el descubrimiento OIDC y el canje del `?code=` (`https://cognito-idp.us-east-1.amazonaws.com`) y el Hosted UI (`https://us-east-1uk0q6emaq.auth.us-east-1.amazoncognito.com`) quedaban bloqueados: el login público funcionaba en `npm run dev` pero fallaba en despliegue
+- Comentario de `connect-src` actualizado a los dos proveedores (se retiró la afirmación obsoleta de que "no se usa Cognito") y `nginx.conf` ajustado a 150 líneas
+- Versión package.json actualizada a 2.2.1
+
 ## [2.2.0] - 2026-09-28
 
 ### Added
