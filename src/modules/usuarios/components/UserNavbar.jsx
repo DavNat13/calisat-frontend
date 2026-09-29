@@ -1,6 +1,6 @@
-import { useMsal, useIsAuthenticated } from "@azure/msal-react";
 import { Link } from "react-router-dom";
 import { User, LogIn } from "lucide-react";
+import useAuthSession from "../../../auth/useAuthSession";
 import useUserSync from "../hooks/useUserSync";
 import useMenuDesplegable from "../hooks/useMenuDesplegable";
 import UserMenu from "./UserMenu";
@@ -11,13 +11,15 @@ import "./UserNavbar.css";
  *
  * - Sin sesión → enlace a /login (YA NO dispara instance.loginRedirect: el
  *   flujo dual Entra ID / Cognito se elige en la página de acceso).
- * - Con sesión → disparador del desplegable; el contenido vive en UserMenu
- *   y el comportamiento accesible (Escape, clic fuera, popstate, flechas,
- *   foco) en useMenuDesplegable.
+ * - Con sesión (de AZURE o de COGNITO) → disparador del desplegable; el
+ *   contenido vive en UserMenu (visibilidades por rol vía useAuthRole) y el
+ *   comportamiento accesible (Escape, clic fuera, popstate, flechas, foco)
+ *   en useMenuDesplegable.
+ * El cierre de sesión lo resuelve `useAuthSession().logout()`: MSAL para la
+ * cuenta institucional, `removeUser()` + Hosted UI para Cognito.
  */
 export default function UserNavbar() {
-  const { instance, accounts } = useMsal();
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated, identificador, logout } = useAuthSession();
   useUserSync();
   // Desestructurado: la regla react-hooks/refs exige que el ref llegue al JSX
   // como identificador directo (ref={contenedorRef}), no como propiedad de un
@@ -32,16 +34,10 @@ export default function UserNavbar() {
   } = useMenuDesplegable();
 
   const handleLogout = () => {
-    instance
-      .logoutRedirect()
-      .catch((e) => console.error("Error en logout:", e));
+    logout().catch((e) => console.error("Error en logout:", e));
   };
 
-  if (isAuthenticated && accounts.length > 0) {
-    // Cuenta ACTIVA (misma regla que los servicios y que AdminSidebar);
-    // accounts[0] solo como respaldo si MSAL no tiene activa.
-    const cuenta = instance.getActiveAccount() ?? accounts[0];
-
+  if (isAuthenticated) {
     return (
       <div
         className="usuario"
@@ -58,10 +54,10 @@ export default function UserNavbar() {
           aria-expanded={abierto}
         >
           <User className="icono" aria-hidden="true" />
-          {/* name puede venir vacío en cuentas sin perfil visual: sin el
-              respaldo a username, el botón quedaría con solo el icono. */}
+          {/* identificador = name ?? username (Azure) o email/teléfono
+              (Cognito); el respaldo evita un botón con solo el icono. */}
           <span className="usuario__nombre">
-            {cuenta?.name || cuenta?.username || "Mi cuenta"}
+            {identificador || "Mi cuenta"}
           </span>
         </button>
         {abierto && (

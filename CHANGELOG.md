@@ -3,6 +3,21 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [2.2.0] - 2026-09-28
+
+### Added
+- Integración de AWS Cognito: dependencias `oidc-client-ts` y `react-oidc-context`, y `src/config/cognitoConfig.js` con authority, client ID, redirect/logout URI, dominio Hosted UI y scopes `email openid phone`
+- `src/auth/DualAuthProvider.jsx`: árbol único `AuthProvider` (Cognito) → `MsalProvider` (Entra ID) → `AuthRoleProvider`, de modo que toda la app tiene los dos contextos
+- Coordinación de callbacks en `src/auth/redirectCallback.js` + `src/auth/msalInstance.js`: solo el proveedor marcado en `sessionStorage` canjea su `?code=` y la URL se limpia tras el intercambio
+- `useAuthSession()`: fuente de verdad de la sesión dual (`isAuthenticated`, `proveedor`, `identificador`, `roles`, `logout`) para rutas, navbar y roles
+- `src/modules/auth/login/loginActions.js` y `useLoginActions.js` reales: acceso institucional (MSAL `loginRedirect`), acceso público y registro (`signinRedirect` / `/signup` del Hosted UI), cierre de sesión por proveedor y retorno a la ruta solicitada
+- `src/auth/retorno.js`: persiste `state.from` en `sessionStorage` antes del redirect y lo consume al volver
+
+### Changed
+- `AuthRoleProvider` y `ProtectedRoute` usan la sesión dual: los tokens de Cognito aportan `cognito:groups` o el fallback `CLIENTE`, y `/carrito`, `/checkout` y `/perfil` se abren también con sesión de Cognito
+- `UserNavbar` muestra el menú y "Cerrar Sesión" con cualquiera de los dos proveedores; `useUserSync` solo registra en el backend con sesión de Azure
+- Versión package.json actualizada a 2.2.0
+
 ## [2.1.0] - 2026-09-28
 
 ### Added

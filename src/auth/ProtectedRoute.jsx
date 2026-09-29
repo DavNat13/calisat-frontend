@@ -1,9 +1,11 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useIsAuthenticated } from "@azure/msal-react";
 import useAuthRole from "./useAuthRole";
+import useAuthSession from "./useAuthSession";
 
 export default function ProtectedRoute({ roles, children }) {
-  const isAuthenticated = useIsAuthenticated();
+  // Autenticado = sesión de Azure O de Cognito (antes solo MSAL: un cliente
+  // de Cognito no podría abrir /carrito, /checkout ni /perfil).
+  const { isAuthenticated } = useAuthSession();
   const { hasAnyRole } = useAuthRole();
   const location = useLocation();
 

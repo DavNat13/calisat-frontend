@@ -1,21 +1,21 @@
 import { useMemo } from "react";
-import { useMsal } from "@azure/msal-react";
 import AuthRoleContext from "./authRoleContext";
+import useAuthSession from "./useAuthSession";
 
-function normalizarRoles(claim) {
-  if (!claim) return [];
-  const lista = Array.isArray(claim) ? claim : [claim];
-  return lista
-    .filter((rol) => typeof rol === "string" && rol.trim().length > 0)
-    .map((rol) => rol.trim().toUpperCase());
-}
-
+/**
+ * Proveedor del contexto de roles (`useAuthRole()`).
+ *
+ * Los roles salen de `useAuthSession()`, que unifica los dos proveedores:
+ *  - Sesión de AZURE  → claim `roles` del id token de Entra ID.
+ *  - Sesión de COGNITO → claim `cognito:groups` (mayúsculas) y, si no hay
+ *    ninguno, `["CLIENTE"]` (fallback obligatorio, igual que el backend).
+ *
+ * El contrato de `useAuthRole()` —`roles`, `activeRole`, `hasRole`,
+ * `hasAnyRole`, `isAuthenticated`— NO cambia: todo el código existente
+ * (Navbar, UserMenu, ProductosPage, AdminSidebar, ProtectedRoute) depende.
+ */
 export default function AuthRoleProvider({ children }) {
-  const { instance } = useMsal();
-  const activeAccount = instance.getActiveAccount();
-  const idTokenClaims = activeAccount?.idTokenClaims;
-  const roles = normalizarRoles(idTokenClaims?.roles);
-  const isAuthenticated = Boolean(activeAccount);
+  const { roles, isAuthenticated } = useAuthSession();
   const rolesKey = roles.join(",");
 
   const value = useMemo(() => {
@@ -28,6 +28,9 @@ export default function AuthRoleProvider({ children }) {
       hasAnyRole,
       isAuthenticated,
     };
+    // `roles` es derivado de `rolesKey`: si la clave no cambia, el contenido
+    // de la lista tampoco, y así el objeto de contexto es estable entre
+    // renders (evita re-renderizar toda la app por un array nuevo).
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rolesKey, isAuthenticated]);
 

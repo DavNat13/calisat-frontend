@@ -15,7 +15,8 @@ import "./LoginPage.css";
 /**
  * Ruta /login · acceso dual (Microsoft Entra ID + AWS Cognito).
  * Página sin props: todo el comportamiento viene de useLoginActions()
- * (stub temporal) y todo el texto de loginCopy.js.
+ * (redirect a Entra ID o al Hosted UI de Cognito, sesión activa y cierre)
+ * y todo el texto de loginCopy.js.
  */
 export default function LoginPage() {
   const { institucional, publico, sesionActiva, error, cerrando } =
@@ -69,7 +70,7 @@ export default function LoginPage() {
                 accionSecundaria={{
                   etiqueta: ACCIONES.registrar,
                   onClick: publico.onRegistro,
-                  loading: publico.loading,
+                  loading: publico.registroLoading,
                 }}
               />
             </div>

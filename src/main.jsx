@@ -4,57 +4,53 @@ import App from './App.jsx';
 import '@fontsource-variable/inter';
 import './styles/index.css';
 
-import { PublicClientApplication, EventType } from "@azure/msal-browser";
-import { MsalProvider } from "@azure/msal-react";
-import { msalConfig } from "./auth/AuthConfig";
-import AuthRoleProvider from "./auth/AuthRoleProvider";
+import DualAuthProvider from "./auth/DualAuthProvider";
+import { crearMsalInstance, fijarCuentaActiva } from "./auth/msalInstance";
+import {
+  clasificarCallback,
+  limpiarProveedorPendiente,
+  limpiarUrl,
+  procesarCallbackAzure,
+} from "./auth/redirectCallback";
 
-const msalInstance = new PublicClientApplication(msalConfig);
-
-msalInstance.addEventCallback((event) => {
-  if (
-    event.eventType === EventType.LOGIN_FAILURE ||
-    event.eventType === EventType.ACQUIRE_TOKEN_FAILURE
-  ) {
-    console.error("Fallo de MSAL:", event.error);
-  }
-});
+const msalInstance = crearMsalInstance();
 
 async function bootstrap() {
+  // MSAL exige inicializar la instancia antes de cualquier interacción.
   await msalInstance.initialize();
 
-  try {
-    const response = await msalInstance.handleRedirectPromise();
-    if (response) {
-      console.info("Autenticacion completada:", response.account?.username);
-    }
-  } catch (error) {
-    console.error("Error al procesar respuesta de Azure:", error);
-    window.history.replaceState(null, "", window.location.pathname);
-  }
+  // AZURE Y COGNITO regresan por redirect a la MISMA página con
+  // ?code=...&state=... → solo el proveedor que pidió el redirect (marcado
+  // en sessionStorage por useLoginActions) puede canjear su código.
+  const { callbackDeAzure, callbackDeCognito } = clasificarCallback();
 
-  // MSAL no marca ninguna cuenta como "activa" por su cuenta: sin este paso
-  // getActiveAccount() devuelve null y AuthRoleProvider no puede leer los
-  // claims de roles del id token (ProtectedRoute denegaría siempre y la UI
-  // no mostraría ninguna opción de rol). Se marca solo si aún no hay una,
-  // para no pisar una selección explícita. El valor persiste en la caché de
-  // MSAL (sessionStorage), así que también sobrevive a un refresh.
-  try {
-    const cuentas = msalInstance.getAllAccounts();
-    if (cuentas.length > 0 && !msalInstance.getActiveAccount()) {
-      msalInstance.setActiveAccount(cuentas[0]);
-    }
-  } catch (error) {
-    console.error("Error al fijar la cuenta activa:", error);
+  if (callbackDeAzure) {
+    await procesarCallbackAzure(msalInstance);
+  } else if (!callbackDeCognito) {
+    // Callback de una pestaña vieja, de otra página o parámetros huérfanos:
+    // se descarta para que nadie canjee un código que no le pertenece.
+    limpiarUrl();
   }
+  // El marcador ya fue consumido (o esta pestaña nunca lanzó un redirect).
+  limpiarProveedorPendiente();
+
+  // getActiveAccount() → claims de roles del id token de Azure (ver
+  // msalInstance.js). Con sesión de Cognito no hay cuenta MSAL y los roles
+  // salen de `cognito:groups` dentro de AuthRoleProvider.
+  fijarCuentaActiva(msalInstance);
 
   ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
-      <MsalProvider instance={msalInstance}>
-        <AuthRoleProvider>
-          <App />
-        </AuthRoleProvider>
-      </MsalProvider>
+      <DualAuthProvider
+        msalInstance={msalInstance}
+        // true → Cognito ignora el ?code= de Azure (skipSigninCallback).
+        // Con la URL ya limpia en los demás casos, ninguno de los dos
+        // proveedores se apropió del código del otro.
+        skipSigninCallback={!callbackDeCognito}
+        onSigninCallback={limpiarUrl}
+      >
+        <App />
+      </DualAuthProvider>
     </React.StrictMode>
   );
 }
