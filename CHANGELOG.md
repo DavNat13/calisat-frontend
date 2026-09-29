@@ -3,6 +3,18 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [2.0.0] - 2026-09-28
+
+### Added
+- Ruta `/login` dentro del shell público, cargada con `React.lazy` desde `src/modules/auth/login/LoginPage.jsx` (esqueleto inicial: pantalla de selección de acceso)
+- `UserMenu.jsx` y `useMenuDesplegable.js`: el desplegable de usuario y su comportamiento accesible (Escape, clic fuera, `popstate`, foco al abrir, flechas ↑/↓) quedan en módulos propios
+
+### Changed
+- **BREAKING CHANGE:** el enlace "Iniciar Sesión" de la navbar **ya no dispara `instance.loginRedirect`**: navega a `/login`, donde el usuario elige entre el acceso institucional (Microsoft Entra ID) y el acceso público (AWS Cognito)
+- **BREAKING CHANGE:** `ProtectedRoute` redirige a `/login` (antes a `/`) y guarda el destino original en `state.from` para retomarlo tras autenticarse; el caso de rol insuficiente sigue yendo a `/403`
+- `UserNavbar.jsx` pasa de 211 a 87 líneas (regla de los 150 líneas por archivo)
+- Versión package.json actualizada a 2.0.0
+
 ## [1.8.2] - 2026-09-25
 
 ### Fixed

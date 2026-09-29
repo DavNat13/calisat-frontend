@@ -10,6 +10,9 @@ import "./App.css";
 // propio chunk y el bundle inicial (React + router + MSAL + layouts) baja de
 // los 500 kB que advertía el build. El fallback vive en App.css (.app__carga).
 const HomePage = lazy(() => import("./modules/home/HomePage"));
+// Acceso dual (Entra ID / Cognito): la página vive en src/modules/auth/login
+// y la implementa @UI Designer; aquí solo se declara su chunk.
+const LoginPage = lazy(() => import("./modules/auth/login/LoginPage"));
 const ProductosPage = lazy(() => import("./modules/catalogo/pages/ProductosPage"));
 const ForbiddenPage = lazy(() => import("./modules/errors/ForbiddenPage"));
 const CarritoPage = lazy(() => import("./modules/carrito/pages/CarritoPage"));
@@ -47,6 +50,9 @@ function App() {
             {/* ---------------- Shell público: Navbar + <main> ---------------- */}
             <Route element={<PublicLayout />}>
               <Route path="/" element={<HomePage />} />
+              {/* Acceso dual: destino único de "Iniciar Sesión" (navbar) y de
+                  ProtectedRoute cuando no hay sesión. */}
+              <Route path="/login" element={<LoginPage />} />
               {/* Vitrina (soloLectura): la gestión vive en /admin/productos */}
               <Route path="/productos" element={<ProductosPage soloLectura />} />
               <Route path="/403" element={<ForbiddenPage />} />
