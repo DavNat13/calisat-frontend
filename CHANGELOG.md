@@ -3,6 +3,17 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [2.1.0] - 2026-09-28
+
+### Added
+- Pantalla `/login` completa: `LoginPage` compone `LoginOptionCard` (tarjetas **Acceso Institucional** y **Acceso Público**) y `LoginSessionBanner` (sesión activa + cierre), con copy centralizado en `loginCopy.js`
+- CSS co-localizados `LoginPage.css`, `LoginOptionCard.css` y `LoginSessionBanner.css` construidos solo con tokens del design system y el kit de UI (`Button`, `Card`, `.boton--bloque`)
+- `useLoginActions.js` como stub temporal con el contrato que implementará la integración de Cognito/MSAL
+
+### Changed
+- Reemplazado el esqueleto de `LoginPage.jsx` por la vista definitiva (mobile-first, 1 columna <768px y rejilla 2 columnas en desktop)
+- Versión package.json actualizada a 2.1.0
+
 ## [2.0.0] - 2026-09-28
 
 ### Added

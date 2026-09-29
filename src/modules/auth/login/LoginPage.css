@@ -1,0 +1,59 @@
+/* ==========================================================================
+   Login · pantalla de acceso dual (Microsoft Entra ID + AWS Cognito).
+   Solo tokens de tokens.css + primitivas del kit (.pagina, .contenedor).
+   Sin outline propio: el foco global vive en base.css (:focus-visible).
+   Espaciado en la escala rem del proyecto (0.25/0.5/0.75/1/1.25/1.5/2/3).
+   ========================================================================== */
+
+/* Bloque de login acotado a 64rem y centrado dentro del .contenedor (72rem) */
+.login {
+  max-width: 64rem;
+  margin-inline: auto;
+}
+
+/* -------------------------- Error de la página --------------------------- */
+/* role="alert" en el JSX: el color nunca es el único portador de la info. */
+.login__error {
+  margin: 0 0 1.5rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-danger-soft);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-control);
+  color: var(--color-danger-hover); /* 5.9:1 sobre --color-danger-soft */
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+/* --------------------------- Título de sección --------------------------- */
+.login__titulo-seccion {
+  margin: 0 0 1rem;
+  color: var(--color-text);
+}
+
+/* ------------------------------- Rejilla -------------------------------- */
+/* Mobile-first: una columna con las tarjetas apiladas (Institucional
+   primero, que es su orden natural en el DOM). */
+.login__rejilla {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+/* Tablet y superior: dos columnas de igual ancho. Las tarjetas se estiran
+   en la fila, de modo que los CTAs quedan alineados al pie gracias al
+   margin-top: auto de .opcion-acceso__acciones. */
+@media (min-width: 768px) {
+  .login__rejilla {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* --------------------------------- Pie ----------------------------------- */
+.login__pie {
+  max-width: 60ch;
+  margin: 1.5rem 0 0;
+  color: var(--color-text-muted); /* 7.5:1 sobre --color-background */
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
