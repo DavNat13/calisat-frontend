@@ -1,8 +1,8 @@
 # calisat-frontend
 
-> SPA de e‑commerce para equipamiento de calistenia: catálogo, carrito y perfil de usuario, con autenticación en Microsoft Entra ID (Azure AD) mediante MSAL.
+> SPA de e‑commerce para equipamiento de calistenia: catálogo, carrito y perfil de usuario, con autenticación dual en Microsoft Entra ID (Azure AD) mediante MSAL y AWS Cognito mediante `react-oidc-context`.
 
-![Versión](https://img.shields.io/badge/version-1.4.0-2563EB)
+![Versión](https://img.shields.io/badge/version-2.2.1-2563EB)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
@@ -40,9 +40,9 @@ La aplicación consume los microservicios del backend a través de un **API Gate
 
 - 🛍️ **Catálogo paginado**: listado de productos con búsqueda rápida, filtro por categoría y detalle por SKU (`useProductos` + `catalogoService`).
 - ✏️ **Gestión de productos**: crear, editar y eliminar productos (con diálogo de confirmación) cuando el usuario está autenticado.
-- 🔐 **Autenticación con Entra ID**: flujo MSAL con `acquireTokenSilent`, *cache* en `sessionStorage* y *scopes* de API (`read-write`).
-- 👤 **Sincronización de usuario**: al iniciar sesión, `useUserSync` registra automáticamente el perfil en `POST /api/v1/usuarios/registro`.
-- 🧭 **Enrutamiento SPA**: rutas con `react-router-dom` 7 (`/`, `/productos`, `/carrito`, `/checkout`, `/perfil`).
+- 🔐 **Autenticación dual**: pantalla `/login` con dos accesos — **institucional** (Microsoft Entra ID vía MSAL, para estudiantes y equipo) y **público** (AWS Cognito vía `react-oidc-context`, para clientes externos con registro). Ambos comparten *cache* en `sessionStorage` y flujo de *redirect* + PKCE.
+- 👤 **Sincronización de usuario**: con sesión de Azure, `useUserSync` registra automáticamente el perfil en `POST /api/v1/usuarios/registro`.
+- 🧭 **Enrutamiento SPA**: rutas con `react-router-dom` 7 (`/`, `/login`, `/productos`, `/carrito`, `/checkout`, `/perfil`); las rutas protegidas redirigen a `/login` conservando el destino original.
 - 🎨 **Sistema de diseño con Tailwind 4**: tokens de tema (`primary`, `accent`, `surface`, `text`, estados) definidos en `@theme` de `src/index.css`.
 - 📱 **Navbar adaptable**: barra de navegación con estado de sesión y acceso al perfil (`Navbar`, `UserNavbar`, `UserProfile`).
 - ⚡ **Build optimizado**: bundle Vite con *hash* de contenido, servido por nginx con Gzip, caché de `assets/` y *fallback* SPA.
@@ -52,7 +52,8 @@ La aplicación consume los microservicios del backend a través de un **API Gate
 ```mermaid
 flowchart LR
     U[Usuario] --> B[Browser: SPA React]
-    B -->|MSAL / login| AAD[(Microsoft Entra ID)]
+    B -->|/login · MSAL| AAD[(Microsoft Entra ID)]
+    B -->|/login · OIDC| COG[(AWS Cognito)]
     B -->|Bearer JWT| GW[API Gateway AWS]
     GW --> MS[Microservicios Calisat]
     B -.->|npm run build| DIST[(dist/)]
@@ -66,14 +67,19 @@ calisat-frontend/
 ├── index.html
 ├── nginx.conf              # Config del servidor de producción
 ├── Dockerfile              # Multi-stage: node:20 build → nginx runtime
-├── package.json            # Versión 1.4.0
+├── package.json            # Versión 2.2.1
 ├── vite.config.js          # Plugins React + Tailwind, base '/'
 └── src/
-    ├── main.jsx            # Punto de entrada + proveedor MSAL
+    ├── main.jsx            # Punto de entrada + callback dual (Azure/Cognito)
     ├── App.jsx             # Router (rutas de la SPA)
     ├── index.css           # Tokens del tema (Tailwind @theme)
     ├── auth/
-    │   └── AuthConfig.js   # msalConfig, loginRequest, apiRequest
+    │   ├── AuthConfig.js   # msalConfig, loginRequest, apiRequest (Entra ID)
+    │   ├── DualAuthProvider.jsx  # AuthProvider (Cognito) + MsalProvider + roles
+    │   └── useAuthSession.js     # Sesión dual: proveedor, roles y logout
+    ├── config/
+    │   └── cognitoConfig.js # Authority, client ID, redirect, dominio y scopes
+    ├── modules/auth/login/  # /login: LoginPage, tarjetas y useLoginActions
     ├── pages/
     │   ├── HomePage.jsx
     │   └── ProductosPage.jsx
@@ -110,13 +116,21 @@ calisat-frontend/
 | *Post-logout redirect* | igual que el *redirect URI* | `src/auth/AuthConfig.js` |
 | *Scope* de API | `api://d221f0d2-1a7c-4872-ad6c-367a1f0717ec/read-write` | `src/auth/AuthConfig.js` |
 | *Cache* de MSAL | `sessionStorage` | fijo en `AuthConfig.js` |
+| Authority (Cognito) | `https://cognito-idp.us-east-1.amazonaws.com/us-east-1_UK0Q6EmAQ` | `src/config/cognitoConfig.js` |
+| Client ID (Cognito) | `79rbb9f5e2l5nmak9d17ueb2se` | `src/config/cognitoConfig.js` |
+| *Redirect / logout URI* (Cognito) | `https://ezeh839whh.execute-api.us-east-1.amazonaws.com/desarrollo` | `src/config/cognitoConfig.js` (+ registro en Cognito) |
+| Dominio Hosted UI | `https://us-east-1uk0q6emaq.auth.us-east-1.amazoncognito.com` | `src/config/cognitoConfig.js` |
+| *Scope* (Cognito) | `email openid phone` | `src/config/cognitoConfig.js` |
 
 > **Sin variables de entorno**: la SPA **no** lee el objeto de entorno de
 > Vite ni archivos `.env` — toda la configuración va hardcodeada en los
 > ficheros de la tabla. Si cambia el host del API Gateway, amplía también
 > `connect-src` en `nginx.conf` (la CSP bloquea el fetch a orígenes no
-> listados); si cambia el tenant o el origen desplegado, actualiza
-> `AuthConfig.js` **y** el redirect URI registrado en Microsoft Entra ID.
+> listados — de ahí que incluya además `cognito-idp.us-east-1.amazonaws.com`
+> y el dominio del Hosted UI); si cambia el tenant o el origen desplegado,
+> actualiza `AuthConfig.js` **y** el redirect URI registrado en Microsoft
+> Entra ID; si cambia el user pool, actualiza `cognitoConfig.js` **y** los
+> *App redirect URLs* / *Sign out URLs* de Cognito.
 >
 > ⚠️ clientId/tenant/URL son **identificadores públicos** (viven en el
 > JavaScript de producción). Nunca pongas aquí *client secrets*, API keys,
@@ -207,9 +221,9 @@ Los productos llegan paginados (`{ content: [...], totalElements, ... }`); `useP
 
 ## 🔒 Seguridad
 
-- **Autenticación**: Microsoft Entra ID (Azure AD) vía **MSAL** (`@azure/msal-browser` 5.x / `@azure/msal-react` 5.x), flujo de *redirect* + PKCE (SPA pública, sin *client secret*).
-- **Token**: se obtiene con `acquireTokenSilent` y se envía como `Authorization: Bearer <token>` al API Gateway. El token **no** se imprime en consola.
-- **RBAC en cliente**: roles (`ADMINISTRADOR`, `CLIENTE`, `LOGISTICA`) leídos del claim `roles` del *id token*, con `ProtectedRoute` en `/carrito`, `/checkout` y `/perfil`, y condicionando la UI de administración del catálogo. **La autoridad real es el backend** (`@PreAuthorize`/`SecurityFilterChain`): el cliente solo evita mostrar acciones sin permiso; cualquier llamada manipulada a mano es rechazada por el servidor.
+- **Autenticación dual**: **Microsoft Entra ID** vía **MSAL** (`@azure/msal-browser` 5.x / `@azure/msal-react` 5.x) y **AWS Cognito** vía **`react-oidc-context`** / `oidc-client-ts`, ambos con flujo de *redirect* + PKCE (SPA pública, sin *client secret*). La elección se hace en `/login`; `DualAuthProvider` monta los dos contextos y `redirectCallback.js` garantiza que **solo el proveedor que pidió el redirect canjea su `?code=`**.
+- **Token**: con sesión de Azure se obtiene con `acquireTokenSilent` y se envía como `Authorization: Bearer <token>` al API Gateway. El token **no** se imprime en consola.
+- **RBAC en cliente**: los roles (`ADMINISTRADOR`, `CLIENTE`, `LOGISTICA`) salen de `useAuthSession()` — claim `roles` del *id token* de Azure, o `cognito:groups` y **fallback `CLIENTE`** para los tokens de Cognito (mismo criterio que el backend)— con `ProtectedRoute` en `/carrito`, `/checkout` y `/perfil` y condicionando la UI de administración del catálogo. **La autoridad real es el backend**: el cliente solo evita mostrar acciones sin permiso; cualquier llamada manipulada a mano es rechazada por el servidor.
 - **Catálogo público**: los GET de `/api/v1/catalogo/**` van sin `Authorization` **por diseño** (`permitAll()` en `calisat-ms-catalogo`). Las escrituras (POST/PUT/DELETE) sí exigen token + rol `ADMINISTRADOR`.
 - **Mensajes de error**: la UI muestra copias propias en español; el detalle real (status/payload) va a `console.error` (`src/utils/errores.js`). No se exponen rutas, esquemas ni trazas internas.
 - **Caché de token**: `sessionStorage` (el token no persiste al cerrar la pestaña ni a otras pestañas).
@@ -265,6 +279,6 @@ docker run -d -p 80:80 --name calisat-frontend calisat-frontend:1.4.0
 
 Este proyecto se desarrolla en **modo académico**. No se distribuye bajo una licencia open source formal; su uso está limitado a fines educativos y de demostración.
 
-- **Versión actual**: `1.4.0`
+- **Versión actual**: `2.2.1`
 - **Historial de cambios**: [`CHANGELOG.md`](CHANGELOG.md) (formato [Keep a Changelog](https://keepachangelog.com/es/1.0.0/), [SemVer](https://semver.org/lang/es/))
-- Los valores de Entra ID y endpoints están *hardcodeados* a propósito (contexto académico).
+- Los valores de Entra ID, Cognito y endpoints están *hardcodeados* a propósito (contexto académico).
