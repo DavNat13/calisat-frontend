@@ -2,7 +2,7 @@
 
 > SPA de e‑commerce para equipamiento de calistenia: catálogo, carrito y perfil de usuario, con autenticación dual en Microsoft Entra ID (Azure AD) mediante MSAL y AWS Cognito mediante `react-oidc-context`.
 
-![Versión](https://img.shields.io/badge/version-2.2.1-2563EB)
+![Versión](https://img.shields.io/badge/version-2.3.0-2563EB)
 ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
@@ -67,7 +67,7 @@ calisat-frontend/
 ├── index.html
 ├── nginx.conf              # Config del servidor de producción
 ├── Dockerfile              # Multi-stage: node:20 build → nginx runtime
-├── package.json            # Versión 2.2.1
+├── package.json            # Versión 2.3.0
 ├── vite.config.js          # Plugins React + Tailwind, base '/'
 └── src/
     ├── main.jsx            # Punto de entrada + callback dual (Azure/Cognito)
@@ -279,6 +279,6 @@ docker run -d -p 80:80 --name calisat-frontend calisat-frontend:1.4.0
 
 Este proyecto se desarrolla en **modo académico**. No se distribuye bajo una licencia open source formal; su uso está limitado a fines educativos y de demostración.
 
-- **Versión actual**: `2.2.1`
+- **Versión actual**: `2.3.0`
 - **Historial de cambios**: [`CHANGELOG.md`](CHANGELOG.md) (formato [Keep a Changelog](https://keepachangelog.com/es/1.0.0/), [SemVer](https://semver.org/lang/es/))
 - Los valores de Entra ID, Cognito y endpoints están *hardcodeados* a propósito (contexto académico).

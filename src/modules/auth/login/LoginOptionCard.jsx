@@ -4,25 +4,23 @@ import { ACCIONES } from "./loginCopy";
 import "./LoginOptionCard.css";
 
 /**
- * Tarjeta de opción de acceso (Institucional / Público).
+ * Tarjeta de opción de acceso: logotipo + "Iniciar sesión con …" + acciones.
  *
- * Props: { id, etiqueta?, icono, titulo, audiencia, beneficios[], consecuencia,
- * accion{etiqueta,onClick,loading,icono?}, accionSecundaria?{etiqueta,onClick,
- * loading}, nota?, nivelTitulo?=3 }.
+ * Props: { id, Logotipo, titulo, descripcion,
+ *          accion{etiqueta,onClick,loading},
+ *          accionSecundaria?{etiqueta,onClick,loading}, nivelTitulo?=2 }.
  * El artículo se enlaza con su título vía aria-labelledby="{id}-titulo".
+ * El logotipo es decorativo (aria-hidden): el nombre accesible lo aporta
+ * el título, que es literalmente el nombre del proveedor.
  */
 export default function LoginOptionCard({
   id,
-  etiqueta,
-  icono: Icono,
+  Logotipo,
   titulo,
-  audiencia,
-  beneficios,
-  consecuencia,
+  descripcion,
   accion,
   accionSecundaria,
-  nota,
-  nivelTitulo = 3,
+  nivelTitulo = 2,
 }) {
   const Titulo = `h${nivelTitulo}`;
   const cargando = Boolean(accion.loading);
@@ -35,35 +33,22 @@ export default function LoginOptionCard({
       className={"opcion-acceso opcion-acceso--" + id}
       aria-labelledby={`${id}-titulo`}
     >
+      <span className="opcion-acceso__logo" aria-hidden="true">
+        <Logotipo />
+      </span>
+
       <div className="opcion-acceso__cabecera">
-        {etiqueta && (
-          <span className="opcion-acceso__pildora">
-            {Icono && <Icono className="icono icono--sm" aria-hidden="true" />}
-            {etiqueta}
-          </span>
-        )}
         <Titulo className="opcion-acceso__titulo" id={`${id}-titulo`}>
           {titulo}
         </Titulo>
-        <p className="opcion-acceso__audiencia">{audiencia}</p>
+        <p className="opcion-acceso__descripcion">{descripcion}</p>
       </div>
-
-      <ul className="opcion-acceso__beneficios">
-        {beneficios.map((beneficio) => (
-          <li key={beneficio} className="opcion-acceso__beneficio">
-            {beneficio}
-          </li>
-        ))}
-      </ul>
-
-      <p className="opcion-acceso__consecuencia">{consecuencia}</p>
 
       <div className="opcion-acceso__acciones">
         <Button
           variant="primario"
           size="lg"
           className="boton--bloque"
-          icon={accion.icono}
           onClick={accion.onClick}
           disabled={cargando}
           aria-busy={cargando}
@@ -85,8 +70,6 @@ export default function LoginOptionCard({
               : accionSecundaria.etiqueta}
           </Button>
         )}
-
-        {nota && <p className="opcion-acceso__nota">{nota}</p>}
       </div>
     </Card>
   );

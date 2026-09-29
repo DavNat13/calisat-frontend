@@ -3,6 +3,17 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [2.3.0] - 2026-09-28
+
+### Added
+- `LoginLogos.jsx`: logotipos SVG inline de los proveedores (las cuatro cuadrículas de Microsoft y el wordmark + sonrisa de AWS), sin dependencias nuevas
+
+### Changed
+- Rediseño de las dos tarjetas de `/login`: ahora son tarjetas simples con **logotipo + "Iniciar sesión con Microsoft Azure"** / **"Iniciar sesión con AWS Cognito"**, una línea de descripción y los botones (`Continuar` y, en Cognito, `Crear una cuenta`); se retiran la píldora, la lista de beneficios, el bloque de consecuencia y la nota al pie de cada tarjeta
+- Cabecera y pie condensados (`"Elige con qué cuenta quieres entrar."`) y la sección pasa a `aria-label` sin `<h2>` visible: los títulos de las tarjetas son ahora `h2`
+- Copy centralizado en `loginCopy.js` (45 líneas) y `LoginOptionCard` reducido a 76 líneas
+- Versión package.json actualizada a 2.3.0
+
 ## [2.2.1] - 2026-09-28
 
 ### Fixed

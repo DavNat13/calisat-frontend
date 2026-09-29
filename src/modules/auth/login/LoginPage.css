@@ -24,19 +24,14 @@
   line-height: var(--text-sm--line-height);
 }
 
-/* --------------------------- Título de sección --------------------------- */
-.login__titulo-seccion {
-  margin: 0 0 1rem;
-  color: var(--color-text);
-}
-
 /* ------------------------------- Rejilla -------------------------------- */
-/* Mobile-first: una columna con las tarjetas apiladas (Institucional
-   primero, que es su orden natural en el DOM). */
+/* Mobile-first: una columna con las dos tarjetas apiladas (Azure primero,
+   que es su orden natural en el DOM). */
 .login__rejilla {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.5rem;
+  margin-top: 0.5rem;
 }
 
 /* Tablet y superior: dos columnas de igual ancho. Las tarjetas se estiran

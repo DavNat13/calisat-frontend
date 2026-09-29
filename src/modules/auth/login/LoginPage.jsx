@@ -1,10 +1,10 @@
 import LoginOptionCard from "./LoginOptionCard";
 import LoginSessionBanner from "./LoginSessionBanner";
+import { LogoAws, LogoMicrosoft } from "./LoginLogos";
 import useLoginActions from "./useLoginActions";
 import {
   ACCIONES,
   CABECERA,
-  ID_SECCION,
   OPCION_INSTITUCIONAL,
   OPCION_PUBLICO,
   PIE,
@@ -16,7 +16,7 @@ import "./LoginPage.css";
  * Ruta /login · acceso dual (Microsoft Entra ID + AWS Cognito).
  * Página sin props: todo el comportamiento viene de useLoginActions()
  * (redirect a Entra ID o al Hosted UI de Cognito, sesión activa y cierre)
- * y todo el texto de loginCopy.js.
+ * y todo el texto de loginCopy.js. Dos tarjetas, una por proveedor.
  */
 export default function LoginPage() {
   const { institucional, publico, sesionActiva, error, cerrando } =
@@ -46,34 +46,32 @@ export default function LoginPage() {
             cerrando={cerrando}
           />
 
-          <section aria-labelledby={ID_SECCION}>
-            <h2 className="login__titulo-seccion" id={ID_SECCION}>
-              {SECCION.titulo}
-            </h2>
-
-            <div className="login__rejilla">
-              <LoginOptionCard
-                {...OPCION_INSTITUCIONAL}
-                accion={{
-                  etiqueta: ACCIONES.microsoft,
-                  onClick: institucional.onAcceder,
-                  loading: institucional.loading,
-                }}
-              />
-              <LoginOptionCard
-                {...OPCION_PUBLICO}
-                accion={{
-                  etiqueta: ACCIONES.entrar,
-                  onClick: publico.onAcceder,
-                  loading: publico.loading,
-                }}
-                accionSecundaria={{
-                  etiqueta: ACCIONES.registrar,
-                  onClick: publico.onRegistro,
-                  loading: publico.registroLoading,
-                }}
-              />
-            </div>
+          {/* Sin <h2> visible: el único h1 es el de la cabecera y los
+              títulos de las tarjetas (h2) nombran a cada proveedor. */}
+          <section className="login__rejilla" aria-label={SECCION.etiqueta}>
+            <LoginOptionCard
+              {...OPCION_INSTITUCIONAL}
+              Logotipo={LogoMicrosoft}
+              accion={{
+                etiqueta: ACCIONES.continuar,
+                onClick: institucional.onAcceder,
+                loading: institucional.loading,
+              }}
+            />
+            <LoginOptionCard
+              {...OPCION_PUBLICO}
+              Logotipo={LogoAws}
+              accion={{
+                etiqueta: ACCIONES.continuar,
+                onClick: publico.onAcceder,
+                loading: publico.loading,
+              }}
+              accionSecundaria={{
+                etiqueta: ACCIONES.registrar,
+                onClick: publico.onRegistro,
+                loading: publico.registroLoading,
+              }}
+            />
           </section>
 
           <p className="login__pie">{PIE}</p>
