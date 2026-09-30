@@ -1,0 +1,118 @@
+/* ==========================================================================
+   Páginas informativas · contenido (Nosotros, Términos, Privacidad).
+   Compartido por esas tres páginas; el CSS del formulario de contacto vive
+   en contacto.css (supera el límite de 150 líneas del proyecto si va todo
+   junto). Solo tokens de tokens.css + primitivas del kit (.pagina,
+   .contenedor, .tarjeta, .boton).
+   ========================================================================== */
+
+/* ------------------------------- Nosotros ------------------------------ */
+.nosotros__subtitulo {
+  margin: 2.25rem 0 0.75rem;
+  color: var(--color-text);
+  font-size: var(--text-xl);
+  line-height: var(--text-xl--line-height);
+}
+
+.nosotros__texto {
+  max-width: 62ch;
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+}
+
+/* Párrafos consecutivos de la misión: separación sin depender de márgenes
+   heredados de otras páginas */
+.nosotros__texto + .nosotros__texto {
+  margin-top: 1rem;
+}
+
+/* Rejilla de valores: mobile-first (1 col) y 3 columnas desde 768px */
+.nosotros__rejilla {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.valor {
+  height: 100%;
+  padding: 1.5rem;
+}
+
+.valor__icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin-bottom: 0.75rem;
+  background: var(--color-primary-soft);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+}
+
+.valor__titulo {
+  margin: 0 0 0.375rem;
+  color: var(--color-text);
+  font-size: var(--text-base);
+}
+
+.valor p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+/* CTAs de cierre: el contenedor ya aporta .pagina__acciones */
+.pagina__acciones--nosotros {
+  margin-top: 2.25rem;
+}
+
+/* ------------------------- Términos y Privacidad ----------------------- */
+.legal {
+  max-width: 48rem;
+}
+
+.legal__seccion {
+  padding-block: 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+  scroll-margin-top: 5.5rem; /* ancla compensada bajo la navbar fija */
+}
+
+.legal__seccion:last-of-type {
+  border-bottom: 0;
+}
+
+.legal__titulo {
+  margin: 0 0 0.5rem;
+  color: var(--color-text);
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+}
+
+.legal__contenido {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+}
+
+.legal__contenido > * {
+  margin: 0 0 0.75rem;
+}
+
+.legal__contenido ul {
+  padding-inline-start: 1.25rem;
+}
+
+.legal__acciones {
+  margin-top: 2rem;
+}
+
+/* ------------------------------- Rejilla ------------------------------- */
+@media (min-width: 768px) {
+  .nosotros__rejilla {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

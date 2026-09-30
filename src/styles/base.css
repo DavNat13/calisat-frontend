@@ -21,6 +21,18 @@ body {
   color: var(--color-on-primary);
 }
 
+/* Bloqueo de scroll del body mientras hay un diálogo abierto (Modal y
+   Drawer lo añaden/quita desde src/components/ui/focoTrap.js).
+   scrollbar-gutter evita el salto de layout al desaparecer la barra de
+   scroll. Es GLOBAL (base.css) porque dos componentes distintos lo usan. */
+body.scroll-bloqueado {
+  overflow: hidden;
+}
+
+html:has(body.scroll-bloqueado) {
+  scrollbar-gutter: stable;
+}
+
 /* Focus global accesible: #A16207 → 4.92:1 sobre blanco, 3.13:1 sobre
    amarillo (umbral no-texto 3:1). El amarillo puro da 1.6:1 (no cumple). */
 :focus-visible {

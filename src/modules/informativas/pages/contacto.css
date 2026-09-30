@@ -1,0 +1,89 @@
+/* ==========================================================================
+   Página /contacto · columna de datos + formulario (solo UI por ahora).
+   Separado de informativas.css para respetar el límite de 150 líneas.
+   Solo tokens de tokens.css + primitivas del kit (.pagina, .campo, .boton).
+   ========================================================================== */
+
+.contacto__rejilla {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.contacto__datos {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.contacto__dato {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+}
+
+.contacto__dato-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: var(--color-primary-soft);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+}
+
+/* Título y valor del dato (ambos son <p> en el HTML) */
+.contacto__dato p {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+.contacto__dato-titulo {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+/* Formulario: tarjeta que lo separa de la columna de datos */
+.contacto__form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+}
+
+/* Éxito: role="status" en el JSX; el color no es el único portador */
+.contacto__exito {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-success);
+  border-radius: var(--radius-card);
+}
+
+.contacto__exito .icono {
+  color: var(--color-success);
+}
+
+.contacto__exito p {
+  margin: 0.25rem 0 0.75rem;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+/* Mobile-first: datos y formulario apilados; dos columnas desde 768px */
+@media (min-width: 768px) {
+  .contacto__rejilla {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+    align-items: start;
+  }
+}

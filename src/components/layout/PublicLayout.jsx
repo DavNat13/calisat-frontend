@@ -1,15 +1,19 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 /**
  * Shell de la zona PÚBLICA de la aplicación: navbar superior + región
- * principal. Es un <Route element={...}> sin path: sus rutas hijas se
+ * principal + pie. Es un <Route element={...}> sin path: sus rutas hijas se
  * renderizan dentro del <Outlet/>.
  *
  * El skip-link global vive en App.jsx y apunta a #contenido, que aquí
  * aporta este <main> (con tabindex="-1" para poder recibir el foco del
- * skip-link y del cambio de ruta). El shell de administración NO usa esta
- * navbar: allí el panel lateral la sustituye (src/modules/admin/layout).
+ * skip-link y del cambio de ruta). El Footer va DESPUÉS de </main>: como
+ * landmark role="contentinfo" debe ser hermano de la región principal y
+ * además el skip-link no debe atravesarlo. El shell de administración NO
+ * usa navbar ni pie: allí el panel lateral los sustituye
+ * (src/modules/admin/layout).
  */
 export default function PublicLayout() {
   return (
@@ -20,6 +24,7 @@ export default function PublicLayout() {
       <main id="contenido" tabIndex={-1} className="app__contenido">
         <Outlet />
       </main>
+      <Footer />
     </>
   );
 }

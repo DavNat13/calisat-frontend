@@ -1,17 +1,8 @@
 /* Kit de UI · Modal
    Overlay fijo + panel centrado. Las animaciones reutilizables
-   (.anim-fade-in / .anim-scale-in) vienen de src/styles/animaciones.css. */
-
-/* Bloqueo de scroll del body mientras hay un modal abierto (lo añade/quita
-   Modal.jsx). scrollbar-gutter evita el salto de layout al desaparecer la
-   barra de scroll. */
-body.scroll-bloqueado {
-  overflow: hidden;
-}
-
-html:has(body.scroll-bloqueado) {
-  scrollbar-gutter: stable;
-}
+   (.anim-fade-in / .anim-scale-in) vienen de src/styles/animaciones.css.
+   El bloqueo de scroll del body (body.scroll-bloqueado) es GLOBAL porque lo
+   comparten Modal y Drawer: vive en src/styles/base.css. */
 
 .modal-overlay {
   position: fixed;
