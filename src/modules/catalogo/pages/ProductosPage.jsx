@@ -1,55 +1,69 @@
-import { RotateCcw } from "lucide-react";
+import { useState } from "react";
+import { Plus } from "lucide-react";
 import useAuthRole from "../../../auth/useAuthRole";
 import { ROLES } from "../../../auth/roles";
 import useProductos from "../hooks/useProductos";
-import ProductoForm from "../components/ProductoForm";
 import ProductoCard from "../components/ProductoCard";
 import ConfirmDialog from "../components/ConfirmDialog";
-import Input from "../../../components/ui/Input";
+import BarraFiltros from "../components/producto/BarraFiltros";
+import ListadoEstado from "../components/producto/ListadoEstado";
+import ProductoModal from "../components/producto/ProductoModal";
 import Button from "../../../components/ui/Button";
 import "./ProductosPage.css";
 
 /**
  * Listado de productos.
  *
- * - soloLectura (por defecto false): modo VITRINA para la ruta pública
- *   /productos (solo consulta y filtro, sin formulario ni acciones de
- *   tarjeta). La gestión vive en /admin/productos, que entra sin la prop.
- * - Solo en gestión (puedeGestionar), el botón "Ver dados de baja"
- *   (aria-pressed) conmuta el listado a los productos inactivos; en esa
- *   vista el formulario y el filtro por categoría se ocultan y cada tarjeta
- *   ofrece la acción única "Reactivar".
+ * - soloLectura: modo VITRINA para /productos (solo consulta y filtro); la
+ *   gestión vive en /admin/productos, que entra sin la prop.
+ * - El alta/edición ya NO vive en un formulario inline: un único MODAL
+ *   PASO A PASO (ProductoModal) atiende ambos modos y esta página solo
+ *   decide si está abierto y en qué modo. En gestión, "Ver dados de baja"
+ *   (aria-pressed) conmuta a los inactivos: sin filtro ni alta y con la
+ *   acción única "Reactivar" en cada tarjeta.
  */
 export default function ProductosPage({ soloLectura = false }) {
   const { hasRole } = useAuthRole();
-  const esAdministrador = hasRole(ROLES.ADMINISTRADOR);
-  const puedeGestionar = esAdministrador && !soloLectura;
+  const puedeGestionar = hasRole(ROLES.ADMINISTRADOR) && !soloLectura;
+  const [modalAbierto, setModalAbierto] = useState(false);
+  const [modo, setModo] = useState("crear");
   const {
-    productos, form, editingSku, loading, submitting,
-    error, exito, filtro, confirmDelete,
-    setFiltro, setConfirmDelete, handleChange, handleSubmit,
-    handleEdit, handleDelete, handleFiltroCategoria,
-    cancelarEdicion, cargarProductos,
+    productos, loading, error, exito, filtro, confirmDelete,
+    setFiltro, setConfirmDelete, handleFiltroCategoria, cargarProductos,
+    form, handleChange, handleSubmit, submitting, cargandoEdicion,
+    cancelarEdicion, handleEdit, handleDelete,
     mostrarInactivos, productosInactivos, cargandoInactivos,
     reactivandoSku, alternarInactivos, handleReactivar, cargarInactivos,
-  } = useProductos();
+  } = useProductos({ onGuardado: () => setModalAbierto(false) });
 
   // Fuente de verdad del listado según la vista activa (activos / bajas).
   const listado = mostrarInactivos ? productosInactivos : productos;
   const cargandoListado = mostrarInactivos ? cargandoInactivos : loading;
 
-  const onLimpiarFiltro = async () => {
-    setFiltro("");
-    await cargarProductos();
+  // Mientras el modal está abierto, los avisos del CRUD viven DENTRO de él;
+  // al cerrarse vuelven a la página (banner role="status" / role="alert").
+  const avisoError = modalAbierto ? "" : error;
+  const avisoExito = modalAbierto ? "" : exito;
+
+  const abrirCrear = () => {
+    cancelarEdicion(); // borra restos del intento anterior (form, error, éxito)
+    setModo("crear");
+    setModalAbierto(true);
   };
 
-  const onRecargarVista = async () => {
-    if (mostrarInactivos) {
-      await cargarInactivos();
-      return;
-    }
-    await onLimpiarFiltro();
+  const abrirEdicion = async (sku) => {
+    setModo("editar");
+    setModalAbierto(true);
+    // Si la precarga falla se cierra y el error queda visible en la página.
+    if (!(await handleEdit(sku))) setModalAbierto(false);
   };
+
+  // Limpiar el filtro vuelve al listado completo (la API no pagina por texto).
+  const onLimpiarFiltro = async () => { setFiltro(""); await cargarProductos(); };
+
+  // Recarga la vista que esté activa: bajas → inactivos; si no → filtros.
+  const onRecargarVista = async () =>
+    mostrarInactivos ? cargarInactivos() : onLimpiarFiltro();
 
   return (
     <div className="pagina">
@@ -65,131 +79,61 @@ export default function ProductosPage({ soloLectura = false }) {
                 : "Consulta, filtra y administra el catálogo de productos de Calisat."}
             </p>
           </div>
+          {puedeGestionar && (
+            <div className="pagina__acciones">
+              <Button variant="primario" icon={<Plus className="icono" aria-hidden="true" />} onClick={abrirCrear}>
+                Crear Producto
+              </Button>
+            </div>
+          )}
         </header>
 
-        {puedeGestionar && !mostrarInactivos && (
-          <ProductoForm
-            form={form}
-            editingSku={editingSku}
-            submitting={submitting}
-            error={error}
-            exito={exito}
-            onChange={handleChange}
-            onSubmit={handleSubmit}
-            onCancel={cancelarEdicion}
-          />
-        )}
-
-        <div className="productos__filtros">
-          {!mostrarInactivos && (
-            <>
-              <div className="productos__campo-busqueda">
-                <Input
-                  label="Filtrar por categoría"
-                  id="productos-filtro"
-                  type="text"
-                  value={filtro}
-                  onChange={(e) => setFiltro(e.target.value)}
-                  placeholder="Ej. Anillas"
-                />
-              </div>
-              <Button
-                variant="secundario"
-                onClick={handleFiltroCategoria}
-                disabled={loading}
-              >
-                Filtrar
-              </Button>
-              {filtro && (
-                <Button variant="fantasma" onClick={onLimpiarFiltro} disabled={loading}>
-                  Limpiar
-                </Button>
-              )}
-            </>
-          )}
-
-          {puedeGestionar && (
-            <Button
-              variant="secundario"
-              className={
-                mostrarInactivos
-                  ? "productos__alternar productos__alternar--activo"
-                  : "productos__alternar"
-              }
-              aria-pressed={mostrarInactivos}
-              onClick={alternarInactivos}
-              disabled={loading || cargandoInactivos}
-              icon={<RotateCcw className="icono" aria-hidden="true" />}
-            >
-              Ver dados de baja
-            </Button>
-          )}
-        </div>
-
-        <ConfirmDialog
-          sku={confirmDelete}
-          onConfirm={handleDelete}
-          onCancel={() => setConfirmDelete(null)}
+        <BarraFiltros
+          puedeGestionar={puedeGestionar}
+          mostrarInactivos={mostrarInactivos}
+          filtro={filtro}
+          onFiltroChange={(e) => setFiltro(e.target.value)}
+          onFiltrar={handleFiltroCategoria}
+          onLimpiar={onLimpiarFiltro}
+          cargando={loading}
+          cargandoInactivos={cargandoInactivos}
+          onAlternar={alternarInactivos}
         />
 
-        {/* Sin formulario (modo vitrina o vista de dados de baja) el único
-            sitio donde se comunica un fallo o un éxito es aquí. */}
-        <section aria-labelledby="productos-listado" aria-busy={cargandoListado}>
-          <h2 className="productos__subtitulo" id="productos-listado">
-            {mostrarInactivos ? "Productos dados de baja" : "Listado de Productos"}
-            <span className="productos__contador">({listado.length})</span>
-          </h2>
+        <ConfirmDialog sku={confirmDelete} onConfirm={handleDelete} onCancel={() => setConfirmDelete(null)} />
 
-          {(!puedeGestionar || mostrarInactivos) && error && (
-            <p className="productos__estado productos__estado--error" role="alert">
-              {error}
-            </p>
-          )}
+        <ListadoEstado
+          titulo={mostrarInactivos ? "Productos dados de baja" : "Listado de Productos"}
+          contador={listado.length}
+          cargando={cargandoListado}
+          vacio={listado.length === 0}
+          cargandoTexto={mostrarInactivos ? "Cargando productos dados de baja..." : "Cargando productos..."}
+          vacioTexto={mostrarInactivos ? "No hay productos dados de baja." : "No hay productos disponibles."}
+          error={avisoError}
+          exito={avisoExito}
+          onRecargar={onRecargarVista}
+        >
+          {listado.map((p) => (
+            <ProductoCard
+              key={p.sku}
+              producto={p}
+              puedeGestionar={puedeGestionar}
+              onEdit={abrirEdicion}
+              onDelete={setConfirmDelete}
+              vistaInactivos={mostrarInactivos}
+              onReactivar={handleReactivar}
+              reactivando={reactivandoSku === p.sku}
+            />
+          ))}
+        </ListadoEstado>
 
-          {mostrarInactivos && exito && (
-            <p className="productos__estado productos__estado--exito" role="status">
-              {exito}
-            </p>
-          )}
-
-          {/* El estado de carga solo sustituye a la lista cuando NO hay nada
-              que mostrar: si ya hay tarjetas (editar/filtrar/baja) se
-              conservan y se marca aria-busy, en vez de desmontar toda la
-              rejilla y hacerla reaparecer (parpadeo + pérdida de scroll). */}
-          {cargandoListado && listado.length === 0 ? (
-            <p className="productos__estado" role="status">
-              {mostrarInactivos
-                ? "Cargando productos dados de baja..."
-                : "Cargando productos..."}
-            </p>
-          ) : listado.length === 0 ? (
-            <div className="productos__vacio">
-              <p className="productos__estado" role="status">
-                {mostrarInactivos
-                  ? "No hay productos dados de baja."
-                  : "No hay productos disponibles."}
-              </p>
-              <Button variant="secundario" onClick={onRecargarVista}>
-                Recargar listado
-              </Button>
-            </div>
-          ) : (
-            <div className="productos__grid">
-              {listado.map((p) => (
-                <ProductoCard
-                  key={p.sku}
-                  producto={p}
-                  puedeGestionar={puedeGestionar}
-                  onEdit={handleEdit}
-                  onDelete={setConfirmDelete}
-                  vistaInactivos={mostrarInactivos}
-                  onReactivar={handleReactivar}
-                  reactivando={reactivandoSku === p.sku}
-                />
-              ))}
-            </div>
-          )}
-        </section>
+        {puedeGestionar && (
+          <ProductoModal
+            abierto={modalAbierto} modo={modo} onCerrar={() => setModalAbierto(false)}
+            form={form} handleChange={handleChange} handleSubmit={handleSubmit}
+            cargandoEdicion={cargandoEdicion} submitting={submitting} error={error}
+          />
+        )}
       </div>
     </div>
   );

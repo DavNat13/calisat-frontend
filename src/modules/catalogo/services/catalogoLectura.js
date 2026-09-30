@@ -9,6 +9,14 @@ import { errorDeUsuario, registrarFallo } from "../../../utils/errores";
 export const CATALOGO_BASE = "/api/v1/catalogo";
 
 /**
+ * Normaliza la respuesta del catálogo: el backend devuelve o una lista
+ * plana o una página Spring (`{content:[...]}`). Vive en la capa de
+ * lectura para que el listado de activos y el de dados de baja
+ * interpreten LA MISMA forma con un único código (sin duplicarlo).
+ */
+export const aLista = (data) => (Array.isArray(data) ? data : data?.content || []);
+
+/**
  * LECTURA del catálogo (FASE: capa partida desde catalogoService.js).
  *
  * - GET (listar / por SKU / por categoría): SIN Authorization. Es público

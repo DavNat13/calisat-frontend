@@ -57,7 +57,7 @@
   color: var(--color-danger);
 }
 
-/* Éxito comunicado fuera del formulario (vista de dados de baja) */
+/* Éxito del CRUD comunicado en la página (el modal ya se cerró) */
 .productos__estado--exito {
   padding: 1rem;
   background-color: color-mix(in srgb, var(--color-success) 12%, var(--color-surface));
