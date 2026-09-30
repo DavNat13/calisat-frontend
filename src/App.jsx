@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { BrowserRouter, Routes } from "react-router-dom";
 import PublicRoutes from "./routes/PublicRoutes";
 import AdminRoutes from "./routes/AdminRoutes";
+import CarritoProvider from "./modules/carrito/context/CarritoContext";
 import "./App.css";
 
 // Fallback de <Suspense>: fuera de los <Routes> para que un solo nodo anuncie
@@ -26,21 +27,26 @@ const CARGA_RUTA = (
  * exige que los hijos de <Routes> sean <Route> o <React.Fragment> (un
  * <PublicRoutes/> como elemento dispararía "All component children of
  * <Routes> must be a <Route> or <React.Fragment>").
+ *
+ * El CarritoProvider vive AQUÍ (y dentro de <BrowserRouter>) porque sus
+ * consumidores navegan: navbar, panel lateral y checkout.
  */
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="app">
-        <a className="skip-link" href="#contenido">
-          Saltar al contenido
-        </a>
-        <Suspense fallback={CARGA_RUTA}>
-          <Routes>
-            {PublicRoutes()}
-            {AdminRoutes()}
-          </Routes>
-        </Suspense>
-      </div>
+      <CarritoProvider>
+        <div className="app">
+          <a className="skip-link" href="#contenido">
+            Saltar al contenido
+          </a>
+          <Suspense fallback={CARGA_RUTA}>
+            <Routes>
+              {PublicRoutes()}
+              {AdminRoutes()}
+            </Routes>
+          </Suspense>
+        </div>
+      </CarritoProvider>
     </BrowserRouter>
   );
 }

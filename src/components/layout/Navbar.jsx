@@ -2,19 +2,25 @@ import { useEffect, useRef, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import UserNavbar from "../../modules/usuarios/components/UserNavbar";
-import useAuthRole from "../../auth/useAuthRole";
-import { ROLES } from "../../auth/roles";
 import Button from "../ui/Button";
-import enfocarContenido from "../../utils/enfocarContenido";
+import NavbarEnlaces from "./NavbarEnlaces";
+import NavbarCarrito from "./NavbarCarrito";
+import NavbarMenuMovil from "./NavbarMenuMovil";
 import "./Navbar.css";
 
-const claseEnlace = ({ isActive }) =>
-  isActive ? "navbar__link navbar__link--activo" : "navbar__link";
-
+/**
+ * Barra superior: marca + enlaces de escritorio + acciones de sesión.
+ *
+ * La barra se compone así:
+ * - NavbarEnlaces: los tres enlaces de escritorio (Catálogo/Nosotros/Contacto).
+ * - NavbarCarrito: botón con el contador del carrito y apertura del panel.
+ * - NavbarMenuMovil: menú de pantallas pequeñas (los mismos enlaces y la
+ *   fila que abre el panel lateral); su ESTADO vive aquí, porque necesita
+ *   controlar la hamburguesa y el contenedor desplegado (Escape, clic
+ *   fuera, popstate).
+ */
 export default function Navbar() {
-  const { hasAnyRole } = useAuthRole();
   const [menuAbierto, setMenuAbierto] = useState(false);
-  const esCliente = hasAnyRole(ROLES.CLIENTE);
   const botonRef = useRef(null);
   const menuRef = useRef(null);
 
@@ -22,11 +28,6 @@ export default function Navbar() {
   // foco sigue en la marca. Los enlaces DEL menú móvil, en cambio, se
   // desmontan al navegar: por eso mueven el foco al contenido principal.
   const cerrarMenu = () => setMenuAbierto(false);
-
-  const navegarDesdeMenu = () => {
-    setMenuAbierto(false);
-    enfocarContenido();
-  };
 
   // Escape cierra el menú móvil y devuelve el foco a la hamburguesa.
   // El clic fuera y el botón "atrás/adelante" también lo cierran: sin
@@ -80,17 +81,11 @@ export default function Navbar() {
         </NavLink>
 
         <div className="navbar__links">
-          <NavLink to="/productos" className={claseEnlace}>
-            Productos
-          </NavLink>
-          {esCliente && (
-            <NavLink to="/carrito" className={claseEnlace}>
-              Carrito
-            </NavLink>
-          )}
+          <NavbarEnlaces />
         </div>
 
         <div className="navbar__acciones">
+          <NavbarCarrito />
           <UserNavbar />
           <Button
             ref={botonRef}
@@ -112,24 +107,11 @@ export default function Navbar() {
         </div>
       </div>
 
-      <div
-        id="menu-principal"
-        ref={menuRef}
-        className={
-          menuAbierto
-            ? "navbar__menu navbar__menu--abierto anim-slide-down"
-            : "navbar__menu"
-        }
-      >
-        <NavLink to="/productos" className={claseEnlace} onClick={navegarDesdeMenu}>
-          Productos
-        </NavLink>
-        {esCliente && (
-          <NavLink to="/carrito" className={claseEnlace} onClick={navegarDesdeMenu}>
-            Carrito
-          </NavLink>
-        )}
-      </div>
+      <NavbarMenuMovil
+        abierto={menuAbierto}
+        menuRef={menuRef}
+        onCerrarMenu={cerrarMenu}
+      />
     </nav>
   );
 }

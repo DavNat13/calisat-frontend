@@ -12,7 +12,7 @@ import {
   TerminosPage,
   PrivacidadPage,
   ForbiddenPage,
-  CarritoPage,
+  CarritoRedirect,
   CheckoutPage,
   UserProfile,
 } from "./lazyPages";
@@ -61,15 +61,9 @@ export default function PublicRoutes() {
             </ProtectedRoute>
           }
         />
-        {/* Temporal: la Fase 2 retira el guard y deja el carrito abierto */}
-        <Route
-          path="/carrito"
-          element={
-            <ProtectedRoute roles={[ROLES.CLIENTE]}>
-              <CarritoPage />
-            </ProtectedRoute>
-          }
-        />
+        {/* Sin guard: el carrito es un panel lateral, no una página con
+            datos privados. /carrito solo lo abre y vuelve a "/" (replace). */}
+        <Route path="/carrito" element={<CarritoRedirect />} />
         {/* Sin comodín, cualquier URL desconocida dejaba el <main> en
             blanco. Se redirige al inicio: hay un 403 propio, pero aún no
             existe página 404. */}

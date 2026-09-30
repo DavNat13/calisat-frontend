@@ -107,37 +107,16 @@
   display: none;
 }
 
-/* Menú desplegable del móvil: oculto por defecto (y en escritorio) */
-.navbar__menu {
-  display: none;
-}
+/* El menú desplegable (#menu-principal), la fila del carrito móvil y sus
+   estilos viven en NavbarMenuMovil.css (cada componente posee los suyos). */
 
 @media (max-width: 767px) {
+  /* Los enlaces de escritorio se ocultan: su equivalente móvil es el menú */
   .navbar__links {
     display: none;
   }
 
   .navbar .navbar__hamburguesa {
     display: inline-flex;
-  }
-
-  .navbar .navbar__menu--abierto {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    padding: 0.75rem 1.5rem 1rem;
-    background-color: var(--color-surface);
-    border-top: 1px solid var(--color-border);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .navbar__menu .navbar__link {
-    padding-block: 0.5rem;
-    font-size: var(--text-base);
-  }
-
-  /* Con la línea base más alta (1.5rem) el subrayado se reancala al texto */
-  .navbar__menu .navbar__link::after {
-    bottom: calc(50% - 0.875rem);
   }
 }

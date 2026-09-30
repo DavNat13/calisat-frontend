@@ -35,8 +35,9 @@ export const PrivacidadPage = lazy(
 export const ForbiddenPage = lazy(
   () => import("../modules/errors/ForbiddenPage")
 );
-export const CarritoPage = lazy(
-  () => import("../modules/carrito/pages/CarritoPage")
+// /carrito no es una página: redirige y abre el panel lateral del carrito.
+export const CarritoRedirect = lazy(
+  () => import("../modules/carrito/pages/CarritoRedirect")
 );
 export const CheckoutPage = lazy(
   () => import("../modules/carrito/pages/CheckoutPage")

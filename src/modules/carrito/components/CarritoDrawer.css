@@ -1,0 +1,140 @@
+/* Panel lateral del carrito — bloque .carrito-drawer (se compone sobre el
+   Drawer del kit: aquí solo se define el layout del cuerpo, la lista con
+   scroll propio, el pie fijo y los estados vacío/error).
+   El ancho min(400px, 100vw) lo aporta .drawer__panel (Drawer.css). */
+
+/* El cuerpo del Drawer pasa a COLUMNA y deja de hacer scroll: el scroll
+   real vive en la lista, así el resumen queda anclado al pie del panel. */
+.carrito-drawer .drawer__cuerpo {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Drawer.css aplica margin-bottom a todo <p> de su cuerpo; aquí el ritmo
+   vertical lo gestiona gap, así que se anula con la misma especificidad
+   compuesta (.drawer__cuerpo p = 0,1,1 ⇒ hace falta la clase del bloque). */
+.carrito-drawer .drawer__cuerpo p {
+  margin: 0;
+}
+
+/* ------------------------------- Lista ---------------------------------- */
+.carrito-drawer__lista {
+  flex: 1;
+  margin: 0;
+  padding: 0.25rem 0;
+  overflow-y: auto;
+  /* Evita que el gesto "arrastrar" encadenado siga moviendo la página
+     detrás del panel (rubber-banding) en iOS/Android. */
+  overscroll-behavior: contain;
+  list-style: none;
+}
+
+/* El último ítem no dibuja su propio borde: el pie ya aporta el separador
+   (sin esto se veía una línea doble de 2px al final de la lista). */
+.carrito-drawer__lista li:last-child {
+  border-bottom: none;
+}
+
+/* -------------------------------- Pie ----------------------------------- */
+.carrito-drawer__pie {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: var(--color-surface-2);
+  border-top: 1px solid var(--color-border);
+}
+
+.carrito-drawer__fila {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-text-muted);
+}
+
+.carrito-drawer__fila--total {
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* Aviso role="status": precios sin dato no se suman al total */
+.carrito-drawer__nota {
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  background: var(--color-primary-soft);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-control);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+  color: var(--color-text);
+}
+
+/* ------------------------------ Estado vacío ---------------------------- */
+.carrito-drawer__vacio {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.carrito-drawer__vacio-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  background: var(--color-primary-soft);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-full);
+  color: var(--color-text);
+}
+
+.carrito-drawer__vacio-titulo {
+  margin: 0;
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.carrito-drawer__vacio-texto {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-text-muted);
+}
+
+/* ------------------------------ Estado error ---------------------------- */
+.carrito-drawer__error {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+/* Fondo rojo suave + borde rojo: el color del texto (--color-danger-hover)
+   mantiene 4.9:1 sobre --color-danger-soft (AA). */
+.carrito-drawer__error-texto {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  background: var(--color-danger-soft);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-control);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-danger-hover);
+}

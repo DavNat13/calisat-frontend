@@ -1,0 +1,82 @@
+/* Checkout — resumen SOLO LECTURA del carrito (Fase 2) y aviso de pago.
+   Se apoya en las primitivas globales .pagina, .contenedor y .tarjeta;
+   aquí solo viven las filas del resumen y los bloques propios. */
+
+/* Más estrecho que el contenedor genérico (72rem): un resumen de pedido
+   legible no necesita todo el ancho disponible. El selector duplicado
+   (.contenedor) gana la carrera de especificidad contra base.css. */
+.contenedor.checkout {
+  max-width: 48rem;
+}
+
+.checkout__resumen {
+  margin-bottom: 1.5rem;
+}
+
+.checkout__lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.checkout__fila {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-text);
+}
+
+.checkout__nombre {
+  overflow-wrap: anywhere;
+}
+
+.checkout__cantidad {
+  color: var(--color-text-muted);
+}
+
+.checkout__precio {
+  flex-shrink: 0;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Fila de total: hereda fondo/borde de .tarjeta__footer (tarjetas.css) */
+.checkout__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: var(--text-base);
+  font-weight: 700;
+}
+
+.checkout__aviso {
+  margin: 0 0 1.5rem;
+  padding: 0.625rem 0.875rem;
+  background: var(--color-primary-soft);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-control);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-text);
+}
+
+.checkout__pago {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1.25rem;
+}
+
+.checkout__pago-texto {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-text-muted);
+}

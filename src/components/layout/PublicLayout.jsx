@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import CarritoDrawer from "../../modules/carrito/components/CarritoDrawer";
 
 /**
  * Shell de la zona PÚBLICA de la aplicación: navbar superior + región
@@ -14,6 +15,10 @@ import Footer from "./Footer";
  * además el skip-link no debe atravesarlo. El shell de administración NO
  * usa navbar ni pie: allí el panel lateral los sustituye
  * (src/modules/admin/layout).
+ *
+ * El panel del carrito va FUERA de <main>: es un diálogo position:fixed que
+ * solo monta cuando está abierto, y vivir dentro de la región principal le
+ * daría un contexto de página erróneo (y haría que el skip-link lo rodeara).
  */
 export default function PublicLayout() {
   return (
@@ -25,6 +30,7 @@ export default function PublicLayout() {
         <Outlet />
       </main>
       <Footer />
+      <CarritoDrawer />
     </>
   );
 }

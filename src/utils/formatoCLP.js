@@ -2,8 +2,9 @@
  * Formateo de dinero y cantidades para toda la UI.
  *
  * Regla del proyecto: TODO precio se muestra en pesos chilenos con locale
- * `es-CL`. No se admite `es-MX` ni MXN: el catálogo, los envíos y el perfil
- * son chilenos y el separador de miles/decimal debe ser el de Chile.
+ * `es-CL`. No se admite el formato ni la moneda mexicana: el catálogo, los
+ * envíos y el perfil son chilenos y el separador de miles/decimal debe ser
+ * el de Chile.
  *
  * Uso:
  *   formatoCLP(49990)    // "$49.990"

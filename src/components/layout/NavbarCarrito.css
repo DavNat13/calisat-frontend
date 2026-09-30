@@ -1,0 +1,34 @@
+/* Botón del carrito en la navbar: icono + contador tipo badge.
+   El contador es el ÚNICO indicador numérico (está fuera del flujo), así
+   que el botón queda como un botón de solo icono de 44×44. */
+
+.navbar__carrito {
+  position: relative; /* ancla del badge absolutamente posicionado */
+}
+
+/* Badge: su centro cae exactamente sobre la esquina superior derecha del
+   icono, que es el anclaje clásico de un contador sobre un icono. */
+.navbar__contador {
+  position: absolute;
+  top: 0.125rem;
+  right: 0.125rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.125rem;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border: 2px solid var(--color-surface);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Sin ítems no se muestra el badge (solo queda el icono del carrito) */
+.navbar__contador--oculto {
+  display: none;
+}

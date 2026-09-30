@@ -12,7 +12,9 @@ import "./Drawer.css";
  * al salir. Toda esa lógica viene de focoTrap.js.
  *
  * Props: open, onClose, title, children, footer, className,
- *        labelledBy (id personalizado para el h2 del título).
+ *        labelledBy (id personalizado para el h2 del título),
+ *        id (identidad del panel: permite que el disparador pueda apuntar
+ *            con aria-controls aunque el diálogo aún no esté en el DOM).
  */
 export default function Drawer({
   open = false,
@@ -22,6 +24,7 @@ export default function Drawer({
   footer,
   className = "",
   labelledBy,
+  id,
 }) {
   const panelRef = useRef(null);
   const raizRef = useRef(null);
@@ -64,6 +67,7 @@ export default function Drawer({
       <div className="drawer__overlay anim-fade-in" aria-hidden="true" />
       <div
         ref={panelRef}
+        id={id}
         className={["drawer__panel", className].filter(Boolean).join(" ")}
         role="dialog"
         aria-modal="true"

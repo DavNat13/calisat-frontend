@@ -1,0 +1,13 @@
+/* Ajustes propios del desplegable de usuario.
+   La base (posición, hover con --color-surface-3, min-height de 2.75rem,
+   salida con --color-danger y el :focus-visible global) ya vive en
+   UserNavbar.css (.usuario__*): aquí NO se duplica, solo se corrige lo que
+   la Fase 2 cambió en el orden de las opciones. */
+
+/* "Cerrar Sesión" trae su propio border-top para separarse de "Ver Perfil"
+   cuando NO hay panel de administración. Si el <hr> precede a la opción
+   (rol administrador/logística) la línea se duplicaba: quedaba un separador
+   de 2px. El selector adyacente cubre exactamente ese caso. */
+.usuario__separador + .usuario__opcion--salir {
+  border-top: none;
+}

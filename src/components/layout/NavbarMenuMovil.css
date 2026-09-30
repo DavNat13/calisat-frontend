@@ -1,0 +1,52 @@
+/* Menú desplegable de la navbar en móvil (#menu-principal).
+   Se compone con NavbarMenuMovil.jsx; el estado (abierto) vive en Navbar.jsx.
+   El bloque se movió desde Navbar.css para que cada componente posea sus
+   estilos (en escritorio el menú no puede abrirse: la hamburguesa está
+   oculta, pero el media query también lo garantiza si se redimensiona). */
+
+.navbar__menu {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .navbar .navbar__menu--abierto {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem 1.5rem 1rem;
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .navbar__menu .navbar__link {
+    padding-block: 0.5rem;
+    font-size: var(--text-base);
+  }
+
+  /* Con la línea base más alta (1.5rem) el subrayado se reancala al texto */
+  .navbar__menu .navbar__link::after {
+    bottom: calc(50% - 0.875rem);
+  }
+}
+
+/* Separador entre la navegación y la fila del carrito */
+.navbar__separador {
+  margin: 0.25rem 0;
+  border: none;
+  border-top: 1px solid var(--color-border);
+}
+
+/* Fila "Mi carrito (n)": mismo aspecto que un enlace del menú, pero es un
+   <button> porque no cambia de destino: abre el panel lateral.
+   El prefijo .navbar__menu sube la especificidad para ganarle a
+   .navbar__link (Navbar.css), que declara font-weight:500. */
+.navbar__menu .navbar__carrito-movil {
+  width: 100%;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
