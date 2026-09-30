@@ -42,6 +42,20 @@
   }
 }
 
+/* Respiro de los esqueletos de carga (fichas, listados): el parpadeo dice
+   "sigue trabajando" sin necesidad de texto. Se desactiva a los 0.01ms con
+   prefers-reduced-motion (regla global de base.css). */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+}
+
 .anim-fade-in {
   animation: fade-in 0.2s ease-out both;
 }

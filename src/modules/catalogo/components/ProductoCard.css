@@ -1,6 +1,7 @@
 /* ProductoCard — tarjeta de producto (Card + Badge + Button del kit).
-   Imagen 16:9, precio en negro (el amarillo no se usa como texto), meta
-   en --text-xs y acciones ancladas al pie de la tarjeta.
+   Imagen SIN recorte (1:1 con object-fit: contain), precio en negro (el
+   amarillo no se usa como texto), meta en --text-xs y acciones ancladas
+   al pie de la tarjeta.
    La disposición en columna de altura igual la aporta Card
    (.tarjeta--columna); aquí solo el ajuste propio de la rejilla. */
 
@@ -8,11 +9,17 @@
   min-width: 0;
 }
 
+/* Lienzo cuadrado de imagen: contain + fondo neutro para que cualquier
+   proporción (logo, foto de producto) se vea COMPLETA, sin recortes ni
+   deformarse, y con la caja ya reservada (sin salto de layout al cargar). */
 .producto-card__imagen {
   display: block;
+  box-sizing: border-box;
   width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  object-position: center;
+  padding: 0.75rem;
   background-color: var(--color-surface-2);
   border-bottom: 1px solid var(--color-border);
 }
@@ -46,6 +53,19 @@
   line-height: var(--text-base--line-height);
   font-weight: 600;
   color: var(--color-text);
+}
+
+/* Modo vitrina: el nombre es el acceso a la ficha. Hereda la tipografía
+   del h3 y NO subraya por defecto (el subrayado solo aparece al pasar el
+   cursor o al enfocar, para no ensuciar la rejilla). El contorno de foco
+   lo aporta el :focus-visible global de base.css. */
+.producto-card__nombre-enlace {
+  color: inherit;
+  text-decoration: none;
+}
+
+.producto-card__nombre-enlace:hover {
+  text-decoration: underline;
 }
 
 .producto-card__precio {

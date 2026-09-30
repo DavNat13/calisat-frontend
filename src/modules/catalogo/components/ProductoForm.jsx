@@ -14,6 +14,9 @@ export default function ProductoForm({
   onCancel,
 }) {
   const hayEstado = Boolean(error || exito);
+  // Icono del estado: el error manda sobre el éxito (mismo criterio que
+  // el texto y el role que se emiten más abajo).
+  const Icono = error ? CircleAlert : Check;
 
   return (
     <section
@@ -27,25 +30,18 @@ export default function ProductoForm({
       {/* Un SOLO nodo de estado con id único: si error y éxito coincidieran
           (racha de acciones) se emitirían dos id="producto-form-estado" y
           aria-describedby apuntaría al primero. El error tiene prioridad. */}
-      {error ? (
+      {hayEstado && (
         <p
-          className="producto-form__alerta producto-form__alerta--error"
+          className={`producto-form__alerta ${
+            error ? "producto-form__alerta--error" : "producto-form__alerta--exito"
+          }`}
           id="producto-form-estado"
-          role="alert"
+          role={error ? "alert" : "status"}
         >
-          <CircleAlert className="icono icono--sm" aria-hidden="true" />
-          <span>{error}</span>
+          <Icono className="icono icono--sm" aria-hidden="true" />
+          <span>{error || exito}</span>
         </p>
-      ) : exito ? (
-        <p
-          className="producto-form__alerta producto-form__alerta--exito"
-          id="producto-form-estado"
-          role="status"
-        >
-          <Check className="icono icono--sm" aria-hidden="true" />
-          <span>{exito}</span>
-        </p>
-      ) : null}
+      )}
 
       <form
         onSubmit={onSubmit}
@@ -98,7 +94,7 @@ export default function ProductoForm({
 
         <div className="producto-form__campo">
           <Input
-            label="Precio (MXN)"
+            label="Precio (CLP)"
             id="producto-precio"
             name="precio"
             type="number"
@@ -140,18 +136,10 @@ export default function ProductoForm({
 
         <div className="producto-form__campo producto-form__full producto-form__acciones">
           <Button type="submit" variant="primario" disabled={submitting}>
-            {submitting
-              ? editingSku
-                ? "Actualizando..."
-                : "Creando..."
-              : editingSku
-                ? "Actualizar Producto"
-                : "Crear Producto"}
+            {submitting ? (editingSku ? "Actualizando..." : "Creando...") : editingSku ? "Actualizar Producto" : "Crear Producto"}
           </Button>
           {editingSku && (
-            <Button type="button" variant="secundario" onClick={onCancel} disabled={submitting}>
-              Cancelar
-            </Button>
+            <Button type="button" variant="secundario" onClick={onCancel} disabled={submitting}>Cancelar</Button>
           )}
         </div>
       </form>

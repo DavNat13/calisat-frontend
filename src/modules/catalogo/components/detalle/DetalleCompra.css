@@ -1,0 +1,94 @@
+/* Columna de compra de la ficha: categoría → título → SKU → precio →
+   descripción → cantidad → CTA. Solo tokens de tokens.css + BEM. */
+
+.detalle__compra {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.detalle__titulo {
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--text-3xl);
+  line-height: var(--text-3xl--line-height);
+  font-weight: 800;
+}
+
+.detalle__sku {
+  margin: 0;
+  color: var(--color-text-subtle);
+  font-size: var(--text-xs);
+}
+
+/* Precio: el elemento dominante de la ficha. clamp() crece con la ventana
+   sin salirse de la escala de tokens; tabular-nums evita que las cifras
+   bailen al cambiar la cantidad. */
+.detalle__precio {
+  margin: 0;
+  color: var(--color-text);
+  font-size: clamp(var(--text-2xl), 5vw, var(--text-4xl));
+  line-height: 1.1;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.detalle__descripcion {
+  margin: 0;
+  max-width: 60ch;
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+}
+
+.detalle__cantidad {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detalle__cantidad-etiqueta {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* El stepper es compacto: el ancho completo lo tiene el CTA de abajo. */
+.detalle__stepper {
+  display: inline-flex;
+  width: fit-content;
+}
+
+/* − / +: 44px de alto (objetivo táctil) y radio solo en los extremos
+   para que el conjunto lea como un único control. */
+.detalle__paso {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  min-height: 2.75rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  cursor: pointer;
+}
+.detalle__paso:first-child { border-radius: var(--radius-control) 0 0 var(--radius-control); }
+.detalle__paso:last-child { border-radius: 0 var(--radius-control) var(--radius-control) 0; }
+.detalle__paso:disabled { color: var(--color-text-subtle); cursor: not-allowed; opacity: 0.6; }
+
+/* Campo numérico sin flechas: el stepper ya aporta los controles. El
+   min-height lo aporta el stretch del grupo (los botones miden 2.75rem). */
+.detalle__numero {
+  width: 3.5rem;
+  padding: 0 0.25rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-inline: 0;
+  font-size: var(--text-base);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.detalle__numero::-webkit-outer-spin-button,
+.detalle__numero::-webkit-inner-spin-button { appearance: none; margin: 0; }

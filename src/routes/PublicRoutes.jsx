@@ -35,7 +35,7 @@ export default function PublicRoutes() {
         <Route path="/login" element={<LoginPage />} />
         {/* Vitrina (soloLectura): la gestión vive en /admin/productos */}
         <Route path="/productos" element={<ProductosPage soloLectura />} />
-        {/* Ficha de producto: stub de la Fase 1 (la Fase 3 lo implementa) */}
+        {/* Ficha de producto: carga real por SKU (galería + compra) */}
         <Route path="/producto/:sku" element={<ProductoDetalle />} />
         {/* Páginas informativas (contenedor propio src/modules/informativas) */}
         <Route path="/nosotros" element={<NosotrosPage />} />
