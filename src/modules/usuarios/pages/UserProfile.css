@@ -7,6 +7,19 @@
   max-width: 48rem;
 }
 
+/* Aviso role="alert": el backend respondió 403 (exige rol CLIENTE) y los
+   datos completos no se pueden mostrar. Rojo de semántica, no de marca. */
+.perfil__aviso {
+  margin: 0 0 1.5rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-danger-soft);
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
 /* --------------------------- Datos de cuenta ---------------------------- */
 .perfil__datos {
   padding: 1.5rem;

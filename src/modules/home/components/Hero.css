@@ -1,0 +1,128 @@
+/* Hero de la home — cabecera a dos columnas con CTA y franja de confianza.
+   Solo tokens de tokens.css; el amarillo es fondo/acentos, nunca texto. */
+
+.hero {
+  padding-block: clamp(3rem, 8vw, 6rem);
+  background-color: var(--color-surface-2);
+  /* Dos halos de marca (color-mix sobre --color-primary): profundidad sin
+     sumar imágenes pesadas al LCP de la portada. */
+  background-image:
+    radial-gradient(60% 70% at 12% 8%,
+      color-mix(in srgb, var(--color-primary) 26%, transparent), transparent 70%),
+    radial-gradient(55% 55% at 88% 95%,
+      color-mix(in srgb, var(--color-primary-active) 16%, transparent), transparent 72%);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Mobile-first: una sola columna. El split llega con el primer breakpoint. */
+.hero__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+
+.hero__contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hero__titulo {
+  max-width: 16ch;
+  margin: 0 0 1.25rem;
+  font-size: clamp(2.25rem, 6vw, 3.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+/* Marca amarilla tipo marcador: fondo amarillo + texto negro. No se pinta
+   `color: var(--color-primary)` porque #FACC15 sobre #F5F5F5 da 1.5:1. */
+.hero__destaque {
+  padding: 0 0.2em;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border-radius: 0.25rem;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.hero__subtitulo {
+  max-width: 42ch;
+  margin: 0 0 2rem;
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+  color: var(--color-text-muted);
+}
+
+.hero__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+/* --------------------------- Franja de confianza ------------------------ */
+.hero__confianza {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  margin: 2rem 0 0;
+  padding: 1.25rem 0 0;
+  border-top: 1px solid var(--color-border);
+  list-style: none;
+}
+
+.hero__confianza-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.hero__confianza-item .icono { color: var(--color-text); }
+
+/* ---------------------------- Bloque visual ---------------------------- */
+/* Decorativo (aria-hidden): panel de gradiente + aros concéntricos. Sustituye
+   a la foto hero.png, cuya losa morada choca con la paleta amarillo/negra. */
+.hero__visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background-color: var(--color-surface);
+  background-image:
+    radial-gradient(75% 75% at 30% 25%,
+      color-mix(in srgb, var(--color-primary) 42%, transparent), transparent 70%),
+    radial-gradient(60% 60% at 85% 90%,
+      color-mix(in srgb, var(--color-primary-soft) 90%, transparent), transparent 75%);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.hero__aro {
+  position: absolute;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-full);
+}
+
+.hero__aro--grande { width: 72%; aspect-ratio: 1; }
+
+.hero__aro--chico { width: 48%; aspect-ratio: 1; }
+
+.hero__dibujo {
+  width: clamp(4.5rem, 16vw, 7.5rem);
+  height: auto;
+  stroke-width: 1.25;
+}
+
+@media (min-width: 1024px) {
+  .hero__grid {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: 2.5rem;
+    align-items: center;
+  }
+}

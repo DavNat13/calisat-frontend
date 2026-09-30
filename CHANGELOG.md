@@ -3,6 +3,23 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [2.4.0] - 2026-09-30
+
+### Added
+- `Drawer` del kit de UI (`src/components/ui/Drawer.jsx`) y panel lateral del carrito (`CarritoDrawer` + `CarritoContext`/`useCarrito`, persistido en `localStorage`) con contador de unidades en la navbar y checkout de solo lectura
+- Ficha pública de producto por SKU en `/producto/:sku` (`useProductoDetalle`, galería, bloque de compra, recomendados y estados de carga / no encontrado)
+- Modal de gestión de productos por pasos (básico → comercial → resumen) con validación por campo (`ProductoModal`, `productoValidacion.js`), que reemplaza a `ProductoForm`
+- Rutas modulares `PublicRoutes` / `AdminRoutes` con `lazyPages`, páginas informativas (`/nosotros`, `/contacto`, `/terminos`, `/privacidad`), `/403` y `Footer`
+- Home expandida: `Hero` (doble CTA + franja de confianza), `Destacados` (top 4 del catálogo público, que desaparece si el GET falla para que la portada nunca muestre errores de API) y `Beneficios`, con `homeDatos.js` y `useDestacados.js`
+- `formatoCLP` (`es-CL` / CLP) como única fórmula de precios de la UI
+- `/perfil` con carga automática al montar y modo fallback (`PerfilTarjeta`) ante 403/404, avisando con `role="alert"`
+
+### Changed
+- Navbar rediseñada (menú móvil, enlaces y sesión dual visibles) y `ProductoCard` en modo vitrina: nombre enlazado a la ficha y acción única "Añadir al carrito"
+- `/carrito` deja de ser una página: la ruta legacy redirige con `CarritoRedirect` y abre el panel lateral
+- Home, footer, páginas informativas y perfil reconstruidos sobre los tokens de `src/styles/tokens.css` con BEM; los archivos del refactor se mantienen por debajo de 150 líneas
+- Versión package.json actualizada a 2.4.0
+
 ## [2.3.0] - 2026-09-28
 
 ### Added

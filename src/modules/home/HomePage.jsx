@@ -1,61 +1,34 @@
-import { Link } from "react-router-dom";
-import { Circle, Columns2, Waves, Hand } from "lucide-react";
 import Card from "../../components/ui/Card";
+import { CATEGORIAS } from "./constantes/homeDatos";
+import Hero from "./components/Hero";
+import Destacados from "./components/Destacados";
+import Beneficios from "./components/Beneficios";
 import "./HomePage.css";
 
-const CATEGORIAS = [
-  {
-    nombre: "Anillas",
-    descripcion: "Para muscle-up y dominadas",
-    IconoCategoria: Circle,
-  },
-  {
-    nombre: "Paralelas",
-    descripcion: "Para handstand y planche",
-    IconoCategoria: Columns2,
-  },
-  {
-    nombre: "Bandas",
-    descripcion: "Resistencia y asistencia",
-    IconoCategoria: Waves,
-  },
-  {
-    nombre: "Magnesia",
-    descripcion: "Agarre perfecto",
-    IconoCategoria: Hand,
-  },
-];
-
+/**
+ * Portada pública. Composición: Hero → Destacados → Beneficios → Categorías.
+ *
+ * Destacados se autocancela: si el GET del catálogo falla o vuelve vacío,
+ * esa sección no se pinta y la home sigue en pie sin mensajes de error.
+ * Las categorías (las de siempre) se conservan al pie de la página.
+ */
 export default function HomePage() {
   return (
     <div className="inicio">
-      <section className="hero">
-        <div className="contenedor hero__contenido">
-          <h1 className="hero__titulo">
-            Equipamiento de{" "}
-            <span className="hero__destaque">Calistenia</span>
-          </h1>
-          <p className="hero__subtitulo">
-            Anillas, paralelas para handstand, bandas y magnesia para dominar
-            el muscle-up.
-          </p>
-          <Link to="/productos" className="boton boton--primario boton--lg">
-            Ver Catálogo
-          </Link>
-        </div>
-      </section>
+      <Hero />
+      <Destacados />
+      <Beneficios />
 
-      <section className="categorias">
+      <section className="categorias" aria-labelledby="categorias-titulo">
         <div className="contenedor">
-          <h2 className="categorias__titulo">Categorías</h2>
+          <h2 className="categorias__titulo" id="categorias-titulo">
+            Categorías
+          </h2>
           <div className="categorias__grid">
-            {CATEGORIAS.map(({ nombre, descripcion, IconoCategoria }) => (
+            {CATEGORIAS.map(({ nombre, descripcion, Icono }) => (
               <Card key={nombre} columna className="categoria">
                 <span className="categoria__icono">
-                  <IconoCategoria
-                    className="icono icono--lg"
-                    aria-hidden="true"
-                  />
+                  <Icono className="icono icono--lg" aria-hidden="true" />
                 </span>
                 <h3 className="categoria__nombre">{nombre}</h3>
                 <p className="categoria__descripcion">{descripcion}</p>

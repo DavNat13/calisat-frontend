@@ -1,0 +1,63 @@
+/* Destacados — franja de la home con la MISMA rejilla que /productos
+   (1 col → 2 a 640px → 4 a 1024px) y esqueletos de carga con `pulse`
+   (keyframes globales de src/styles/animaciones.css). */
+
+.destacados {
+  padding-block: 3.5rem;
+  background-color: var(--color-surface);
+}
+
+.destacados__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.destacados__titulo {
+  margin: 0;
+  color: var(--color-text);
+  font-size: var(--text-2xl);
+  line-height: var(--text-2xl--line-height);
+}
+
+/* Enlace con foco visible heredado del :focus-visible global */
+.destacados__ver-todo {
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-underline-offset: 0.2em;
+}
+
+.destacados__ver-todo:hover {
+  text-decoration: underline;
+}
+
+.destacados__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+/* Esqueleto: caja con la proporción de una tarjeta + parpadeo. */
+.destacados__esqueleto {
+  min-height: 18rem;
+  background-color: var(--color-surface-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@media (min-width: 640px) {
+  .destacados__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .destacados__grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

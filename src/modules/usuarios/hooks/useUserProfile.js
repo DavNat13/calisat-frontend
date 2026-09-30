@@ -18,6 +18,10 @@ export default function useUserProfile() {
   const [perfil, setPerfil] = useState(null);
   const [loading, setLoading] = useState(false);
   const [mensaje, setMensaje] = useState("");
+  // HTTP de la ÚLTIMA carga (null si hubo red caída). La página lo traduce a
+  // modo fallback: 403 (rol sin permiso) y 404 (sin ficha) no deben dejar
+  // /perfil en blanco, sino pasar a los datos de la sesión.
+  const [codigoFallo, setCodigoFallo] = useState(null);
 
   const getToken = async () => {
     // Misma regla que en catalogoService: token SIEMPRE de la cuenta activa
@@ -33,6 +37,7 @@ export default function useUserProfile() {
   const obtenerPerfil = async () => {
     setLoading(true);
     setMensaje("");
+    setCodigoFallo(null);
     try {
       const token = await getToken();
       const res = await fetch(`${API_BASE_URL}${PERFIL_ENDPOINT}`, {
@@ -44,9 +49,12 @@ export default function useUserProfile() {
         setMensaje("Perfil obtenido correctamente");
       } else if (res.status === 404) {
         setPerfil(null);
+        setCodigoFallo(res.status);
         setMensaje("Perfil no encontrado");
       } else {
         registrarFallo("usuarios/obtenerPerfil", `HTTP ${res.status}`);
+        setPerfil(null);
+        setCodigoFallo(res.status);
         setMensaje(MENSAJE_OPERACION_FALLIDA);
       }
     } catch (err) {
@@ -120,6 +128,7 @@ export default function useUserProfile() {
     perfil,
     loading,
     mensaje,
+    codigoFallo,
     obtenerPerfil,
     actualizarNombre,
     eliminarPerfil,
