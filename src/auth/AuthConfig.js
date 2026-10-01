@@ -30,7 +30,7 @@ const TENANT_ID = "e5372bf0-c5e3-4286-887c-79069f209c1f";
 // API Gateway, con barra final).
 const REDIRECT_URI = "https://ezeh839whh.execute-api.us-east-1.amazonaws.com/";
 const POST_LOGOUT_REDIRECT_URI =
-  "https://ezeh839whh.execute-api.us-east-1.amazonaws.com/";
+  "https://ezeh839whh.execute-api.us-east-1.amazonaws.com/desarrrollo";
 // Scope expuesto por el propio API Gateway (debe coincidir con el
 // Application ID URI configurado en Entra ID).
 const API_SCOPE = `api://${CLIENT_ID}/read-write`;

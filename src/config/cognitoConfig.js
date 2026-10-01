@@ -36,7 +36,7 @@ export const COGNITO_AUTHORITY =
 export const COGNITO_CLIENT_ID = "79rbb9f5e2l5nmak9d17ueb2se";
 /** URL de la SPA: entrada y salida de sesión (raíz del API Gateway). */
 export const COGNITO_REDIRECT_URI =
-  "https://ezeh839whh.execute-api.us-east-1.amazonaws.com/";
+  "https://ezeh839whh.execute-api.us-east-1.amazonaws.com/desarrrollo/";
 export const COGNITO_LOGOUT_URI = COGNITO_REDIRECT_URI;
 /** Dominio del Hosted UI (login/registro/logout de Cognito). */
 export const COGNITO_DOMAIN =
