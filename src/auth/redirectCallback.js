@@ -98,29 +98,52 @@ export function marcarProveedorPendiente(proveedor) {
 }
 
 /**
- * Canjea el `?code=` de Microsoft Entra ID y limpia la URL.
- * MSAL espera a `initialize()`, por eso se invoca desde `main.jsx`.
+ * Procesa la respuesta de redirect de Microsoft Entra ID y, si la hubo, deja
+ * su cuenta como ACTIVA. MSAL espera a `initialize()`, por eso se invoca desde
+ * `main.jsx` y SIEMPRE en cada carga (no solo si la URL "parece" de Azure):
+ * su respuesta viene en el HASH (`response_mode=fragment`) y su `state` vive
+ * en la caché temporal de interacción, así que decidir por el query string
+ * hacía que un redirect legítimo no se canjeara nunca → la cuenta no entraba
+ * en la caché → `getActiveAccount()` quedaba null → la UI veía "sin sesión"
+ * aunque Entra ya había autenticado.
+ *
+ * @param instance instancia MSAL ya inicializada.
+ * @param silencioso `true` cuando ESTE callback NO es de Azure (Cognito o
+ *   huérfanos). MSAL solo canjea el código cuyo `state` registró él mismo al
+ *   lanzar el redirect: uno ajeno se rechaza y eso es esperado —no es un
+ *   error que mostrar en /login ni un motivo para borrar la URL, que
+ *   `oidc-client-ts` todavía necesita para canjear su `?code=` de Cognito.
+ *
  * Solo se imprimen username/excepción: nunca tokens.
  */
-export async function procesarCallbackAzure(instance) {
+export async function procesarCallbackAzure(instance, { silencioso = false } = {}) {
   try {
     const response = await instance.handleRedirectPromise();
-    if (response) {
+    if (response?.account) {
+      // setActiveAccount ANTES del primer render: sin él getActiveAccount()
+      // queda null y useAuthSession (AuthRoleProvider/ProtectedRoute/
+      // UserNavbar) leería la app como no autenticada.
+      instance.setActiveAccount(response.account);
       console.info(
         "Autenticacion completada:",
-        response.account?.username ?? "(sin username)"
+        response.account.username ?? "(sin username)"
       );
     }
+    // response === null → el respaldo lo hace `fijarCuentaActiva` (main.jsx).
   } catch (error) {
     // Protocolo rechazado (scope inexistente, consentimiento denegado,
-    // estado caducado...): se registra el detalle en consola, se deja un
-    // mensaje legible para /login y se limpia la URL para que la app pueda
-    // arrancar igualmente.
+    // estado caducado...): el detalle va a consola y, SOLO si este callback
+    // era de Azure, se deja un mensaje legible para /login.
     console.error("Error al procesar la respuesta de Azure:", error);
-    marcarErrorCallback(
-      "Microsoft devolvió un error al iniciar sesión. Inténtalo de nuevo."
-    );
-    limpiarProveedorPendiente();
+    if (!silencioso) {
+      marcarErrorCallback(
+        "Microsoft devolvió un error al iniciar sesión. Inténtalo de nuevo."
+      );
+      limpiarProveedorPendiente();
+    }
   }
+  // La URL solo se limpia si el callback era de Azure: en modo silencioso hay
+  // que preservar el `?code=` de Cognito (lo limpia `onSigninCallback`).
+  if (silencioso) return;
   limpiarUrl();
 }
