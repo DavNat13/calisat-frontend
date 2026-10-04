@@ -37,6 +37,42 @@ function normalizarRoles(claim) {
     .map((rol) => rol.trim().toUpperCase());
 }
 
+/** true si `valor` tiene forma de correo (`alguien@dominio`, sin espacios). */
+function esCorreo(valor) {
+  return typeof valor === "string" && /^[^\s@]+@[^\s@]+$/.test(valor);
+}
+
+/**
+ * Parte local de un correo: `davnat137` de `davnat137@gmail.com`.
+ *
+ * Es el fallback OBLIGATORIO de `user.name` cuando la fuente no aporta
+ * nombre: devuelve "" (nunca undefined) para que el caller encadene su
+ * último recurso y el DOM no muestre `undefined` ni "null".
+ */
+function parteLocalCorreo(correo) {
+  return esCorreo(correo) ? correo.split("@")[0] : "";
+}
+
+/**
+ * Sesión dual (Microsoft Entra ID + AWS Cognito) en un único hook.
+ *
+ * CONTRATO de salida (claves estables; añadir más no rompe a nadie):
+ *   {
+ *     isAuthenticated, proveedor, identificador, roles, cargando, logout,
+ *     user: { name, email, provider, roles } | null
+ *   }
+ *
+ * `user` es la forma NORMALIZADA del perfil, igual para los dos proveedores:
+ * - Con sesión → objeto con `name` y `email` siempre string (vacío si la
+ *   fuente no lo aporta), `provider` igual a `proveedor` y `roles` igual al
+ *   `roles` de nivel superior (mismo array).
+ * - Sin sesión → `null`, no un objeto vacío: los consumidores lo leen dentro
+ *   de `isAuthenticated` (con `?.` como doble salvaguarda).
+ * `user.name` nunca queda vacío si hay correo: cae a la parte local
+ * (`davnat137` de `davnat137@gmail.com`).
+ * `identificador` se DERIVA de `user` (misma cadena de fallbacks) para no
+ * duplicar lógica; sigue siendo un string de display o `null` sin sesión.
+ */
 export default function useAuthSession() {
   const { instance, accounts, inProgress } = useMsal();
   const cognito = useAuth();
@@ -58,24 +94,59 @@ export default function useAuthSession() {
       ? AUTH_PROVIDER_COGNITO
       : null;
 
-  const identificador = sesionAzure
-    ? cuenta?.name || cuenta?.username || null
-    : sesionCognito
-      ? usuario?.profile?.email ||
-        usuario?.profile?.phone_number ||
-        "usuario"
-      : null;
-
   let roles = [];
+  // Candidatos a nombre y correo de la sesión ACTIVA; siempre string para
+  // que `user` no pueda contener undefined.
+  let nombreSesion = "";
+  let emailSesion = "";
+
   if (sesionAzure) {
-    roles = normalizarRoles(cuenta?.idTokenClaims?.roles);
+    const claims = cuenta?.idTokenClaims;
+    // `username` de MSAL es una UPN (email-like); si no lo es, se miran los
+    // claims del id token antes de quedarse sin correo.
+    emailSesion =
+      [cuenta?.username, claims?.email, claims?.preferred_username].find(
+        esCorreo
+      ) ?? "";
+    nombreSesion =
+      cuenta?.name ||
+      (esCorreo(cuenta?.username) ? "" : cuenta?.username) ||
+      "";
+    roles = normalizarRoles(claims?.roles);
   } else if (sesionCognito) {
+    const perfil = usuario?.profile;
+    emailSesion = perfil?.email || "";
+    // Orden: nombre del profile → parte local del correo → correo → teléfono.
+    nombreSesion =
+      perfil?.name ||
+      parteLocalCorreo(emailSesion) ||
+      perfil?.email ||
+      perfil?.phone_number ||
+      "";
     // Cognito no pide roles de aplicación: vienen en `cognito:groups`.
     // Fallback OBLIGATORIO a CLIENTE (mismo criterio que el backend) para
     // que un usuario público vea vitrina/carrito/perfil sin grupos.
-    const grupos = normalizarRoles(usuario?.profile?.["cognito:groups"]);
+    const grupos = normalizarRoles(perfil?.["cognito:groups"]);
     roles = grupos.length > 0 ? grupos : [ROLES.CLIENTE];
   }
+
+  /**
+   * Usuario normalizado (ver JSDoc del hook): forma única para Azure y
+   * Cognito, con `name`/`email` siempre string y `null` sin sesión.
+   */
+  const user = proveedor
+    ? {
+        name: nombreSesion.trim() || parteLocalCorreo(emailSesion),
+        email: emailSesion,
+        provider: proveedor,
+        roles,
+      }
+    : null;
+
+  // Derivado de `user`: misma cadena de fallbacks, sin lógica duplicada.
+  // Se mantiene como string de display (o `null` sin sesión) porque lo
+  // consumen UserNavbar, PerfilTarjeta y el banner de /login.
+  const identificador = user ? user.name || user.email || "usuario" : null;
 
   const isAuthenticated = Boolean(proveedor);
 
@@ -112,6 +183,7 @@ export default function useAuthSession() {
     isAuthenticated,
     proveedor,
     identificador,
+    user,
     roles,
     cargando,
     logout,

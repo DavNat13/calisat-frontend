@@ -19,7 +19,7 @@ import "./UserNavbar.css";
  * cuenta institucional, `removeUser()` + Hosted UI para Cognito.
  */
 export default function UserNavbar() {
-  const { isAuthenticated, identificador, logout } = useAuthSession();
+  const { isAuthenticated, user, logout } = useAuthSession();
   useUserSync();
   // Desestructurado: la regla react-hooks/refs exige que el ref llegue al JSX
   // como identificador directo (ref={contenedorRef}), no como propiedad de un
@@ -38,6 +38,11 @@ export default function UserNavbar() {
   };
 
   if (isAuthenticated) {
+    // `user` viene normalizado de useAuthSession (name/email siempre string);
+    // la cadena de respaldo cierra el botón con "Mi cuenta" para que nunca
+    // se pinte undefined ni un label vacío.
+    const nombreVisible = user?.name || user?.email || "Mi cuenta";
+
     return (
       <div
         className="usuario"
@@ -54,11 +59,7 @@ export default function UserNavbar() {
           aria-expanded={abierto}
         >
           <User className="icono" aria-hidden="true" />
-          {/* identificador = name ?? username (Azure) o email/teléfono
-              (Cognito); el respaldo evita un botón con solo el icono. */}
-          <span className="usuario__nombre">
-            {identificador || "Mi cuenta"}
-          </span>
+          <span className="usuario__nombre">{nombreVisible}</span>
         </button>
         {abierto && (
           <UserMenu onCerrar={cerrarYContenido} onCerrarSesion={handleLogout} />
