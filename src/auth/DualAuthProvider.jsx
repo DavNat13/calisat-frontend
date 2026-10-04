@@ -14,10 +14,12 @@
  * `redirectCallback.js`: solo el proveedor que pidió el redirect canjea su
  * `?code=`, y la URL se limpia al terminar.
  */
-import { AuthProvider } from "react-oidc-context";
+import { useEffect } from "react";
+import { AuthProvider, useAuth } from "react-oidc-context";
 import { MsalProvider } from "@azure/msal-react";
 import AuthRoleProvider from "./AuthRoleProvider";
 import useRetorno from "./retorno";
+import { hayCallbackDeAuth, limpiarUrl } from "./redirectCallback";
 import { cognitoOidcConfig } from "../config/cognitoConfig";
 
 /**
@@ -26,6 +28,25 @@ import { cognitoOidcConfig } from "../config/cognitoConfig";
  */
 function RetornoAlVolver() {
   useRetorno();
+  return null;
+}
+
+/**
+ * Respaldo de la limpieza de la URL tras un callback de Cognito:
+ * `onSigninCallback` solo se ejecuta si el canje del `?code=` resuelve, de
+ * modo que un fallo (código caducado o ya consumido, red caída) dejaría el
+ * parámetro en la barra de direcciones y un F5 volvería a leerlo.
+ * `isLoading` garantiza que la URL se toca DESPUÉS de oidc-client-ts y NO
+ * antes, o el canje se rompería.
+ */
+function LimpiezaCallbackPendiente() {
+  const { isLoading } = useAuth();
+
+  useEffect(() => {
+    if (isLoading || !hayCallbackDeAuth()) return;
+    limpiarUrl();
+  }, [isLoading]);
+
   return null;
 }
 
@@ -44,6 +65,7 @@ export default function DualAuthProvider({
       <MsalProvider instance={msalInstance}>
         <AuthRoleProvider>
           <RetornoAlVolver />
+          <LimpiezaCallbackPendiente />
           {children}
         </AuthRoleProvider>
       </MsalProvider>
