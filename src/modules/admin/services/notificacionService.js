@@ -8,6 +8,7 @@ import useApiAdmin, { segmento } from "./apiAdmin";
  *   GET  /api/v1/notificaciones?estado=&page=&size= → Page<NotificacionResponse>
  *   GET  /api/v1/notificaciones/{id}                → detalle + intentosEnvio[]
  *   POST /api/v1/notificaciones/{id}/reintentar     → 200 · 409 (estado no permite)
+ *   POST /api/v1/notificaciones/enviar              → 201 NotificacionResponse
  *
  * El parámetro `estado` se resuelve con `valueOf` en el backend: hay que
  * enviar los valores EXACTOS del enum (FALLIDO, no FALLIDA).
@@ -26,6 +27,11 @@ const MENSAJES_REINTENTO = {
   400: "No se pudo solicitar el reintento de la notificación.",
   404: "No se encontró la notificación indicada.",
   409: "El estado actual no permite reintentar: solo FALLIDO, REINTENTO o CANCELADO.",
+};
+
+const MENSAJES_ENVIO = {
+  400: "No se pudo enviar el correo: revisa el asunto, el cuerpo y el email.",
+  401: "Tu sesión expiró: vuelve a iniciar sesión para enviar el correo.",
 };
 
 /** Tamaño de página del listado del panel. */
@@ -51,5 +57,21 @@ export default function useNotificacionService() {
       mensajes: MENSAJES_REINTENTO,
     });
 
-  return { listar, detalle, reintentar };
+  /**
+   * Envío manual desde el panel admin → 201 con la notificación creada.
+   * `destinatarioEmail` vacío = el backend resuelve el sub autenticado.
+   */
+  const enviarManual = ({ canal, asunto, cuerpoTexto, destinatarioEmail }) =>
+    enviar(`${BASE}/enviar`, {
+      metodo: "POST",
+      cuerpo: {
+        canal: canal || "EMAIL",
+        asunto,
+        cuerpoTexto,
+        destinatarioEmail: destinatarioEmail || null,
+      },
+      mensajes: MENSAJES_ENVIO,
+    });
+
+  return { listar, detalle, reintentar, enviarManual };
 }

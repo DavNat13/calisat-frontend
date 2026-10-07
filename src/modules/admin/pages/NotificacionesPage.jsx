@@ -1,5 +1,7 @@
 import { Check, CircleAlert, Clock, Eye, Mail, RefreshCw } from "lucide-react";
 import useNotificaciones from "../hooks/useNotificaciones";
+import useEnvioManual from "../hooks/useEnvioManual";
+import SendEmailModal from "../components/SendEmailModal";
 import { ESTADOS_NOTIFICACION, esReintentable } from "../services/estadoNotificacion";
 import Button from "../../../components/ui/Button";
 import Modal from "../../../components/ui/Modal";
@@ -49,6 +51,7 @@ const destinatarioDe = (notificacion) =>
  */
 export default function NotificacionesPage() {
   const notificaciones = useNotificaciones();
+  const envioManual = useEnvioManual();
   const {
     notificaciones: listado,
     pagina,
@@ -117,6 +120,10 @@ export default function NotificacionesPage() {
           </div>
           <Button variant="secundario" onClick={recargar} disabled={cargando}>
             Recargar
+          </Button>
+          <Button variant="primario" onClick={envioManual.abrir}>
+            <Mail className="icono icono--sm" aria-hidden="true" />
+            Enviar correo
           </Button>
         </div>
 
@@ -457,6 +464,9 @@ export default function NotificacionesPage() {
             </p>
           </form>
         </Modal>
+
+        {/* ------------------- Modal: envío manual ---------------------- */}
+        <SendEmailModal envio={envioManual} />
       </div>
     </div>
   );
