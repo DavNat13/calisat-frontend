@@ -61,10 +61,7 @@ export const cognitoOidcConfig = {
   redirect_uri: COGNITO_REDIRECT_URI,
   response_type: "code",
   scope: COGNITO_SCOPE,
-  post_logout_redirect_uri: COGNITO_LOGOUT_URI,
-  loadUserInfo: false,
-  monitorSession: false,
-  automaticSilentRenew: false,
+  post_logout_redirect_uri: COGNITO_LOGOUT_URI
 };
 
 /**
