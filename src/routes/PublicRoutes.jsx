@@ -44,10 +44,13 @@ export default function PublicRoutes() {
         <Route path="/terminos" element={<TerminosPage />} />
         <Route path="/privacidad" element={<PrivacidadPage />} />
         <Route path="/403" element={<ForbiddenPage />} />
+        {/* Sin roles: cualquier usuario autenticado paga su pedido (ms-orden
+            recibe el sub del JWT). Exigir CLIENTE aquí devolvía un 403 a
+            cuentas con otro rol aunque el token fuera válido. */}
         <Route
           path="/checkout"
           element={
-            <ProtectedRoute roles={[ROLES.CLIENTE]}>
+            <ProtectedRoute>
               <CheckoutPage />
             </ProtectedRoute>
           }
