@@ -13,6 +13,7 @@ const SIN_PROVEEDOR = {
   actualizarCantidad() {},
   quitar() {},
   vaciar() {},
+  sustituir() {},
   reintentar() {},
   cantidadTotal: 0,
   subtotal: 0,

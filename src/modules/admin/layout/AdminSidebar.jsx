@@ -3,11 +3,15 @@ import { useMsal } from "@azure/msal-react";
 import {
   Bell,
   Boxes,
+  FileText,
   LayoutDashboard,
   LogOut,
   Package,
+  ScrollText,
+  Settings2,
   Store,
   Truck,
+  Users,
 } from "lucide-react";
 import useAuthRole from "../../../auth/useAuthRole";
 import { ROLES } from "../../../auth/roles";
@@ -27,9 +31,10 @@ const claseItem = ({ isActive }) =>
  * - panelRef: ref del <aside> que AdminLayout usa para el foco y para el
  *   cierre con clic fuera.
  *
- * La visibilidad de cada enlace depende del rol (useAuthRole): Dashboard y
- * Envíos son de gestión (ADMINISTRADOR | LOGISTICA); Productos, Inventario
- * y Notificaciones son exclusivas de ADMINISTRADOR, igual que en las rutas.
+ * La visibilidad de cada enlace depende del rol (useAuthRole): Dashboard,
+ * Envíos y Preferencias son de gestión (ADMINISTRADOR | LOGISTICA);
+ * Productos, Inventario, Órdenes, Notificaciones, Destinatarios y
+ * Plantillas son exclusivas de ADMINISTRADOR, igual que en las rutas.
  */
 export default function AdminSidebar({ isOpen, onClose, panelRef }) {
   const { instance, accounts } = useMsal();
@@ -103,6 +108,12 @@ export default function AdminSidebar({ isOpen, onClose, panelRef }) {
                   Inventario
                 </NavLink>
               </li>
+              <li>
+                <NavLink to="/admin/ordenes" className={claseItem} onClick={navegarDesdePanel}>
+                  <ScrollText className="icono" aria-hidden="true" />
+                  Órdenes
+                </NavLink>
+              </li>
             </>
           )}
 
@@ -124,6 +135,44 @@ export default function AdminSidebar({ isOpen, onClose, panelRef }) {
               >
                 <Bell className="icono" aria-hidden="true" />
                 Notificaciones
+              </NavLink>
+            </li>
+          )}
+
+          {esAdministrador && (
+            <>
+              <li>
+                <NavLink
+                  to="/admin/destinatarios"
+                  className={claseItem}
+                  onClick={navegarDesdePanel}
+                >
+                  <Users className="icono" aria-hidden="true" />
+                  Destinatarios
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/admin/plantillas"
+                  className={claseItem}
+                  onClick={navegarDesdePanel}
+                >
+                  <FileText className="icono" aria-hidden="true" />
+                  Plantillas
+                </NavLink>
+              </li>
+            </>
+          )}
+
+          {verGestion && (
+            <li>
+              <NavLink
+                to="/admin/preferencias"
+                className={claseItem}
+                onClick={navegarDesdePanel}
+              >
+                <Settings2 className="icono" aria-hidden="true" />
+                Preferencias
               </NavLink>
             </li>
           )}

@@ -339,7 +339,7 @@ export default function EnviosPage() {
               required
               disabled={enviando}
               maxLength={200}
-              placeholder="Calle Mayor 1"
+              placeholder="O'Higgins 680"
             />
             <Input
               label="Ciudad"
@@ -351,7 +351,7 @@ export default function EnviosPage() {
               required
               disabled={enviando}
               maxLength={120}
-              placeholder="Madrid"
+              placeholder="Puerto Montt"
             />
             <Input
               label="País"
@@ -363,7 +363,7 @@ export default function EnviosPage() {
               required
               disabled={enviando}
               maxLength={64}
-              placeholder="España"
+              placeholder="Chile"
             />
             <Input
               label="Código postal"
@@ -375,7 +375,7 @@ export default function EnviosPage() {
               required
               disabled={enviando}
               maxLength={16}
-              placeholder="28001"
+              placeholder="5500000"
             />
           </form>
         </Modal>
@@ -460,7 +460,7 @@ export default function EnviosPage() {
               onChange={cambiarFormEstado}
               disabled={enviando}
               maxLength={200}
-              placeholder="Centro logístico Madrid"
+              placeholder="Centro logístico Puerto Montt"
             />
           </form>
         </Modal>

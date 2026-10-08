@@ -1,0 +1,60 @@
+/* ------------------------ Destinatarios (admin) ------------------------ */
+.destinatarios__barra { margin-bottom: 1rem; max-width: 420px; }
+
+.destinatarios__mensaje {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md, 10px);
+  font-size: var(--text-sm);
+}
+
+.destinatarios__mensaje--exito {
+  background-color: color-mix(in srgb, var(--color-success, #16a34a) 12%, white);
+  color: var(--color-success-text, #14532d);
+}
+
+.destinatarios__mensaje--error {
+  background-color: color-mix(in srgb, var(--color-danger, #dc2626) 12%, white);
+  color: var(--color-danger-text, #7f1d1d);
+}
+
+.destinatarios__estado { margin: 0; color: var(--color-text-muted); }
+
+.destinatarios__tabla-envoltorio { overflow-x: auto; }
+
+.destinatarios__tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.destinatarios__tabla th,
+.destinatarios__tabla td {
+  padding: 0.7rem 0.6rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.destinatarios__tabla thead th {
+  font-size: var(--text-xs, 0.78rem);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.destinatarios__email { color: var(--color-text-muted); word-break: break-all; }
+
+.destinatarios__acciones { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+/* ------------------------------ Modal --------------------------------- */
+.destinatarios__formulario { display: grid; gap: 1rem; }
+
+.destinatarios__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--text-sm);
+}

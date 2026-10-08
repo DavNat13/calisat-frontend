@@ -9,7 +9,7 @@ const SECCIONES = [
     id: "responsable",
     titulo: "1. Responsable del tratamiento",
     parrafos: [
-      "Calisat SpA, con domicilio en Santiago de Chile, es responsable de los datos personales que recabas en este sitio. Puedes contactarnos en hola@calisat.cl para cualquier consulta sobre esta política.",
+      "Calisat SpA, con domicilio en Puerto Montt, Chile, es responsable de los datos personales que recabas en este sitio. Puedes contactarnos en hola@calisat.cl para cualquier consulta sobre esta política.",
     ],
   },
   {

@@ -24,9 +24,14 @@ export const DATOS_CONTACTO = [
     id: "direccion",
     IconoDato: MapPin,
     titulo: "Dirección",
-    valor: "Av. Vicuña Mackenna 4456, Santiago",
+    valor: "O'Higgins 680, Puerto Montt, Los Lagos",
   },
 ];
+
+/** Dirección y horario reutilizados por la home (y el formulario). */
+export const DIRECCION_CONTACTO =
+  DATOS_CONTACTO.find(({ id }) => id === "direccion")?.valor ?? "";
+export const HORARIO = DATOS_CONTACTO.find(({ id }) => id === "horario")?.valor ?? "";
 
 export const ASUNTOS = [
   "Consulta de productos",

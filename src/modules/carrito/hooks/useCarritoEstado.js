@@ -106,6 +106,15 @@ export default function useCarritoEstado() {
 
   const vaciar = useCallback(() => setItems([]), []);
 
+  /**
+   * Reemplaza la lista entera (la usa la sincronía remota al hidratar el
+   * carrito desde ms-carrito). No pasa por `agregar` para no reenviar cada
+   * línea a la API: la sincronía guarda ella misma el último estado remoto.
+   */
+  const sustituir = useCallback((nuevos) => {
+    setItems(Array.isArray(nuevos) ? nuevos : []);
+  }, []);
+
   // Reintenta el guardado fallido (si esta vez entra, limpia el error).
   const reintentar = useCallback(() => setError(escribirCarrito(items)), [items]);
 
@@ -124,8 +133,8 @@ export default function useCarritoEstado() {
   // Acciones agrupadas: todos los useCallback estables ⇒ este memo solo se
   // rompe cuando cambia `items` (reintentar).
   const acciones = useMemo(
-    () => ({ abrir, cerrar, agregar, actualizarCantidad, quitar, vaciar, reintentar }),
-    [abrir, cerrar, agregar, actualizarCantidad, quitar, vaciar, reintentar]
+    () => ({ abrir, cerrar, agregar, actualizarCantidad, quitar, vaciar, sustituir, reintentar }),
+    [abrir, cerrar, agregar, actualizarCantidad, quitar, vaciar, sustituir, reintentar]
   );
 
   // Memoizado: navbar, drawer y checkout no se re-renderizan sin cambios.

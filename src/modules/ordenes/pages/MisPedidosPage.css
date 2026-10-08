@@ -1,0 +1,76 @@
+.pedidos__lista {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pedidos__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pedidos__cabecera {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.pedidos__cabecera strong {
+  display: block;
+  word-break: break-all;
+}
+
+.pedidos__fecha {
+  display: block;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.pedidos__productos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+}
+
+.pedidos__productos li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.pedidos__pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid var(--color-border, #e5e7eb);
+  padding-top: 0.75rem;
+}
+
+.pedidos__vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.pedidos__error {
+  color: var(--color-peligro, #b00020);
+  font-weight: 600;
+}
+
+.pedidos__costos {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}

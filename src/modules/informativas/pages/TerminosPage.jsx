@@ -9,7 +9,7 @@ const SECCIONES = [
     id: "objeto",
     titulo: "1. Objeto",
     parrafos: [
-      "Estos términos regulan el uso del sitio calisat.cl y la compra de equipamiento de calistenia ofrecido por Calisat SpA (en adelante, «Calisat»), con domicilio en Santiago de Chile.",
+      "Estos términos regulan el uso del sitio calisat.cl y la compra de equipamiento de calistenia ofrecido por Calisat SpA (en adelante, «Calisat»), con domicilio en Puerto Montt, Chile.",
       "Al crear una cuenta o realizar un pedido declaras haber leído y aceptado estas condiciones. Si no estás de acuerdo, no uses el sitio.",
     ],
   },

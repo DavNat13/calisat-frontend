@@ -3,10 +3,12 @@ import { CATEGORIAS } from "./constantes/homeDatos";
 import Hero from "./components/Hero";
 import Destacados from "./components/Destacados";
 import Beneficios from "./components/Beneficios";
+import Ubicacion from "./components/Ubicacion";
 import "./HomePage.css";
 
 /**
- * Portada pública. Composición: Hero → Destacados → Beneficios → Categorías.
+ * Portada pública. Composición: Hero → Destacados → Beneficios → Categorías →
+ * Ubicación (mapa de Puerto Montt).
  *
  * Destacados se autocancela: si el GET del catálogo falla o vuelve vacío,
  * esa sección no se pinta y la home sigue en pie sin mensajes de error.
@@ -37,6 +39,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <Ubicacion />
     </div>
   );
 }

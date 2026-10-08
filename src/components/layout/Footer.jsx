@@ -69,7 +69,7 @@ export default function Footer() {
 
       <div className="contenedor pie-pagina__legal">
         <p className="pie-pagina__copy">
-          © {new Date().getFullYear()} Calisat · Santiago, Chile
+          © {new Date().getFullYear()} Calisat · Puerto Montt, Chile
         </p>
       </div>
     </footer>

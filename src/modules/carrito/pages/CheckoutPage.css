@@ -80,3 +80,43 @@
   line-height: var(--text-sm--line-height);
   color: var(--color-text-muted);
 }
+
+.checkout__aviso--error {
+  color: var(--color-peligro, #b00020);
+  font-weight: 600;
+}
+
+.checkout__lineas {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 0.5rem;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-text-muted);
+}
+
+.checkout__direccion {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem;
+}
+
+.checkout__subtitulo {
+  margin: 0;
+  font-size: var(--text-md, 1rem);
+}
+
+.checkout__formulario {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.checkout__destino {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}

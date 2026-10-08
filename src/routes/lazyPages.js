@@ -42,6 +42,9 @@ export const CarritoRedirect = lazy(
 export const CheckoutPage = lazy(
   () => import("../modules/carrito/pages/CheckoutPage")
 );
+export const MisPedidosPage = lazy(
+  () => import("../modules/ordenes/pages/MisPedidosPage")
+);
 export const UserProfile = lazy(
   () => import("../modules/usuarios/pages/UserProfile")
 );
@@ -58,4 +61,16 @@ export const EnviosPage = lazy(
 );
 export const NotificacionesPage = lazy(
   () => import("../modules/admin/pages/NotificacionesPage")
+);
+export const OrdenesPage = lazy(
+  () => import("../modules/admin/pages/OrdenesPage")
+);
+export const DestinatariosPage = lazy(
+  () => import("../modules/admin/pages/DestinatariosPage")
+);
+export const PlantillasPage = lazy(
+  () => import("../modules/admin/pages/PlantillasPage")
+);
+export const PreferenciasPage = lazy(
+  () => import("../modules/admin/pages/PreferenciasPage")
 );

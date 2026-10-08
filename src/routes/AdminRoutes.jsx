@@ -8,13 +8,17 @@ import {
   InventarioPage,
   EnviosPage,
   NotificacionesPage,
+  OrdenesPage,
+  DestinatariosPage,
+  PlantillasPage,
+  PreferenciasPage,
 } from "./lazyPages";
 
 /**
  * Rama /admin: panel lateral, SIN navbar pública.
- * Los guards quedan EXACTAMENTE igual que en el App.jsx original
- * (shell ADMIN|LOGISTICA; productos/inventario/notificaciones sólo ADMIN;
- * envíos hereda el guard del shell).
+ * Guards: shell ADMIN|LOGISTICA; productos, inventario, órdenes,
+ * notificaciones, destinatarios y plantillas sólo ADMIN; envíos hereda el
+ * guard del shell; preferencias (del usuario autenticado) ADMIN|LOG.
  *
  * Devuelve un <React.Fragment> de <Route> por la misma restricción de
  * react-router que PublicRoutes (los hijos de <Routes> no pueden ser
@@ -50,6 +54,14 @@ export default function AdminRoutes() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="ordenes"
+          element={
+            <ProtectedRoute roles={[ROLES.ADMINISTRADOR]}>
+              <OrdenesPage />
+            </ProtectedRoute>
+          }
+        />
         {/* Envíos: el guard del shell /admin ya limita a ADMIN|LOG. */}
         <Route path="envios" element={<EnviosPage />} />
         <Route
@@ -57,6 +69,31 @@ export default function AdminRoutes() {
           element={
             <ProtectedRoute roles={[ROLES.ADMINISTRADOR]}>
               <NotificacionesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="destinatarios"
+          element={
+            <ProtectedRoute roles={[ROLES.ADMINISTRADOR]}>
+              <DestinatariosPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="plantillas"
+          element={
+            <ProtectedRoute roles={[ROLES.ADMINISTRADOR]}>
+              <PlantillasPage />
+            </ProtectedRoute>
+          }
+        />
+        {/* Preferencias: son del usuario autenticado, también para logística. */}
+        <Route
+          path="preferencias"
+          element={
+            <ProtectedRoute roles={[ROLES.ADMINISTRADOR, ROLES.LOGISTICA]}>
+              <PreferenciasPage />
             </ProtectedRoute>
           }
         />

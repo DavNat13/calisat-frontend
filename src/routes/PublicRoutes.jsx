@@ -14,6 +14,7 @@ import {
   ForbiddenPage,
   CarritoRedirect,
   CheckoutPage,
+  MisPedidosPage,
   UserProfile,
 } from "./lazyPages";
 
@@ -48,6 +49,15 @@ export default function PublicRoutes() {
           element={
             <ProtectedRoute roles={[ROLES.CLIENTE]}>
               <CheckoutPage />
+            </ProtectedRoute>
+          }
+        />
+        {/* Mis pedidos: solo CLIENTE (ms-orden filtra por el sub del JWT). */}
+        <Route
+          path="/mis-pedidos"
+          element={
+            <ProtectedRoute roles={[ROLES.CLIENTE]}>
+              <MisPedidosPage />
             </ProtectedRoute>
           }
         />

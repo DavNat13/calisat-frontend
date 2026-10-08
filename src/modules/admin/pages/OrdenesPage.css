@@ -1,0 +1,128 @@
+/* --------------------------- Órdenes (admin) --------------------------- */
+.ordenes__barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.ordenes__barra .campo {
+  flex: 1 1 260px;
+}
+
+.ordenes__mensaje {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-md, 10px);
+  font-size: var(--text-sm);
+}
+
+.ordenes__mensaje--exito {
+  background-color: color-mix(in srgb, var(--color-success, #16a34a) 12%, white);
+  color: var(--color-success-text, #14532d);
+}
+
+.ordenes__mensaje--error {
+  background-color: color-mix(in srgb, var(--color-danger, #dc2626) 12%, white);
+  color: var(--color-danger-text, #7f1d1d);
+}
+
+.ordenes__estado {
+  margin: 0;
+  color: var(--color-text-muted);
+}
+
+.ordenes__vacio {
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+}
+
+.ordenes__tabla-envoltorio { overflow-x: auto; }
+
+.ordenes__tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.ordenes__tabla th,
+.ordenes__tabla td {
+  padding: 0.7rem 0.6rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.ordenes__tabla thead th {
+  font-size: var(--text-xs, 0.78rem);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.ordenes__celda--numerica { text-align: right; }
+
+.ordenes__fecha,
+.ordenes__cliente {
+  color: var(--color-text-muted);
+  word-break: break-all;
+}
+
+.ordenes__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.ordenes__paginacion {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.ordenes__paginacion-texto {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+/* ----------------------------- Modales -------------------------------- */
+.ordenes__detalle { display: grid; gap: 0.85rem; }
+
+.ordenes__direccion {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.ordenes__lineas {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ordenes__lineas li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.ordenes__totales {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.ordenes__formulario { display: grid; gap: 0.75rem; }
