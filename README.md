@@ -112,13 +112,13 @@ calisat-frontend/
 | Base URL del API Gateway | `https://ho5p58iyu7.execute-api.us-east-1.amazonaws.com` | `src/config/api.js` |
 | Client ID (MSAL) | `d221f0d2-1a7c-4872-ad6c-367a1f0717ec` | `src/auth/AuthConfig.js` |
 | Tenant (autoridad) | `e5372bf0-c5e3-4286-887c-79069f209c1f` | `src/auth/AuthConfig.js` |
-| *Redirect URI* | `https://ezeh839whh.execute-api.us-east-1.amazonaws.com/desarrrollo/` | `src/auth/AuthConfig.js` (+ registro en Entra ID) |
+| *Redirect URI* | `https://ezeh839whh.execute-api.us-east-1.amazonaws.com/` | `src/auth/AuthConfig.js` (+ registro en Entra ID) |
 | *Post-logout redirect* | igual que el *redirect URI* | `src/auth/AuthConfig.js` |
 | *Scope* de API | `api://d221f0d2-1a7c-4872-ad6c-367a1f0717ec/read-write` | `src/auth/AuthConfig.js` |
 | *Cache* de MSAL | `sessionStorage` | fijo en `AuthConfig.js` |
 | Authority (Cognito) | `https://cognito-idp.us-east-1.amazonaws.com/us-east-1_UK0Q6EmAQ` | `src/config/cognitoConfig.js` |
 | Client ID (Cognito) | `79rbb9f5e2l5nmak9d17ueb2se` | `src/config/cognitoConfig.js` |
-| *Redirect / logout URI* (Cognito) | `https://ezeh839whh.execute-api.us-east-1.amazonaws.com/desarrollo` | `src/config/cognitoConfig.js` (+ registro en Cognito) |
+| *Redirect / logout URI* (Cognito) | `https://ezeh839whh.execute-api.us-east-1.amazonaws.com/` | `src/config/cognitoConfig.js` (+ registro en Cognito) |
 | Dominio Hosted UI | `https://us-east-1uk0q6emaq.auth.us-east-1.amazoncognito.com` | `src/config/cognitoConfig.js` |
 | *Scope* (Cognito) | `email openid phone` | `src/config/cognitoConfig.js` |
 

@@ -16,10 +16,9 @@
  *
  * ⚠️ El `redirect_uri` debe coincidir EXACTAMENTE (incluida la barra final)
  * con uno de los "App redirect URLs" registrados en la app del user pool
- * de Cognito: aquí apunta a la etapa `/desarrrollo/` del API Gateway
- * (con barra final), así que ese valor literal debe ser el que esté
- * registrado. Si no coincide, el Hosted UI rechaza el flujo con
- * `error_description=redirect_uri mismatch`.
+ * de Cognito: aquí apunta a la raíz del API Gateway donde se sirve la SPA,
+ * así que ese valor literal debe ser el que esté registrado. Si no coincide,
+ * el Hosted UI rechaza el flujo con `error_description=redirect_uri mismatch`.
  * Igualmente, `post_logout_redirect_uri` debe estar en "Sign out URL(s)"
  * con esa misma URI.
  *
@@ -37,11 +36,11 @@ export const COGNITO_AUTHORITY =
   "https://cognito-idp.us-east-1.amazonaws.com/us-east-1_UK0Q6EmAQ";
 /** App client id (público, con PKCE) del user pool. */
 export const COGNITO_CLIENT_ID = "79rbb9f5e2l5nmak9d17ueb2se";
-/** URL de la SPA: entrada y salida de sesión (etapa `/desarrrollo/` del
- * API Gateway, con barra final; debe coincidir EXACTAMENTE con los
- * "App redirect URLs" / "Sign out URL(s)" de la app del user pool). */
+/** Raíz del API Gateway donde se sirve la SPA: entrada y salida de sesión
+ * (con barra final; debe coincidir EXACTAMENTE con los "App redirect URLs"
+ * / "Sign out URL(s)" de la app del user pool). */
 export const COGNITO_REDIRECT_URI =
-  "https://ezeh839whh.execute-api.us-east-1.amazonaws.com/desarrrollo/";
+  "https://ezeh839whh.execute-api.us-east-1.amazonaws.com/";
 export const COGNITO_LOGOUT_URI = COGNITO_REDIRECT_URI;
 /** Dominio del Hosted UI (login/registro/logout de Cognito). */
 export const COGNITO_DOMAIN =

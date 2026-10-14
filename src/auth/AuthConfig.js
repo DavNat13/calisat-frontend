@@ -21,18 +21,17 @@
  * nada del objeto de entorno de Vite ni archivos `.env`. Si cambia el
  * tenant, la app o el origen desplegado, hay que actualizar estos valores
  * Y el redirect URI registrado en Microsoft Entra ID (debe coincidir
- * EXACTAMENTE con la etapa `/desarrrollo/` del API Gateway que apunta
- * `REDIRECT_URI`; si no coinciden, Entra rechaza el flujo).
+ * EXACTAMENTE con `REDIRECT_URI`; si no coincide, Entra rechaza el flujo).
  */
 const CLIENT_ID = "d221f0d2-1a7c-4872-ad6c-367a1f0717ec";
 const TENANT_ID = "e5372bf0-c5e3-4286-887c-79069f209c1f";
-// Origen de la SPA (debe coincidir EXACTAMENTE con la URL pública
-// registrada como "Mobile and web applications" en Entra ID: la etapa
-// `/desarrrollo/` del API Gateway, con barra final).
+// Raíz del API Gateway donde se sirve la SPA (debe coincidir EXACTAMENTE
+// con la URL pública registrada como "Mobile and web applications" en
+// Entra ID, con barra final).
 const REDIRECT_URI =
-  "https://ezeh839whh.execute-api.us-east-1.amazonaws.com/desarrrollo/";
+  "https://ezeh839whh.execute-api.us-east-1.amazonaws.com/";
 const POST_LOGOUT_REDIRECT_URI =
-  "https://ezeh839whh.execute-api.us-east-1.amazonaws.com/desarrrollo/";
+  "https://ezeh839whh.execute-api.us-east-1.amazonaws.com/";
 // Scope expuesto por el propio API Gateway (debe coincidir con el
 // Application ID URI configurado en Entra ID).
 const API_SCOPE = `api://${CLIENT_ID}/read-write`;
