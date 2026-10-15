@@ -100,10 +100,14 @@ async function enriquecer(lineas, locales) {
 
 /** Aplica el diff local↔remoto contra la API. Best-effort (nunca lanza). */
 async function empujar(clavePrevia, items, servicio) {
-  const previas = new Map(parsear(clavePrevia).map((l) => [l.sku, l.cantidad]));
+  // `clavePrevia` son tuplas [sku, cantidad] (así las escribe `clave()`),
+  // así que el Map se arma directo: mapearlas como objetos dejaba sku
+  // undefined y la API recibía DELETE /items/undefined.
+  const previas = new Map(parsear(clavePrevia));
   const actuales = new Map(items.map((l) => [l.sku, l.cantidad]));
   try {
     for (const [sku, cantidad] of actuales) {
+      if (!sku) continue;
       const antes = previas.get(sku);
       if (antes === undefined) {
         await servicio.agregarItem(sku, cantidad);
@@ -112,7 +116,7 @@ async function empujar(clavePrevia, items, servicio) {
       }
     }
     for (const sku of previas.keys()) {
-      if (!actuales.has(sku)) await servicio.quitarItem(sku);
+      if (sku && !actuales.has(sku)) await servicio.quitarItem(sku);
     }
   } catch (detalle) {
     registrarFallo("carritoRemoto/empujar", detalle);
