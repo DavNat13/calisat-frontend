@@ -1,18 +1,119 @@
-/* Checkout — resumen SOLO LECTURA del carrito (Fase 2) y aviso de pago.
-   Se apoya en las primitivas globales .pagina, .contenedor y .tarjeta;
-   aquí solo viven las filas del resumen y los bloques propios. */
+/* Checkout — layout moderno en dos columnas (entrega + productos a la izquierda,
+   resumen sticky a la derecha) apoyado en las primitivas globales .pagina,
+   .contenedor y .tarjeta y en los tokens del diseño (amarillo CalisaT). */
 
-/* Más estrecho que el contenedor genérico (72rem): un resumen de pedido
-   legible no necesita todo el ancho disponible. El selector duplicado
-   (.contenedor) gana la carrera de especificidad contra base.css. */
 .contenedor.checkout {
-  max-width: 48rem;
+  max-width: 68rem;
 }
 
+/* ---- Pasos del checkout ---- */
+.checkout__pasos {
+  display: flex;
+  gap: 0.75rem;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+}
+
+.checkout__paso {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full, 999px);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-text-muted);
+  background: var(--color-surface, #fff);
+}
+
+.checkout__paso--activo {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.checkout__paso-numero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: var(--radius-full, 999px);
+  background: var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.checkout__paso--activo .checkout__paso-numero {
+  background: var(--color-primary);
+  color: #1a1a1a;
+}
+
+/* ---- Rejilla principal: columna de entrega + resumen lateral ---- */
+.checkout__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (min-width: 60rem) {
+  .checkout__grid {
+    grid-template-columns: minmax(0, 1.6fr) minmax(18rem, 1fr);
+  }
+}
+
+.checkout__principal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+}
+
+.checkout__lateral {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+}
+
+@media (min-width: 60rem) {
+  .checkout__lateral {
+    position: sticky;
+    top: 1.5rem;
+  }
+}
+
+/* ---- Secciones ---- */
+.checkout__direccion,
+.checkout__productos,
 .checkout__resumen {
-  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
 }
 
+.checkout__subtitulo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: var(--text-md, 1rem);
+  font-weight: 700;
+}
+
+.checkout__formulario {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+/* ---- Lista de productos ---- */
 .checkout__lista {
   margin: 0;
   padding: 0;
@@ -21,31 +122,49 @@
 
 .checkout__fila {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.875rem 1.25rem;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 0;
   border-bottom: 1px solid var(--color-border);
   font-size: var(--text-sm);
   line-height: var(--text-sm--line-height);
   color: var(--color-text);
 }
 
-.checkout__nombre {
-  overflow-wrap: anywhere;
+.checkout__fila:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
 }
 
-.checkout__cantidad {
-  color: var(--color-text-muted);
+.checkout__chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  min-width: 1.75rem;
+  height: 1.75rem;
+  padding: 0 0.375rem;
+  border-radius: var(--radius-full, 999px);
+  background: var(--color-primary);
+  color: #1a1a1a;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.checkout__nombre {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-weight: 500;
 }
 
 .checkout__precio {
   flex-shrink: 0;
-  font-weight: 600;
+  font-weight: 700;
   white-space: nowrap;
 }
 
-/* Fila de total: hereda fondo/borde de .tarjeta__footer (tarjetas.css) */
+/* ---- Totales ---- */
 .checkout__total {
   display: flex;
   align-items: baseline;
@@ -55,35 +174,10 @@
   font-weight: 700;
 }
 
-.checkout__aviso {
-  margin: 0 0 1.5rem;
-  padding: 0.625rem 0.875rem;
-  background: var(--color-primary-soft);
-  border: 1px solid var(--color-primary);
-  border-radius: var(--radius-control);
-  font-size: var(--text-sm);
-  line-height: var(--text-sm--line-height);
+.checkout__total-monto {
+  font-size: 1.25rem;
+  font-weight: 800;
   color: var(--color-text);
-}
-
-.checkout__pago {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.75rem;
-  padding: 1.25rem;
-}
-
-.checkout__pago-texto {
-  margin: 0;
-  font-size: var(--text-sm);
-  line-height: var(--text-sm--line-height);
-  color: var(--color-text-muted);
-}
-
-.checkout__aviso--error {
-  color: var(--color-peligro, #b00020);
-  font-weight: 600;
 }
 
 .checkout__lineas {
@@ -97,26 +191,100 @@
   color: var(--color-text-muted);
 }
 
-.checkout__direccion {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1.25rem;
-}
-
-.checkout__subtitulo {
-  margin: 0;
-  font-size: var(--text-md, 1rem);
-}
-
-.checkout__formulario {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
+.checkout__lineas strong {
+  color: var(--color-text);
 }
 
 .checkout__destino {
   margin: 0;
   font-size: var(--text-sm);
   color: var(--color-text-muted);
+}
+
+/* ---- Avisos ---- */
+.checkout__aviso {
+  margin: 0;
+  padding: 0.625rem 0.875rem;
+  background: var(--color-primary-soft);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-control);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-text);
+}
+
+.checkout__aviso--error {
+  color: var(--color-peligro, #b00020);
+  font-weight: 600;
+}
+
+/* ---- Confirmación ---- */
+.checkout__pago {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1.5rem;
+}
+
+.checkout__pago-texto {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-text-muted);
+}
+
+.checkout__acciones {
+  width: 100%;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* ---- Vista de éxito ---- */
+.checkout__exito {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: center;
+  padding-top: 1rem;
+}
+
+.checkout__exito-icono {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: var(--radius-full, 999px);
+  background: var(--color-primary);
+  color: #1a1a1a;
+  font-size: 1.75rem;
+  font-weight: 800;
+  box-shadow: var(--shadow-panel);
+}
+
+.checkout__exito-tarjeta {
+  width: 100%;
+  max-width: 28rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding: 1.5rem;
+  text-align: left;
+}
+
+.checkout__exito-dato {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.checkout__exito-dato strong {
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+  text-align: right;
 }
