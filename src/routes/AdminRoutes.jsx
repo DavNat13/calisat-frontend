@@ -8,6 +8,7 @@ import {
   InventarioPage,
   EnviosPage,
   NotificacionesPage,
+  AuditoriaPage,
   OrdenesPage,
   DestinatariosPage,
   PlantillasPage,
@@ -17,8 +18,8 @@ import {
 /**
  * Rama /admin: panel lateral, SIN navbar pública.
  * Guards: shell ADMIN|LOGISTICA; productos, inventario, órdenes,
- * notificaciones, destinatarios y plantillas sólo ADMIN; envíos hereda el
- * guard del shell; preferencias (del usuario autenticado) ADMIN|LOG.
+ * notificaciones, auditoría, destinatarios y plantillas sólo ADMIN; envíos
+ * hereda el guard del shell; preferencias (del usuario autenticado) ADMIN|LOG.
  *
  * Devuelve un <React.Fragment> de <Route> por la misma restricción de
  * react-router que PublicRoutes (los hijos de <Routes> no pueden ser
@@ -69,6 +70,15 @@ export default function AdminRoutes() {
           element={
             <ProtectedRoute roles={[ROLES.ADMINISTRADOR]}>
               <NotificacionesPage />
+            </ProtectedRoute>
+          }
+        />
+        {/* Auditoría interna (auditoria.queue): solo ADMINISTRADOR. */}
+        <Route
+          path="auditoria"
+          element={
+            <ProtectedRoute roles={[ROLES.ADMINISTRADOR]}>
+              <AuditoriaPage />
             </ProtectedRoute>
           }
         />

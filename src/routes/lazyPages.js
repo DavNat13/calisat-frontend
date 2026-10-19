@@ -62,6 +62,9 @@ export const EnviosPage = lazy(
 export const NotificacionesPage = lazy(
   () => import("../modules/admin/pages/NotificacionesPage")
 );
+export const AuditoriaPage = lazy(
+  () => import("../modules/admin/pages/AuditoriaPage")
+);
 export const OrdenesPage = lazy(
   () => import("../modules/admin/pages/OrdenesPage")
 );

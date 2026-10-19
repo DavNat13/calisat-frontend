@@ -1,0 +1,181 @@
+/* AuditoriaPage — filtros por tipo/resultado, tarjetas y paginación
+   (patrón de NotificacionesPage, solo lectura: sin modales ni acciones).
+   El ritmo vertical y la cabecera vienen de .pagina / .pagina__cabecera. */
+
+/* ------------------------------- Filtros ------------------------------- */
+.auditoria__barra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.auditoria__filtro {
+  flex: 1 1 14rem;
+  max-width: 20rem;
+}
+
+/* ------------------------------ Mensajes ------------------------------- */
+.auditoria__mensaje {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+}
+
+.auditoria__mensaje--error {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+/* ------------------------------- Listado ------------------------------- */
+.auditoria__seccion {
+  margin-top: 0.5rem;
+}
+
+.auditoria__encabezado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.auditoria__titulo-listado {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.auditoria__contador {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--color-text-subtle);
+}
+
+.auditoria__estado {
+  margin: 0;
+  padding: 3rem 1rem;
+  color: var(--color-text-subtle);
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  text-align: center;
+}
+
+.auditoria__vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-card);
+  background-color: var(--color-surface);
+}
+
+/* --------------------------- Tarjetas ---------------------------------- */
+.auditoria__lista {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.auditoria-ficha {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  padding: 1rem 1.25rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+}
+
+.auditoria-ficha__info {
+  flex: 1 1 20rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.auditoria-ficha__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.auditoria-ficha__evento {
+  margin: 0;
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.auditoria-ficha__referencia {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-text);
+}
+
+.auditoria-ficha__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.auditoria-ficha__texto {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-text-subtle);
+}
+
+.auditoria-ficha__detalle {
+  margin: 0.25rem 0 0;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-text-subtle);
+  overflow-wrap: anywhere;
+}
+
+/* --------------------------- Paginación -------------------------------- */
+.auditoria__paginacion {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.auditoria__paginacion-texto {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm--line-height);
+  color: var(--color-text-subtle);
+}

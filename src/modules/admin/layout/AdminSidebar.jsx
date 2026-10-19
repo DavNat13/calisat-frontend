@@ -4,6 +4,7 @@ import {
   Bell,
   Boxes,
   FileText,
+  History,
   LayoutDashboard,
   LogOut,
   Package,
@@ -33,7 +34,7 @@ const claseItem = ({ isActive }) =>
  *
  * La visibilidad de cada enlace depende del rol (useAuthRole): Dashboard,
  * Envíos y Preferencias son de gestión (ADMINISTRADOR | LOGISTICA);
- * Productos, Inventario, Órdenes, Notificaciones, Destinatarios y
+ * Productos, Inventario, Órdenes, Notificaciones, Auditoría, Destinatarios y
  * Plantillas son exclusivas de ADMINISTRADOR, igual que en las rutas.
  */
 export default function AdminSidebar({ isOpen, onClose, panelRef }) {
@@ -135,6 +136,19 @@ export default function AdminSidebar({ isOpen, onClose, panelRef }) {
               >
                 <Bell className="icono" aria-hidden="true" />
                 Notificaciones
+              </NavLink>
+            </li>
+          )}
+
+          {esAdministrador && (
+            <li>
+              <NavLink
+                to="/admin/auditoria"
+                className={claseItem}
+                onClick={navegarDesdePanel}
+              >
+                <History className="icono" aria-hidden="true" />
+                Auditoría
               </NavLink>
             </li>
           )}
