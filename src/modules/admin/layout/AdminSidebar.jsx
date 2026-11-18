@@ -2,7 +2,10 @@ import { NavLink, Link } from "react-router-dom";
 import { useMsal } from "@azure/msal-react";
 import {
   Bell,
+  Activity,
   Boxes,
+  Database,
+  MessageSquare,
   FileText,
   History,
   LayoutDashboard,
@@ -151,6 +154,29 @@ export default function AdminSidebar({ isOpen, onClose, panelRef }) {
                 Auditoría
               </NavLink>
             </li>
+          )}
+
+          {esAdministrador && (
+            <>
+              <li>
+                <NavLink to="/admin/metricas" className={claseItem} onClick={navegarDesdePanel}>
+                  <Activity className="icono" aria-hidden="true" />
+                  Métricas en vivo
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/admin/rabbitmq" className={claseItem} onClick={navegarDesdePanel}>
+                  <MessageSquare className="icono" aria-hidden="true" />
+                  Colas RabbitMQ
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/admin/kafka" className={claseItem} onClick={navegarDesdePanel}>
+                  <Database className="icono" aria-hidden="true" />
+                  Kafka
+                </NavLink>
+              </li>
+            </>
           )}
 
           {esAdministrador && (

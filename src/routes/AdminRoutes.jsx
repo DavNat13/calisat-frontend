@@ -14,6 +14,8 @@ import {
   PlantillasPage,
   PreferenciasPage,
   MetricasPage,
+  ColasRabbitPage,
+  KafkaPage,
 } from "./lazyPages";
 
 /**
@@ -105,6 +107,22 @@ export default function AdminRoutes() {
           element={
             <ProtectedRoute roles={[ROLES.ADMINISTRADOR]}>
               <MetricasPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="rabbitmq"
+          element={
+            <ProtectedRoute roles={[ROLES.ADMINISTRADOR]}>
+              <ColasRabbitPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="kafka"
+          element={
+            <ProtectedRoute roles={[ROLES.ADMINISTRADOR]}>
+              <KafkaPage />
             </ProtectedRoute>
           }
         />

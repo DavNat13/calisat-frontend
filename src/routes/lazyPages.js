@@ -83,3 +83,9 @@ export const PreferenciasPage = lazy(
 export const MetricasPage = lazy(
   () => import("../modules/admin/pages/MetricasPage")
 );
+export const ColasRabbitPage = lazy(
+  () => import("../modules/admin/pages/ColasRabbitPage")
+);
+export const KafkaPage = lazy(
+  () => import("../modules/admin/pages/KafkaPage")
+);
