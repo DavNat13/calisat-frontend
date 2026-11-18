@@ -4,6 +4,7 @@ import Badge from "../../../components/ui/Badge";
 import Button from "../../../components/ui/Button";
 import Input from "../../../components/ui/Input";
 import useCarrito from "../hooks/useCarrito";
+import PagoWebpay from "../../pagos/components/PagoWebpay";
 import useCrearOrden from "../../ordenes/hooks/useCrearOrden";
 import useCotizacionService, {
   UMBRAL_GRATIS,
@@ -114,6 +115,9 @@ export default function CheckoutPage() {
                 <strong>{formatoCLP(orden?.total ?? total)}</strong>
               </div>
             </section>
+            {orden?.estado === "PENDIENTE" || !orden?.estado ? (
+              <PagoWebpay ordenId={orden?.id} monto={orden?.total ?? total} />
+            ) : null}
             <div className="pagina__acciones">
               <Link className="boton boton--primario" to="/mis-pedidos">
                 Ver mis pedidos
