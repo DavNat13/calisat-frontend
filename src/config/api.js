@@ -17,6 +17,14 @@ const URL_BASE = "https://ho5p58iyu7.execute-api.us-east-1.amazonaws.com";
 /** URL base sin barra final: `https://xxxx.execute-api.us-east-1.amazonaws.com` */
 export const API_BASE_URL = URL_BASE.replace(/\/+$/, "");
 
+/**
+ * WebSocket de métricas en tiempo real (ms-analytics, `/ws/metricas`). Un API
+ * Gateway HTTP no proxea WebSocket, por eso es un origen aparte. Se puede
+ * sobrescribir al construir con `VITE_METRICAS_WS_URL` (valor público, no secreto).
+ */
+export const WS_METRICAS_URL =
+  import.meta.env.VITE_METRICAS_WS_URL ?? "ws://localhost:8090/ws/metricas";
+
 /** Une la URL base con la ruta de un recurso (`"/api/v1/..."`). */
 export function apiUri(ruta) {
   return `${API_BASE_URL}${ruta}`;

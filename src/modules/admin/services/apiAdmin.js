@@ -150,5 +150,5 @@ export default function useApiAdmin() {
     return res.json().catch(() => null);
   };
 
-  return { obtener, enviar };
+  return { obtener, enviar, getToken };
 }

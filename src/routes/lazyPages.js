@@ -80,3 +80,6 @@ export const PlantillasPage = lazy(
 export const PreferenciasPage = lazy(
   () => import("../modules/admin/pages/PreferenciasPage")
 );
+export const MetricasPage = lazy(
+  () => import("../modules/admin/pages/MetricasPage")
+);

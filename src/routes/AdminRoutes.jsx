@@ -13,6 +13,7 @@ import {
   DestinatariosPage,
   PlantillasPage,
   PreferenciasPage,
+  MetricasPage,
 } from "./lazyPages";
 
 /**
@@ -95,6 +96,15 @@ export default function AdminRoutes() {
           element={
             <ProtectedRoute roles={[ROLES.ADMINISTRADOR]}>
               <PlantillasPage />
+            </ProtectedRoute>
+          }
+        />
+        {/* Plataforma de mensajería y analítica: solo ADMINISTRADOR. */}
+        <Route
+          path="metricas"
+          element={
+            <ProtectedRoute roles={[ROLES.ADMINISTRADOR]}>
+              <MetricasPage />
             </ProtectedRoute>
           }
         />
