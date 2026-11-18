@@ -3,6 +3,17 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [2.5.0] - 2026-11-18
+
+### Added
+- Pago con WebPay en el checkout: `pagoService`, `PagoWebpay` y la página de retorno `/checkout/retorno` que confirma el pago y marca la orden como pagada
+- Recomendaciones personalizadas (Top-5 de `ms-analytics`) en la ficha de producto
+- Dashboard de métricas en tiempo real por WebSocket (`/ws/metricas`) con alertas de fraude
+- Paneles de administración de RabbitMQ (colas, exchanges, bindings) y Kafka (tópicos y consumer groups)
+
+### Fixed
+- La CSP de nginx permite el POST a WebPay y las conexiones WebSocket
+
 ## [2.4.0] - 2026-09-30
 
 ### Added
