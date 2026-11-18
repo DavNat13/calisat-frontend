@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import useCatalogoService from "../services/catalogoService";
+import useRecomendacionService from "../services/recomendacionService";
 import { registrarFallo } from "../../../utils/errores";
 
 /** El backend devuelve una página Spring ({content:[...]}) o una lista. */
@@ -12,6 +13,7 @@ const aLista = (data) => (Array.isArray(data) ? data : data?.content || []);
  */
 export default function useProductoDetalle(sku) {
   const { getProductoBySku, listarProductos } = useCatalogoService();
+  const { misRecomendaciones } = useRecomendacionService();
   const [producto, setProducto] = useState(null);
   const [recomendados, setRecomendados] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -56,13 +58,30 @@ export default function useProductoDetalle(sku) {
   // Recomendados: UNA sola vez (no dependen del SKU); el filtrado del SKU en pantalla lo hace la página.
   useEffect(() => {
     let cancelado = false;
-    listarProductos(0, 8)
-      .then((data) => !cancelado && setRecomendados(aLista(data)))
-      .catch((err) => registrarFallo("productoDetalle/recomendados", err));
+    // 1) Personalizadas (Top-5 de ms-analytics); 2) respaldo: primeros del catálogo.
+    (async () => {
+      try {
+        const personales = await misRecomendaciones();
+        const fichas = (
+          await Promise.all(
+            personales.map((r) => getProductoBySku(r.itemId).catch(() => null))
+          )
+        ).filter(Boolean);
+        if (cancelado) return;
+        if (fichas.length > 0) {
+          setRecomendados(fichas);
+          return;
+        }
+        const data = await listarProductos(0, 8);
+        if (!cancelado) setRecomendados(aLista(data));
+      } catch (err) {
+        registrarFallo("productoDetalle/recomendados", err);
+      }
+    })();
     return () => {
       cancelado = true; // al desmontar no debe escribirse estado tardío
     };
-  }, [listarProductos]);
+  }, [listarProductos, getProductoBySku, misRecomendaciones]);
 
   // Título derivado del ESTADO (no de la respuesta): un fetch que llegue
   // tarde no deja un título huérfano tras salir.
