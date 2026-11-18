@@ -14,6 +14,7 @@ import {
   ForbiddenPage,
   CarritoRedirect,
   CheckoutPage,
+  RetornoPagoPage,
   MisPedidosPage,
   UserProfile,
 } from "./lazyPages";
@@ -52,6 +53,15 @@ export default function PublicRoutes() {
           element={
             <ProtectedRoute>
               <CheckoutPage />
+            </ProtectedRoute>
+          }
+        />
+        {/* Retorno desde WebPay: confirma el pago con el token_ws recibido. */}
+        <Route
+          path="/checkout/retorno"
+          element={
+            <ProtectedRoute>
+              <RetornoPagoPage />
             </ProtectedRoute>
           }
         />

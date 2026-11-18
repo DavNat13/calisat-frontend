@@ -42,6 +42,9 @@ export const CarritoRedirect = lazy(
 export const CheckoutPage = lazy(
   () => import("../modules/carrito/pages/CheckoutPage")
 );
+export const RetornoPagoPage = lazy(
+  () => import("../modules/pagos/pages/RetornoPagoPage")
+);
 export const MisPedidosPage = lazy(
   () => import("../modules/ordenes/pages/MisPedidosPage")
 );
