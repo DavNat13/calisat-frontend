@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useMsal } from "@azure/msal-react";
-import { apiRequest } from "../../../auth/AuthConfig";
+import useTokenSesion from "../../../auth/tokenSesion";
 import { API_BASE_URL } from "../../../config/api";
 import { MENSAJE_OPERACION_FALLIDA, registrarFallo } from "../../../utils/errores";
 
@@ -14,7 +13,7 @@ const PERFIL_ENDPOINT = "/api/v1/usuarios/perfil";
  * (status/payload) va a consola vía `registrarFallo`.
  */
 export default function useUserProfile() {
-  const { instance, accounts } = useMsal();
+  const obtenerTokenSesion = useTokenSesion();
   const [perfil, setPerfil] = useState(null);
   const [loading, setLoading] = useState(false);
   const [mensaje, setMensaje] = useState("");
@@ -23,15 +22,11 @@ export default function useUserProfile() {
   // /perfil en blanco, sino pasar a los datos de la sesión.
   const [codigoFallo, setCodigoFallo] = useState(null);
 
+  // Token de la sesión activa (Microsoft o Cognito).
   const getToken = async () => {
-    // Misma regla que en catalogoService: token SIEMPRE de la cuenta activa
-    // (la que ve el usuario en la navbar), no de `accounts[0]` a ciegas.
-    const cuenta = instance.getActiveAccount() ?? accounts[0];
-    const response = await instance.acquireTokenSilent({
-      ...apiRequest,
-      account: cuenta,
-    });
-    return response.accessToken;
+    const token = await obtenerTokenSesion();
+    if (!token) throw new Error("Sesión sin token disponible");
+    return token;
   };
 
   const obtenerPerfil = async () => {
