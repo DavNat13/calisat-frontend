@@ -10,13 +10,13 @@ import "./Recomendados.css";
  * Si no queda nada que sugerir no se pinta nada: un h2 sin contenido por
  * debajo es ruido para un lector de pantalla.
  */
-export default function Recomendados({ productos }) {
+export default function Recomendados({ titulo, productos }) {
   if (!productos?.length) return null;
 
   return (
     <section className="recomendados" aria-labelledby="recomendados-titulo">
       <h2 className="recomendados__titulo" id="recomendados-titulo">
-        Productos Recomendados
+        {titulo}
       </h2>
       <div className="recomendados__grid">
         {productos.map((producto) => (

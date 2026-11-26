@@ -19,7 +19,8 @@ export const aLista = (data) => (Array.isArray(data) ? data : data?.content || [
 /**
  * LECTURA del catálogo (FASE: capa partida desde catalogoService.js).
  *
- * - GET (listar / por SKU / por categoría): SIN Authorization. Es público
+ * - GET (listar / por categoría): SIN Authorization; por SKU admite un token
+ *   opcional. El catálogo es público
  *   POR DISEÑO: el SecurityConfig del microservicio define
  *   `GET /api/v1/catalogo/** -> permitAll()` (catálogo abierto). Adjuntar un
  *   token aquí sería contraproducente: si el token caducara, la petición
@@ -49,14 +50,23 @@ export async function listarProductos(page = 0, size = 100) {
 
 /**
  * GET /api/v1/catalogo/{sku} — detalle de un producto.
+ * Con `token` la vista queda registrada a nombre del usuario (recomendaciones).
+ * Si esa petición falla se repite sin token: la ficha sigue siendo pública.
  * Devuelve `null` en 404 (SKU inexistente NO es un fallo técnico: la ficha
  * lo traduce a la página "Producto no encontrado").
  */
-export async function getProductoBySku(sku) {
-  const res = await fetch(
-    `${API_BASE_URL}${CATALOGO_BASE}/${encodeURIComponent(sku)}`,
-    { method: "GET" }
-  );
+export async function getProductoBySku(sku, token) {
+  const url = `${API_BASE_URL}${CATALOGO_BASE}/${encodeURIComponent(sku)}`;
+  let res = null;
+  if (token) {
+    res = await fetch(url, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    }).catch(() => null);
+  }
+  if (!res || res.status === 401 || res.status === 403) {
+    res = await fetch(url, { method: "GET" });
+  }
   if (!res.ok) {
     if (res.status === 404) return null;
     registrarFallo("catalogo/getProductoBySku", `HTTP ${res.status}`);

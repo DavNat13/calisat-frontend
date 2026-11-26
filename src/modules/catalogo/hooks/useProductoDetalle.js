@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import useCatalogoService from "../services/catalogoService";
 import useRecomendacionService from "../services/recomendacionService";
+import useAuthSession from "../../../auth/useAuthSession";
+import useTokenSesion from "../../../auth/tokenSesion";
 import { registrarFallo } from "../../../utils/errores";
 
 /** El backend devuelve una página Spring ({content:[...]}) o una lista. */
@@ -8,14 +10,18 @@ const aLista = (data) => (Array.isArray(data) ? data : data?.content || []);
 
 /**
  * Ficha por SKU: `producto` (objeto, `null` en 404 o aún sin cargar),
- * `error` (fallo técnico → la página ofrece Reintentar), `recomendados`
- * (carga aparte: un fallo ahí no debe tumbar la ficha) y `reintentar`.
+ * `error` (fallo técnico → la página ofrece Reintentar), `personales` (Top-5
+ * del usuario) y `generales` (respaldo del catálogo), que se cargan aparte
+ * para que un fallo ahí no tumbe la ficha, y `reintentar`.
  */
 export default function useProductoDetalle(sku) {
   const { getProductoBySku, listarProductos } = useCatalogoService();
   const { misRecomendaciones } = useRecomendacionService();
+  const obtenerToken = useTokenSesion();
+  const { cargando: cargandoSesion } = useAuthSession();
   const [producto, setProducto] = useState(null);
-  const [recomendados, setRecomendados] = useState([]);
+  const [personales, setPersonales] = useState([]);
+  const [generales, setGenerales] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
 
@@ -24,12 +30,15 @@ export default function useProductoDetalle(sku) {
   const peticion = useRef(null);
 
   const cargar = useCallback(async () => {
+    // Se espera a la sesión para que la vista quede a nombre del usuario.
+    if (cargandoSesion) return;
     if (peticion.current === sku) return; // ya hay una petición en vuelo
     peticion.current = sku;
     setCargando(true); // el primer render ya pinta el esqueleto
     setError("");
     try {
-      const datos = await getProductoBySku(sku);
+      const token = await obtenerToken();
+      const datos = await getProductoBySku(sku, token);
       if (peticion.current !== sku) return; // navegamos a otro SKU: obsoleta
       setProducto(datos);
     } catch (err) {
@@ -41,7 +50,7 @@ export default function useProductoDetalle(sku) {
       // de un SKU anterior la apagaría a mitad de camino.
       if (peticion.current === sku) setCargando(false);
     }
-  }, [sku, getProductoBySku]);
+  }, [sku, getProductoBySku, obtenerToken, cargandoSesion]);
 
   const reintentar = useCallback(() => {
     peticion.current = null;
@@ -55,25 +64,21 @@ export default function useProductoDetalle(sku) {
     Promise.resolve().then(cargar);
   }, [cargar]);
 
-  // Recomendados: UNA sola vez (no dependen del SKU); el filtrado del SKU en pantalla lo hace la página.
+  // Recomendados: no dependen del SKU; la página filtra el que está en pantalla.
+  // Se resuelven contra el listado (no por SKU) para no registrar vistas falsas.
   useEffect(() => {
     let cancelado = false;
-    // 1) Personalizadas (Top-5 de ms-analytics); 2) respaldo: primeros del catálogo.
     (async () => {
       try {
-        const personales = await misRecomendaciones();
-        const fichas = (
-          await Promise.all(
-            personales.map((r) => getProductoBySku(r.itemId).catch(() => null))
-          )
-        ).filter(Boolean);
+        const [top, data] = await Promise.all([
+          misRecomendaciones(),
+          listarProductos(0, 100),
+        ]);
         if (cancelado) return;
-        if (fichas.length > 0) {
-          setRecomendados(fichas);
-          return;
-        }
-        const data = await listarProductos(0, 8);
-        if (!cancelado) setRecomendados(aLista(data));
+        const catalogo = aLista(data);
+        const porSku = new Map(catalogo.map((p) => [p.sku, p]));
+        setPersonales(top.map((r) => porSku.get(r.itemId)).filter(Boolean));
+        setGenerales(catalogo.slice(0, 8));
       } catch (err) {
         registrarFallo("productoDetalle/recomendados", err);
       }
@@ -81,7 +86,7 @@ export default function useProductoDetalle(sku) {
     return () => {
       cancelado = true; // al desmontar no debe escribirse estado tardío
     };
-  }, [listarProductos, getProductoBySku, misRecomendaciones]);
+  }, [listarProductos, misRecomendaciones]);
 
   // Título derivado del ESTADO (no de la respuesta): un fetch que llegue
   // tarde no deja un título huérfano tras salir.
@@ -100,5 +105,5 @@ export default function useProductoDetalle(sku) {
     };
   }, []);
 
-  return { cargando, producto, error, recomendados, reintentar };
+  return { cargando, producto, error, personales, generales, reintentar };
 }

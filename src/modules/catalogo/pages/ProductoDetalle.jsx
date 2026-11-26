@@ -23,11 +23,13 @@ import "./ProductoDetalle.css";
  */
 export default function ProductoDetalle() {
   const { sku } = useParams();
-  const { cargando, producto, error, recomendados, reintentar } =
+  const { cargando, producto, error, personales, generales, reintentar } =
     useProductoDetalle(sku);
   const listo = !cargando && !error;
   // La recomendación nunca debe repetir el producto que se está viendo.
-  const otros = recomendados.filter((p) => p.sku !== sku);
+  const sinActual = (lista) => lista.filter((p) => p.sku !== sku);
+  const propios = sinActual(personales);
+  const hayPropios = propios.length > 0;
 
   return (
     <div className="pagina">
@@ -66,7 +68,10 @@ export default function ProductoDetalle() {
           )}
 
           {listo && producto && (
-            <Recomendados productos={otros} />
+            <Recomendados
+              titulo={hayPropios ? "Recomendados para ti" : "Otros productos"}
+              productos={hayPropios ? propios : sinActual(generales)}
+            />
           )}
         </section>
       </div>
