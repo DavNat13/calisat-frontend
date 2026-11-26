@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { API_BASE_URL } from "../../../config/api";
 import { registrarFallo } from "../../../utils/errores";
 import useTokenSesion from "../../../auth/tokenSesion";
@@ -30,6 +31,12 @@ const errorDe = (status, mensaje) =>
 export default function useOrdenService() {
   const tokenSesion = useTokenSesion();
 
+  // Memorizado: las páginas usan el servicio como dependencia de sus efectos
+  // y un objeto nuevo en cada render las haría consultar en bucle.
+  return useMemo(() => crearServicio(tokenSesion), [tokenSesion]);
+}
+
+function crearServicio(tokenSesion) {
   const llamada = async (ruta, { metodo = "GET", cuerpo, clave } = {}) => {
     const token = await tokenSesion();
     if (!token) throw errorDe(401);
