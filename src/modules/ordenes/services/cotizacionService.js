@@ -1,3 +1,4 @@
+import { SERVICIOS } from "../../../config/servicios";
 import { useCallback } from "react";
 import { API_BASE_URL } from "../../../config/api";
 import { registrarFallo } from "../../../utils/errores";
@@ -84,6 +85,7 @@ export default function useCotizacionService() {
   return useCallback(async (datos) => {
     const local = cotizarLocal(datos);
     try {
+      if (!SERVICIOS.envios) return local;
       const token = await tokenSesion();
       if (!token) return local;
       const res = await fetch(`${API_BASE_URL}/api/v1/envios/cotizar`, {

@@ -55,7 +55,7 @@ export default function AuditoriaPage() {
           <div className="pagina__cabecera-texto">
             <h1 className="pagina__titulo">Auditoría</h1>
             <p className="pagina__descripcion">
-              Eventos de usuarios, órdenes y envíos procesados por la cola
+              Eventos de usuarios y órdenes procesados por la cola
               interna de auditoría, con el resultado del correo automatizado
               asociado a cada uno.
             </p>

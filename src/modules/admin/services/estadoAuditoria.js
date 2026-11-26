@@ -1,9 +1,10 @@
+import { SERVICIOS } from "../../../config/servicios";
 /**
  * Constantes de la auditoría interna (eventos de usuario/orden/envío y
  * resultado del correo automatizado). Claves = valores EXACTOS de los enums
  * del backend (TipoAuditoria y ResultadoAuditoria).
  */
-export const TIPOS_AUDITORIA = ["USUARIO", "ORDEN", "ENVIO"];
+export const TIPOS_AUDITORIA = ["USUARIO", "ORDEN", ...(SERVICIOS.envios ? ["ENVIO"] : [])];
 
 export const RESULTADOS_AUDITORIA = [
   "ENVIADO",
