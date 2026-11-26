@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Input from "../../../../components/ui/Input";
 import { ID_CAMPO } from "../../constantes/producto";
+import { SERVICIOS } from "../../../../config/servicios";
 
 /**
  * Paso 2 · Precio (CLP), categoría e imagen de portada.
@@ -22,6 +23,7 @@ export default function PasoComercial({ form, errores = {}, onChange }) {
           onChange={onChange}
           error={errores.precio}
           hint={
+            SERVICIOS.inventario ? (
             <>
               El stock se administra en{" "}
               <Link className="modal-pasos__enlace" to="/admin/inventario">
@@ -29,6 +31,7 @@ export default function PasoComercial({ form, errores = {}, onChange }) {
               </Link>
               .
             </>
+            ) : undefined
           }
           min="1"
           step="1"
