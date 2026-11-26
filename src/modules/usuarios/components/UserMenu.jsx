@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { LogOut, LayoutDashboard, User } from "lucide-react";
+import { LogOut, LayoutDashboard, Package, User } from "lucide-react";
 import useAuthRole from "../../../auth/useAuthRole";
 import { ROLES } from "../../../auth/roles";
 import "./UserMenu.css";
@@ -11,7 +11,8 @@ import "./UserMenu.css";
  * disparador sigue en UserNavbar. Aquí solo se compone el contenido.
  *
  * Matriz de visibilidad (Fase 2):
- *   Rol: X → Ver Perfil (todos los roles) → Panel de administración*
+ *   Rol: X → Ver Perfil (todos los roles) → Mis pedidos (CLIENTE y
+ *   ADMINISTRADOR) → Panel de administración*
  *   (solo ADMINISTRADOR y LOGISTICA) → <hr> → Cerrar Sesión.
  * Se retiraron la entrada de gestión de productos (vivía en el panel de
  * admin) y el enlace de catálogo para LOGISTICA (ya está en la navbar).
@@ -25,6 +26,8 @@ export default function UserMenu({ onCerrar, onCerrarSesion }) {
   const { hasAnyRole, roles } = useAuthRole();
   // Acceso al panel: mismos roles que las rutas /admin.
   const puedePanel = hasAnyRole([ROLES.ADMINISTRADOR, ROLES.LOGISTICA]);
+  // Mismos roles que la ruta /mis-pedidos.
+  const puedePedidos = hasAnyRole([ROLES.CLIENTE, ROLES.ADMINISTRADOR]);
   const rolVisible = roles[0] ?? "SIN ROL";
 
   return (
@@ -35,6 +38,13 @@ export default function UserMenu({ onCerrar, onCerrarSesion }) {
         <User className="icono icono--sm" aria-hidden="true" />
         Ver Perfil
       </Link>
+
+      {puedePedidos && (
+        <Link to="/mis-pedidos" className="usuario__opcion" onClick={onCerrar}>
+          <Package className="icono icono--sm" aria-hidden="true" />
+          Mis pedidos
+        </Link>
+      )}
 
       {puedePanel && (
         <>

@@ -65,11 +65,11 @@ export default function PublicRoutes() {
             </ProtectedRoute>
           }
         />
-        {/* Mis pedidos: solo CLIENTE (ms-orden filtra por el sub del JWT). */}
+        {/* Mis pedidos: CLIENTE y ADMINISTRADOR (ms-orden filtra por el sub del JWT). */}
         <Route
           path="/mis-pedidos"
           element={
-            <ProtectedRoute roles={[ROLES.CLIENTE]}>
+            <ProtectedRoute roles={[ROLES.CLIENTE, ROLES.ADMINISTRADOR]}>
               <MisPedidosPage />
             </ProtectedRoute>
           }

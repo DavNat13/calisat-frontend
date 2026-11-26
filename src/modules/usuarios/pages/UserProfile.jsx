@@ -1,4 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import useAuthRole from "../../../auth/useAuthRole";
+import { ROLES } from "../../../auth/roles";
 import useUserProfile from "../hooks/useUserProfile";
 import PerfilTarjeta from "../components/PerfilTarjeta";
 import Input from "../../../components/ui/Input";
@@ -7,8 +10,8 @@ import Modal from "../../../components/ui/Modal";
 import "./UserProfile.css";
 
 /**
- * Ruta /perfil · datos de la cuenta. Carga SOLO con Bearer (el hook pide el
- * token a MSAL). Si el backend responde 403 (exige rol CLIENTE) o 404 (sin
+ * Ruta /perfil · datos de la cuenta y acceso a los pedidos. Carga SOLO con
+ * el Bearer de la sesión activa (Microsoft o Cognito). Si el backend responde 403 (exige rol CLIENTE) o 404 (sin
  * ficha) la página no se rompe: avisa con role="alert" y sustituye la
  * tarjeta por el modo fallback de PerfilTarjeta (datos de la sesión local).
  */
@@ -17,6 +20,8 @@ export default function UserProfile() {
   const [nombre, setNombre] = useState("");
   const [confirmarEliminacion, setConfirmarEliminacion] = useState(false);
   const yaCargo = useRef(false);
+  const { hasAnyRole } = useAuthRole();
+  const puedePedidos = hasAnyRole([ROLES.CLIENTE, ROLES.ADMINISTRADOR]);
 
   // Carga automática al montar. El guard ref evita la doble petición de
   // StrictMode (mount → unmount → mount), que repetiría el GET de perfil.
@@ -63,6 +68,14 @@ export default function UserProfile() {
           )}
           {perfil && <PerfilTarjeta perfil={perfil} />}
           {!perfil && enFallback && <PerfilTarjeta fallback />}
+
+          {puedePedidos && (
+            <section className="perfil__seccion" aria-labelledby="perfil-pedidos">
+              <h2 className="perfil__subtitulo" id="perfil-pedidos">Mis pedidos</h2>
+              <p className="perfil__nota">Revisa tus compras, su estado y su detalle.</p>
+              <Link to="/mis-pedidos" className="boton boton--primario">Ver mis pedidos</Link>
+            </section>
+          )}
 
           <section className="perfil__seccion" aria-labelledby="perfil-actualizar">
             <h2 className="perfil__subtitulo" id="perfil-actualizar">Actualizar Nombre</h2>
