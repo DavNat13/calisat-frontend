@@ -40,7 +40,7 @@ export default function PagoWebpay({ ordenId, monto }) {
       <label htmlFor="pago-tarjeta">Tarjeta de prueba (solo identificador antifraude)</label>
       <input
         id="pago-tarjeta"
-        className="input"
+        className="campo__control"
         value={tarjeta}
         onChange={(e) => setTarjeta(e.target.value)}
         inputMode="numeric"
