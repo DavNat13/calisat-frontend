@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useMsal } from "@azure/msal-react";
 import { apiRequest } from "../../../auth/AuthConfig";
 import { API_BASE_URL } from "../../../config/api";
@@ -92,14 +93,14 @@ export default function useApiAdmin() {
   const { instance, accounts } = useMsal();
 
   /** Token de la cuenta ACTIVA (misma regla que adminService/catalogoService). */
-  const getToken = async () => {
+  const getToken = useCallback(async () => {
     const cuenta = instance.getActiveAccount() ?? accounts[0];
     const response = await instance.acquireTokenSilent({
       ...apiRequest,
       account: cuenta,
     });
     return response.accessToken;
-  };
+  }, [instance, accounts]);
 
   /**
    * GET JSON.
@@ -107,7 +108,7 @@ export default function useApiAdmin() {
    * - `nullEn404: true` para búsquedas exactas: el "no existe" se comunica
    *   con una lista vacía, no como error.
    */
-  const obtener = async (
+  const obtener = useCallback(async (
     ruta,
     { conToken = true, mensajes = {}, nullEn404 = false } = {}
   ) => {
@@ -119,10 +120,10 @@ export default function useApiAdmin() {
     }
     // Cuerpo vacío / 204 → null (nunca rompe el .json()).
     return res.json().catch(() => null);
-  };
+  }, [getToken]);
 
   /** Petición con cuerpo JSON (POST/PUT/DELETE). Devuelve null en 204. */
-  const enviar = async (
+  const enviar = useCallback(async (
     ruta,
     {
       metodo = "POST",
@@ -148,7 +149,7 @@ export default function useApiAdmin() {
       });
     }
     return res.json().catch(() => null);
-  };
+  }, [getToken]);
 
   return { obtener, enviar, getToken };
 }
