@@ -4,7 +4,9 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: './',
+  // Rutas absolutas: con './' las rutas anidadas (/checkout/retorno, /producto/:sku,
+  // /admin/*) pedían los assets en una subcarpeta y quedaban en blanco al recargar.
+  base: '/',
   build: {
     rolldownOptions: {
       output: {
