@@ -5,9 +5,16 @@ import useAuthSession from "./useAuthSession";
 export default function ProtectedRoute({ roles, children }) {
   // Autenticado = sesión de Azure O de Cognito (antes solo MSAL: un cliente
   // de Cognito no podría abrir /carrito, /checkout ni /perfil).
-  const { isAuthenticated } = useAuthSession();
+  const { isAuthenticated, cargando } = useAuthSession();
   const { hasAnyRole } = useAuthRole();
   const location = useLocation();
+
+  // Al cargar la página (F5 o vuelta desde WebPay) Cognito recupera la sesión
+  // de forma asíncrona: sin esta espera se mandaba al cliente a /login antes
+  // de tiempo y se perdía el `token_ws` del retorno.
+  if (!isAuthenticated && cargando) {
+    return <p role="status">Verificando tu sesión…</p>;
+  }
 
   // Sin sesión → /login (antes iba a "/", lo que dejaba al usuario en la
   // home sin haber resuelto su intención: él pidió una ruta protegida y lo
