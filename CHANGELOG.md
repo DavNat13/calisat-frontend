@@ -3,6 +3,17 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [2.6.0] - 2026-11-25
+
+### Added
+- Configuración de servicios desplegados para ocultar menús y rutas de inventario y envíos en el despliegue en 9 instancias.
+
+### Changed
+- Dashboard sin consultas ni tarjetas de los servicios no desplegados.
+
+### Fixed
+- Se oculta el enlace a inventario en el formulario de producto cuando el servicio no está desplegado.
+
 ## [2.5.0] - 2026-11-18
 
 ### Added
