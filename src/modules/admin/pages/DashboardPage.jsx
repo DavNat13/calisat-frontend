@@ -19,6 +19,7 @@ import { ROLES } from "../../../auth/roles";
 import useAdminService, { UMBRAL_BAJO_STOCK } from "../services/adminService";
 import Badge from "../../../components/ui/Badge";
 import "./DashboardPage.css";
+import { SERVICIOS } from "../../../config/servicios";
 
 /* ----------------------------- Formateo ------------------------------- */
 const FORMATO_NUMERO = new Intl.NumberFormat("es-CL");
@@ -144,6 +145,11 @@ export default function DashboardPage() {
     const intentar = (promesa) =>
       promesa.then((datosNuevos) => ({ datos: datosNuevos })).catch((error) => ({ error }));
     const omitido = async () => ({ omitido: true });
+    // Los servicios no desplegados (config/servicios.js) no se consultan.
+    const inventarioSiHay = () =>
+      SERVICIOS.inventario ? intentar(obtenerResumenInventario()) : omitido();
+    const enviosSiHay = () =>
+      SERVICIOS.envios ? intentar(obtenerResumenEnvios()) : omitido();
 
     (async () => {
       // Promise.all con tolerancia a fallos parciales: si un bloque no
@@ -152,10 +158,10 @@ export default function DashboardPage() {
         ? [
             intentar(obtenerTotalProductosActivos()),
             intentar(obtenerTotalProductosInactivos()),
-            intentar(obtenerResumenInventario()),
+            inventarioSiHay(),
             intentar(obtenerTotalNotificaciones()),
             intentar(obtenerNotificacionesFallidas()),
-            intentar(obtenerResumenEnvios()),
+            enviosSiHay(),
           ]
         : [
             omitido(),
@@ -163,7 +169,7 @@ export default function DashboardPage() {
             omitido(),
             omitido(),
             omitido(),
-            intentar(obtenerResumenEnvios()),
+            enviosSiHay(),
           ];
 
       const [activos, inactivos, inventario, notificaciones, fallidas, envios] =
@@ -204,7 +210,9 @@ export default function DashboardPage() {
   const nombre = nombreCuenta || (esAdministrador ? "Administrador" : "Logística");
   const subtitulo = esAdministrador
     ? "Resumen general de la actividad de Calisat."
-    : "Panel de logística: estado actual de los envíos.";
+    : SERVICIOS.envios
+      ? "Panel de logística: estado actual de los envíos."
+      : "El módulo de envíos no está disponible en este despliegue.";
 
   const inventario = datos.inventario;
   const envios = datos.envios;
@@ -290,25 +298,27 @@ export default function DashboardPage() {
                   </div>
                 </Seccion>
 
-                <Seccion id="panel-inventario" titulo="Inventario">
-                  <div className="admin-dashboard__grid">
-                    <StatTarjeta
-                      Icono={Warehouse}
-                      etiqueta="Registros de stock"
-                      valor={aTexto(inventario?.registros)}
-                    />
-                    <StatTarjeta
-                      Icono={Package}
-                      etiqueta="Unidades disponibles"
-                      valor={aTexto(inventario?.unidadesDisponibles)}
-                    />
-                    <StatTarjeta
-                      Icono={CircleAlert}
-                      etiqueta={`Bajo stock (≤ ${UMBRAL_BAJO_STOCK})`}
-                      valor={aTexto(inventario?.bajoStock)}
-                    />
-                  </div>
-                </Seccion>
+                {SERVICIOS.inventario && (
+                  <Seccion id="panel-inventario" titulo="Inventario">
+                    <div className="admin-dashboard__grid">
+                      <StatTarjeta
+                        Icono={Warehouse}
+                        etiqueta="Registros de stock"
+                        valor={aTexto(inventario?.registros)}
+                      />
+                      <StatTarjeta
+                        Icono={Package}
+                        etiqueta="Unidades disponibles"
+                        valor={aTexto(inventario?.unidadesDisponibles)}
+                      />
+                      <StatTarjeta
+                        Icono={CircleAlert}
+                        etiqueta={`Bajo stock (≤ ${UMBRAL_BAJO_STOCK})`}
+                        valor={aTexto(inventario?.bajoStock)}
+                      />
+                    </div>
+                  </Seccion>
+                )}
 
                 <Seccion id="panel-notificaciones" titulo="Notificaciones">
                   <div className="admin-dashboard__grid">
@@ -327,30 +337,38 @@ export default function DashboardPage() {
               </>
             )}
 
-            <Seccion id="panel-envios" titulo="Envíos">
-              <div className="admin-dashboard__grid">
-                <StatTarjeta
-                  Icono={Truck}
-                  etiqueta="Envíos totales"
-                  valor={aTexto(envios?.total)}
-                />
-                {tarjetasEstado.map((tarjeta) => (
+            {SERVICIOS.envios && (
+              <Seccion id="panel-envios" titulo="Envíos">
+                <div className="admin-dashboard__grid">
                   <StatTarjeta
-                    key={tarjeta.estado}
-                    Icono={ICONO_ESTADO[tarjeta.estado] ?? Truck}
-                    etiqueta={ETIQUETA_ESTADO[tarjeta.estado] ?? tarjeta.estado}
-                    valor={aTexto(tarjeta.valor)}
+                    Icono={Truck}
+                    etiqueta="Envíos totales"
+                    valor={aTexto(envios?.total)}
                   />
-                ))}
-              </div>
-            </Seccion>
+                  {tarjetasEstado.map((tarjeta) => (
+                    <StatTarjeta
+                      key={tarjeta.estado}
+                      Icono={ICONO_ESTADO[tarjeta.estado] ?? Truck}
+                      etiqueta={ETIQUETA_ESTADO[tarjeta.estado] ?? tarjeta.estado}
+                      valor={aTexto(tarjeta.valor)}
+                    />
+                  ))}
+                </div>
+              </Seccion>
+            )}
 
             <Seccion id="panel-acciones" titulo="Acciones rápidas">
               <div className="admin-dashboard__acciones">
                 {/* Navegación = <Link> (no <button>+navigate): el lector de
                     pantalla lo anuncia como enlace y permite abrir en otra
                     pestaña. El aspecto lo aporta la primitiva .boton. */}
-                {acciones.map((accion) => (
+                {acciones
+                  .filter(
+                    ({ ruta }) =>
+                      (SERVICIOS.inventario || ruta !== "/admin/inventario") &&
+                      (SERVICIOS.envios || ruta !== "/admin/envios")
+                  )
+                  .map((accion) => (
                   <Link
                     key={accion.ruta}
                     to={accion.ruta}
@@ -365,56 +383,58 @@ export default function DashboardPage() {
               </div>
             </Seccion>
 
-            <Seccion id="panel-ultimos-envios" titulo="Últimos envíos">
-              {recientes.length === 0 ? (
-                /* Mismo nodo para los dos casos: vacío = status, fallo de
-                   carga = alert (role dinámico según el origen del estado). */
-                <p
-                  className="admin-dashboard__vacio"
-                  role={envios ? "status" : "alert"}
-                >
-                  {envios
-                    ? "Todavía no hay envíos registrados."
-                    : "No se pudieron cargar los envíos."}
-                </p>
-              ) : (
-                <ul className="admin-dashboard__lista-envios">
-                  {recientes.map((envio) => {
-                    const estado = String(envio?.estado ?? "SIN_ESTADO").toUpperCase();
-                    return (
-                      <li
-                        key={envio?.id ?? envio?.numeroGuia}
-                        className="envio-tarjeta"
-                      >
-                        <div className="envio-tarjeta__info">
-                          <span className="envio-tarjeta__guia">
-                            {envio?.numeroGuia || "—"}
-                          </span>
-                          <span className="envio-tarjeta__transportista">
-                            {envio?.transportista || "Sin transportista asignado"}
-                          </span>
-                          <span className="envio-tarjeta__fecha">
-                            <Calendar className="icono icono--sm" aria-hidden="true" />
-                            {aFecha(envio?.fechaCreacion)}
-                          </span>
-                        </div>
-                        <div className="envio-tarjeta__acciones">
-                          <Badge tone={TONO_ESTADO[estado] ?? "neutral"}>
-                            {ETIQUETA_ESTADO[estado] ?? estado}
-                          </Badge>
-                          <Link
-                            to="/admin/envios"
-                            className="boton boton--secundario boton--sm"
-                          >
-                            Gestionar
-                          </Link>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
-            </Seccion>
+            {SERVICIOS.envios && (
+              <Seccion id="panel-ultimos-envios" titulo="Últimos envíos">
+                {recientes.length === 0 ? (
+                  /* Mismo nodo para los dos casos: vacío = status, fallo de
+                     carga = alert (role dinámico según el origen del estado). */
+                  <p
+                    className="admin-dashboard__vacio"
+                    role={envios ? "status" : "alert"}
+                  >
+                    {envios
+                      ? "Todavía no hay envíos registrados."
+                      : "No se pudieron cargar los envíos."}
+                  </p>
+                ) : (
+                  <ul className="admin-dashboard__lista-envios">
+                    {recientes.map((envio) => {
+                      const estado = String(envio?.estado ?? "SIN_ESTADO").toUpperCase();
+                      return (
+                        <li
+                          key={envio?.id ?? envio?.numeroGuia}
+                          className="envio-tarjeta"
+                        >
+                          <div className="envio-tarjeta__info">
+                            <span className="envio-tarjeta__guia">
+                              {envio?.numeroGuia || "—"}
+                            </span>
+                            <span className="envio-tarjeta__transportista">
+                              {envio?.transportista || "Sin transportista asignado"}
+                            </span>
+                            <span className="envio-tarjeta__fecha">
+                              <Calendar className="icono icono--sm" aria-hidden="true" />
+                              {aFecha(envio?.fechaCreacion)}
+                            </span>
+                          </div>
+                          <div className="envio-tarjeta__acciones">
+                            <Badge tone={TONO_ESTADO[estado] ?? "neutral"}>
+                              {ETIQUETA_ESTADO[estado] ?? estado}
+                            </Badge>
+                            <Link
+                              to="/admin/envios"
+                              className="boton boton--secundario boton--sm"
+                            >
+                              Gestionar
+                            </Link>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </Seccion>
+            )}
 
             <section
               className="admin-dashboard__seccion admin-dashboard__bienvenida"
@@ -425,8 +445,8 @@ export default function DashboardPage() {
               </h2>
               <p className="admin-dashboard__bienvenida-texto">
                 {esAdministrador
-                  ? "Desde aquí gestionas el catálogo, el inventario, los envíos y las notificaciones de Calisat. Todos los datos se cargan en vivo desde la API."
-                  : "Consulta el estado de los envíos y accede a su gestión desde este panel. Todos los datos se cargan en vivo desde la API."}
+                  ? "Desde aquí gestionas el catálogo, las órdenes, las notificaciones y la mensajería de Calisat. Todos los datos se cargan en vivo desde la API."
+                  : "Panel de logística de Calisat."}
               </p>
             </section>
           </>
