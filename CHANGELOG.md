@@ -3,6 +3,16 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [2.8.0] - 2026-11-26
+
+### Added
+- Acceso a Mis pedidos desde el perfil y el menú de usuario.
+
+### Fixed
+- Espera de la sesión antes de redirigir a login, permitiendo el retorno de WebPay con Cognito.
+- Uso de la sesión de Cognito en la sincronización del registro y la carga del perfil de usuario.
+- Servicio de órdenes memorizado para evitar consultas en bucle.
+
 ## [2.7.1] - 2026-11-26
 
 ### Fixed
