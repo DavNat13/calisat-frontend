@@ -3,6 +3,12 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [2.7.1] - 2026-11-26
+
+### Fixed
+- Rutas absolutas de assets en Vite para evitar pantallas en blanco al cargar directamente el retorno de WebPay y otras rutas anidadas.
+- Campo de tarjeta de prueba de WebPay con el estilo de control de formulario del sitio.
+
 ## [2.7.0] - 2026-11-26
 
 ### Added
