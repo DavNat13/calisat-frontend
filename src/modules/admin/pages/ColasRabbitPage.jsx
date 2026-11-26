@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
+import { RefreshCw } from "lucide-react";
 import useApiAdmin from "../services/apiAdmin";
+import Button from "../../../components/ui/Button";
+import Badge from "../../../components/ui/Badge";
 import "./PlataformaAdmin.css";
 
 const BASE = "/api/v1/rabbit";
@@ -7,6 +10,16 @@ const MENSAJES = {
   400: "Datos no válidos.",
   502: "RabbitMQ no está disponible o rechazó la operación.",
 };
+
+/** Campo de texto con etiqueta, con el estilo común de formularios. */
+function Campo({ etiqueta, valor, onChange, requerido = false }) {
+  return (
+    <label className="campo">
+      <span className="campo__label">{etiqueta}</span>
+      <input className="campo__control" value={valor} required={requerido} onChange={(e) => onChange(e.target.value)} />
+    </label>
+  );
+}
 
 /** Administración de RabbitMQ (ms-rabbit-admin): colas, exchanges y bindings. */
 export default function ColasRabbitPage() {
@@ -43,89 +56,130 @@ export default function ColasRabbitPage() {
     }
   };
 
+  const alEnviar = (ruta, cuerpo, ok) => (e) => {
+    e.preventDefault();
+    ejecutar(() => enviar(`${BASE}/${ruta}`, { cuerpo, mensajes: MENSAJES }), ok);
+  };
+
+  const eliminar = (tipo, nombre, ok) => {
+    if (!window.confirm(`¿Eliminar ${nombre}?`)) return;
+    ejecutar(
+      () => enviar(`${BASE}/${tipo}/${encodeURIComponent(nombre)}`, { metodo: "DELETE", mensajes: MENSAJES }),
+      ok
+    );
+  };
+
   return (
-    <div className="plataforma">
-      <h1 className="pagina__titulo">Administración de RabbitMQ</h1>
-      {mensaje && <p role="status">{mensaje}</p>}
-
-      <div className="plataforma__grid">
-        <form className="tarjeta" onSubmit={(e) => { e.preventDefault();
-          ejecutar(() => enviar(`${BASE}/queues`, { cuerpo: { name: cola.name, durable: true,
-            deadLetterExchange: cola.dlx || null, deadLetterRoutingKey: cola.dlk || null }, mensajes: MENSAJES }), "Cola creada."); }}>
-          <h2>Crear cola</h2>
-          <input className="input" placeholder="nombre" value={cola.name} required onChange={(e) => setCola({ ...cola, name: e.target.value })} />
-          <input className="input" placeholder="DLX" value={cola.dlx} onChange={(e) => setCola({ ...cola, dlx: e.target.value })} />
-          <input className="input" placeholder="routing key DLQ" value={cola.dlk} onChange={(e) => setCola({ ...cola, dlk: e.target.value })} />
-          <button className="boton boton--primario" type="submit">Crear</button>
-        </form>
-
-        <form className="tarjeta" onSubmit={(e) => { e.preventDefault();
-          ejecutar(() => enviar(`${BASE}/exchanges`, { cuerpo: { name: ex.name, type: ex.type, durable: true }, mensajes: MENSAJES }), "Exchange creado."); }}>
-          <h2>Crear exchange</h2>
-          <input className="input" placeholder="nombre" value={ex.name} required onChange={(e) => setEx({ ...ex, name: e.target.value })} />
-          <select className="input" value={ex.type} onChange={(e) => setEx({ ...ex, type: e.target.value })}>
-            {["topic", "direct", "fanout", "headers"].map((t) => <option key={t}>{t}</option>)}
-          </select>
-          <button className="boton boton--primario" type="submit">Crear</button>
-        </form>
-
-        <form className="tarjeta" onSubmit={(e) => { e.preventDefault();
-          ejecutar(() => enviar(`${BASE}/bindings`, { cuerpo: bind, mensajes: MENSAJES }), "Binding creado."); }}>
-          <h2>Crear binding</h2>
-          <input className="input" placeholder="exchange" value={bind.exchange} required onChange={(e) => setBind({ ...bind, exchange: e.target.value })} />
-          <input className="input" placeholder="cola" value={bind.queue} required onChange={(e) => setBind({ ...bind, queue: e.target.value })} />
-          <input className="input" placeholder="routing key" value={bind.routingKey} onChange={(e) => setBind({ ...bind, routingKey: e.target.value })} />
-          <div className="plataforma__fila">
-            <button className="boton boton--primario" type="submit">Crear</button>
-            <button className="boton boton--secundario" type="button"
-              onClick={() => ejecutar(() => enviar(`${BASE}/bindings`, { metodo: "DELETE", cuerpo: bind, mensajes: MENSAJES }), "Binding eliminado.")}>
-              Eliminar
-            </button>
+    <div className="pagina plataforma">
+      <div className="contenedor">
+        <header className="pagina__cabecera">
+          <div className="pagina__cabecera-texto">
+            <h1 className="pagina__titulo">RabbitMQ</h1>
+            <p className="pagina__descripcion">
+              Administra las colas, exchanges y bindings de la mensajería interna.
+            </p>
           </div>
-        </form>
+          <Button variant="secundario" onClick={cargar}>
+            <RefreshCw className="icono icono--sm" aria-hidden="true" />
+            Recargar
+          </Button>
+        </header>
+
+        {mensaje && <p className="plataforma__mensaje" role="status">{mensaje}</p>}
+
+        <div className="plataforma__grid">
+          <form className="plataforma-panel" onSubmit={alEnviar("queues", {
+            name: cola.name, durable: true,
+            deadLetterExchange: cola.dlx || null, deadLetterRoutingKey: cola.dlk || null,
+          }, "Cola creada.")}>
+            <h2 className="plataforma-panel__titulo">Crear cola</h2>
+            <Campo etiqueta="Nombre" valor={cola.name} requerido onChange={(v) => setCola({ ...cola, name: v })} />
+            <Campo etiqueta="Dead letter exchange" valor={cola.dlx} onChange={(v) => setCola({ ...cola, dlx: v })} />
+            <Campo etiqueta="Routing key de la DLQ" valor={cola.dlk} onChange={(v) => setCola({ ...cola, dlk: v })} />
+            <div className="plataforma-panel__acciones">
+              <Button type="submit">Crear cola</Button>
+            </div>
+          </form>
+
+          <form className="plataforma-panel" onSubmit={alEnviar("exchanges", { name: ex.name, type: ex.type, durable: true }, "Exchange creado.")}>
+            <h2 className="plataforma-panel__titulo">Crear exchange</h2>
+            <Campo etiqueta="Nombre" valor={ex.name} requerido onChange={(v) => setEx({ ...ex, name: v })} />
+            <label className="campo">
+              <span className="campo__label">Tipo</span>
+              <select className="campo__control" value={ex.type} onChange={(e) => setEx({ ...ex, type: e.target.value })}>
+                {["topic", "direct", "fanout", "headers"].map((t) => <option key={t}>{t}</option>)}
+              </select>
+            </label>
+            <div className="plataforma-panel__acciones">
+              <Button type="submit">Crear exchange</Button>
+            </div>
+          </form>
+
+          <form className="plataforma-panel" onSubmit={alEnviar("bindings", bind, "Binding creado.")}>
+            <h2 className="plataforma-panel__titulo">Binding</h2>
+            <Campo etiqueta="Exchange" valor={bind.exchange} requerido onChange={(v) => setBind({ ...bind, exchange: v })} />
+            <Campo etiqueta="Cola" valor={bind.queue} requerido onChange={(v) => setBind({ ...bind, queue: v })} />
+            <Campo etiqueta="Routing key" valor={bind.routingKey} onChange={(v) => setBind({ ...bind, routingKey: v })} />
+            <div className="plataforma-panel__acciones">
+              <Button type="submit">Crear</Button>
+              <Button variant="peligro" onClick={() => ejecutar(
+                () => enviar(`${BASE}/bindings`, { metodo: "DELETE", cuerpo: bind, mensajes: MENSAJES }),
+                "Binding eliminado."
+              )}>
+                Eliminar
+              </Button>
+            </div>
+          </form>
+        </div>
+
+        <h2 className="plataforma__titulo-seccion">
+          Colas <span className="plataforma__contador">({colas.length})</span>
+        </h2>
+        <div className="plataforma__tabla-marco">
+          {colas.length === 0 ? <p className="plataforma__vacio">Sin colas que mostrar.</p> : (
+            <table className="plataforma__tabla">
+              <thead><tr><th>Nombre</th><th>Mensajes</th><th>Consumidores</th><th className="plataforma__celda-acciones">Acciones</th></tr></thead>
+              <tbody>
+                {colas.map((q) => (
+                  <tr key={q.name}>
+                    <td>{q.name}</td>
+                    <td>{q.messages ?? 0}</td>
+                    <td><Badge tone={q.consumers > 0 ? "exito" : "neutral"}>{q.consumers ?? 0}</Badge></td>
+                    <td className="plataforma__celda-acciones">
+                      <Button variant="peligro" size="sm" onClick={() => eliminar("queues", q.name, "Cola eliminada.")}>Eliminar</Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+
+        <h2 className="plataforma__titulo-seccion">
+          Exchanges <span className="plataforma__contador">({exchanges.length})</span>
+        </h2>
+        <div className="plataforma__tabla-marco">
+          {exchanges.length === 0 ? <p className="plataforma__vacio">Sin exchanges que mostrar.</p> : (
+            <table className="plataforma__tabla">
+              <thead><tr><th>Nombre</th><th>Tipo</th><th className="plataforma__celda-acciones">Acciones</th></tr></thead>
+              <tbody>
+                {exchanges.map((x) => (
+                  <tr key={x.name}>
+                    <td>{x.name}</td>
+                    <td><Badge tone="neutral">{x.type}</Badge></td>
+                    <td className="plataforma__celda-acciones">
+                      {/* Los exchanges amq.* son del broker y no se pueden eliminar. */}
+                      {!x.name.startsWith("amq.") && (
+                        <Button variant="peligro" size="sm" onClick={() => eliminar("exchanges", x.name, "Exchange eliminado.")}>Eliminar</Button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
       </div>
-
-      <section className="tarjeta">
-        <h2>Colas ({colas.length})</h2>
-        <table className="plataforma__tabla">
-          <thead><tr><th>Nombre</th><th>Mensajes</th><th>Consumidores</th><th /></tr></thead>
-          <tbody>
-            {colas.map((q) => (
-              <tr key={q.name}>
-                <td>{q.name}</td><td>{q.messages ?? 0}</td><td>{q.consumers ?? 0}</td>
-                <td>
-                  <button className="boton boton--secundario" type="button"
-                    onClick={() => window.confirm(`¿Eliminar la cola ${q.name}?`) &&
-                      ejecutar(() => enviar(`${BASE}/queues/${encodeURIComponent(q.name)}`, { metodo: "DELETE", mensajes: MENSAJES }), "Cola eliminada.")}>
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
-
-      <section className="tarjeta">
-        <h2>Exchanges ({exchanges.length})</h2>
-        <table className="plataforma__tabla">
-          <thead><tr><th>Nombre</th><th>Tipo</th><th /></tr></thead>
-          <tbody>
-            {exchanges.map((x) => (
-              <tr key={x.name}>
-                <td>{x.name}</td><td>{x.type}</td>
-                <td>
-                  <button className="boton boton--secundario" type="button"
-                    onClick={() => window.confirm(`¿Eliminar el exchange ${x.name}?`) &&
-                      ejecutar(() => enviar(`${BASE}/exchanges/${encodeURIComponent(x.name)}`, { metodo: "DELETE", mensajes: MENSAJES }), "Exchange eliminado.")}>
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
     </div>
   );
 }
