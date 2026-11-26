@@ -2,6 +2,7 @@ import { Route, Navigate } from "react-router-dom";
 import AdminLayout from "../modules/admin/layout/AdminLayout";
 import ProtectedRoute from "../auth/ProtectedRoute";
 import { ROLES } from "../auth/roles";
+import { SERVICIOS } from "../config/servicios";
 import {
   DashboardPage,
   ProductosPage,
@@ -50,14 +51,16 @@ export default function AdminRoutes() {
             </ProtectedRoute>
           }
         />
-        <Route
-          path="inventario"
-          element={
-            <ProtectedRoute roles={[ROLES.ADMINISTRADOR]}>
-              <InventarioPage />
-            </ProtectedRoute>
-          }
-        />
+        {SERVICIOS.inventario && (
+          <Route
+            path="inventario"
+            element={
+              <ProtectedRoute roles={[ROLES.ADMINISTRADOR]}>
+                <InventarioPage />
+              </ProtectedRoute>
+            }
+          />
+        )}
         <Route
           path="ordenes"
           element={
@@ -67,7 +70,7 @@ export default function AdminRoutes() {
           }
         />
         {/* Envíos: el guard del shell /admin ya limita a ADMIN|LOG. */}
-        <Route path="envios" element={<EnviosPage />} />
+        {SERVICIOS.envios && <Route path="envios" element={<EnviosPage />} />}
         <Route
           path="notificaciones"
           element={

@@ -22,6 +22,7 @@ import { ROLES } from "../../../auth/roles";
 import Badge from "../../../components/ui/Badge";
 import enfocarContenido from "../../../utils/enfocarContenido";
 import "./AdminSidebar.css";
+import { SERVICIOS } from "../../../config/servicios";
 
 /** Clases semánticas del item de navegación (NavLink activo incluido). */
 const claseItem = ({ isActive }) =>
@@ -106,12 +107,14 @@ export default function AdminSidebar({ isOpen, onClose, panelRef }) {
                   Productos
                 </NavLink>
               </li>
-              <li>
-                <NavLink to="/admin/inventario" className={claseItem} onClick={navegarDesdePanel}>
-                  <Boxes className="icono" aria-hidden="true" />
-                  Inventario
-                </NavLink>
-              </li>
+              {SERVICIOS.inventario && (
+                <li>
+                  <NavLink to="/admin/inventario" className={claseItem} onClick={navegarDesdePanel}>
+                    <Boxes className="icono" aria-hidden="true" />
+                    Inventario
+                  </NavLink>
+                </li>
+              )}
               <li>
                 <NavLink to="/admin/ordenes" className={claseItem} onClick={navegarDesdePanel}>
                   <ScrollText className="icono" aria-hidden="true" />
@@ -121,7 +124,7 @@ export default function AdminSidebar({ isOpen, onClose, panelRef }) {
             </>
           )}
 
-          {verGestion && (
+          {SERVICIOS.envios && verGestion && (
             <li>
               <NavLink to="/admin/envios" className={claseItem} onClick={navegarDesdePanel}>
                 <Truck className="icono" aria-hidden="true" />
