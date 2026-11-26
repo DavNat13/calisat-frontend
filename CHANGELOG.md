@@ -3,6 +3,18 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [2.7.0] - 2026-11-26
+
+### Added
+- Consulta periódica de métricas cada 5 segundos cuando no hay conexión WebSocket.
+
+### Changed
+- Paneles de Kafka, RabbitMQ y métricas adaptados al diseño del sitio.
+
+### Fixed
+- Llamadas del panel memorizadas con `useCallback` para evitar recargas en bucle.
+- Auditoría sin la opción de envíos cuando el servicio no está desplegado y cotización local sin consultar dicho servicio.
+
 ## [2.6.0] - 2026-11-25
 
 ### Added
