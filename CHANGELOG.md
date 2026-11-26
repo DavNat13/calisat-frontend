@@ -3,6 +3,11 @@
 El formato de este archivo se basa en [Keep a Changelog](https://keepachangelog.com/es/1.0.0/),
 y este proyecto adherido al [Versionamiento Semántico](https://semver.org/lang/es/).
 
+## [2.9.0] - 2026-11-26
+
+### Added
+- Recomendaciones personales en la ficha de producto y consultas de catálogo autenticadas para registrar vistas por usuario.
+
 ## [2.8.0] - 2026-11-26
 
 ### Added
